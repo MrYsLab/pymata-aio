@@ -1,0 +1,2438 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>pymata_aio.pymata_iot.PymataIOT</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="pymata_aio-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="pymata_aio-module.html">Package&nbsp;pymata_aio</a> ::
+        <a href="pymata_aio.pymata_iot-module.html">Module&nbsp;pymata_iot</a> ::
+        Class&nbsp;PymataIOT
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="pymata_aio.pymata_iot.PymataIOT-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class PymataIOT</h1><p class="nomargin-top"><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+autobahn.asyncio.websocket.WebSocketServerProtocol --+
+                                                     |
+                                                    <strong class="uidshort">PymataIOT</strong>
+</pre>
+
+<hr />
+<pre class="literalblock">
+
+This class implements the PyMata Websocket interface. JSON command messages are received via Websocket connection,
+decoded and mapped to an associated PyMata method to be executed
+operation.
+
+The methods below are not intended to be called directly. The JSON message format is documented as part of the
+method description. All JSON reply messages (to be handled by the client)  will also be documented for
+within the description.
+
+usage: pymata_iot.py [-h] [-host HOSTNAME] [-port PORT] [-wait WAIT]
+                 [-comport COM] [-sleep SLEEP]
+
+    optional arguments:
+      -h, --help      show this help message and exit
+      -host HOSTNAME  Server name or IP address
+      -port PORT      Server port number
+      -wait WAIT      Arduino wait time
+      -comport COM    Arduino COM port
+      -sleep SLEEP    sleep tune in ms.
+
+</pre>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      This is the &quot;constructor&quot; for PymataIOT.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#analog_read" class="summary-sig-name">analog_read</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">command</span>)</span><br />
+      This method reads and returns the last reported value for an analog 
+      pin.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.analog_read">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#analog_write" class="summary-sig-name">analog_write</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">command</span>)</span><br />
+      This method writes a value to an analog pin.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.analog_write">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#digital_read" class="summary-sig-name">digital_read</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">command</span>)</span><br />
+      This method reads and returns the last reported value for a digital 
+      pin.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.digital_read">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#digital_write" class="summary-sig-name">digital_write</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">command</span>)</span><br />
+      This method writes a zero or one to a digital pin.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.digital_write">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#disable_analog_reporting" class="summary-sig-name">disable_analog_reporting</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">command</span>)</span><br />
+      Disable Firmata reporting for an analog pin.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.disable_analog_reporting">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#disable_digital_reporting" class="summary-sig-name">disable_digital_reporting</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">command</span>)</span><br />
+      Disable Firmata reporting for a digital pin.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.disable_digital_reporting">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#enable_analog_reporting" class="summary-sig-name">enable_analog_reporting</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">command</span>)</span><br />
+      Enable Firmata reporting for an analog pin.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.enable_analog_reporting">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#enable_digital_reporting" class="summary-sig-name">enable_digital_reporting</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">command</span>)</span><br />
+      Enable Firmata reporting for a digital pin.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.enable_digital_reporting">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#encoder_config" class="summary-sig-name">encoder_config</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">command</span>)</span><br />
+      Configure 2 pins for FirmataPlus encoder operation.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.encoder_config">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#encoder_read" class="summary-sig-name">encoder_read</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">command</span>)</span><br />
+      This is a polling method to read the last cached FirmataPlus encoder 
+      value.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.encoder_read">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#get_analog_latch_data" class="summary-sig-name">get_analog_latch_data</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">command</span>)</span><br />
+      This method retrieves a latch table entry for an analog pin.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.get_analog_latch_data">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#get_analog_map" class="summary-sig-name">get_analog_map</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      This method retrieves the Firmata analog map.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.get_analog_map">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#get_capability_report" class="summary-sig-name">get_capability_report</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      This method retrieves the Firmata capability report.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.get_capability_report">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#get_digital_latch_data" class="summary-sig-name">get_digital_latch_data</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">command</span>)</span><br />
+      This method retrieves a latch table entry for a digital pin.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.get_digital_latch_data">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#get_firmware_version" class="summary-sig-name">get_firmware_version</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      This method retrieves the Firmata firmware version.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.get_firmware_version">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#get_pinstate_report" class="summary-sig-name">get_pinstate_report</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">command</span>)</span><br />
+      This method retrieves a Firmata pin_state report for a pin..</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.get_pinstate_report">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#get_protocol_version" class="summary-sig-name">get_protocol_version</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      This method retrieves the Firmata protocol version.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.get_protocol_version">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#get_pymata_version" class="summary-sig-name">get_pymata_version</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      This method retrieves the PyMata release version number.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.get_pymata_version">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#i2c_config" class="summary-sig-name">i2c_config</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">command</span>)</span><br />
+      This method initializes the I2c and sets the optional read delay (in 
+      microseconds).</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.i2c_config">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#i2c_read_data" class="summary-sig-name">i2c_read_data</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">command</span>)</span><br />
+      This method retrieves the last value read for an i2c device 
+      identified by address.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.i2c_read_data">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#i2c_read_request" class="summary-sig-name">i2c_read_request</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">command</span>)</span><br />
+      This method sends an I2C read request to Firmata.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.i2c_read_request">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#i2c_write_request" class="summary-sig-name">i2c_write_request</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">command</span>)</span><br />
+      This method performs an I2C write at a given I2C address,</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.i2c_write_request">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#play_tone" class="summary-sig-name">play_tone</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">command</span>)</span><br />
+      This method controls a piezo device to play a tone.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.play_tone">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#set_analog_latch" class="summary-sig-name">set_analog_latch</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">command</span>)</span><br />
+      This method sets the an analog latch for a given analog pin, 
+      providing the threshold type, and latching threshold.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.set_analog_latch">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#set_digital_latch" class="summary-sig-name">set_digital_latch</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">command</span>)</span><br />
+      This method sets the a digital latch for a given digital pin, the 
+      threshold type, and latching threshold.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.set_digital_latch">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#set_pin_mode" class="summary-sig-name">set_pin_mode</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">command</span>)</span><br />
+      This method sets the pin mode for the selected pin.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.set_pin_mode">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#set_sampling_interval" class="summary-sig-name">set_sampling_interval</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">command</span>)</span><br />
+      This method sets the Firmata sampling interval in ms.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.set_sampling_interval">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#sonar_config" class="summary-sig-name">sonar_config</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">command</span>)</span><br />
+      This method configures 2 pins to support HC-SR04 Ping devices.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.sonar_config">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#sonar_read" class="summary-sig-name">sonar_read</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">command</span>)</span><br />
+      This method retrieves the last sonar data value that was cached.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.sonar_read">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#servo_config" class="summary-sig-name">servo_config</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">command</span>)</span><br />
+      This method configures a pin for servo operation.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.servo_config">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#stepper_config" class="summary-sig-name">stepper_config</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">command</span>)</span><br />
+      This method configures 4 pins for stepper motor operation.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.stepper_config">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#stepper_step" class="summary-sig-name">stepper_step</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">command</span>)</span><br />
+      This method activates a stepper motor motion.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.stepper_step">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#onClose" class="summary-sig-name">onClose</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">was_clean</span>,
+        <span class="summary-sig-arg">code</span>,
+        <span class="summary-sig-arg">reason</span>)</span><br />
+      Websocket management message.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.onClose">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#onConnect" class="summary-sig-name">onConnect</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">request</span>)</span><br />
+      WebSocket management method.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.onConnect">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#onMessage" class="summary-sig-name">onMessage</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">payload</span>,
+        <span class="summary-sig-arg">is_binary</span>)</span><br />
+      Websocket management method.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.onMessage">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#onOpen" class="summary-sig-name">onOpen</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      WebSocket management method.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.onOpen">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#analog_callback" class="summary-sig-name">analog_callback</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">data</span>)</span><br />
+      This method handles the analog message received from pymata_core</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.analog_callback">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#analog_latch_callback" class="summary-sig-name">analog_latch_callback</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">data</span>)</span><br />
+      This method handles analog_latch data received from pymata_core</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.analog_latch_callback">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#digital_callback" class="summary-sig-name">digital_callback</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">data</span>)</span><br />
+      This method handles the digital message received from pymata_core</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.digital_callback">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#digital_latch_callback" class="summary-sig-name">digital_latch_callback</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">data</span>)</span><br />
+      This method handles the digital latch data message received from 
+      pymata_core</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.digital_latch_callback">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#encoder_callback" class="summary-sig-name">encoder_callback</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">data</span>)</span><br />
+      This method handles the encoder data message received from 
+      pymata_core</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.encoder_callback">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#i2c_read_request_callback" class="summary-sig-name">i2c_read_request_callback</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">data</span>)</span><br />
+      This method handles the i2c read data message received from 
+      pymata_core.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.i2c_read_request_callback">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#i2c_read_data_callback" class="summary-sig-name">i2c_read_data_callback</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">data</span>)</span><br />
+      This method handles the i2c cached read data received from 
+      pymata_core.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.i2c_read_data_callback">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata_iot.PymataIOT-class.html#sonar_callback" class="summary-sig-name">sonar_callback</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">data</span>)</span><br />
+      This method handles sonar data received from pymata_core.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.sonar_callback">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="parser"></a><span class="summary-name">parser</span> = <code title="argparse.ArgumentParser()">argparse.ArgumentParser()</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="args"></a><span class="summary-name">args</span> = <code title="parser.parse_args()">parser.parse_args()</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="ip_addr"></a><span class="summary-name">ip_addr</span> = <code title="args.hostname">args.hostname</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="ip_port"></a><span class="summary-name">ip_port</span> = <code title="args.port">args.port</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="comport"></a><span class="summary-name">comport</span> = <code title="args.com">args.com</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="core"></a><span class="summary-name">core</span> = <code title="PymataCore(int(args.wait), float(args.sleep), comport)">PymataCore(int(args.wait), float(args.sleep), comport)</code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This is the &quot;constructor&quot; for PymataIOT. It sets up a 
+  translation dictionary using incoming JSON commands and maps them to 
+  command methods.</p>
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>No Return.</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="analog_read"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">analog_read</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">command</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.analog_read">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method reads and returns the last reported value for an analog 
+  pin. Normally not used since analog pin updates will be provided 
+  automatically as they occur with the analog_message_reply being sent to 
+  the client after set_pin_mode is called. (see enable_analog_reporting for
+  message format).</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>command</code></strong> - {&quot;method&quot;: &quot;analog_read&quot;, &quot;params&quot;:
+          [ANALOG_PIN]}</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>{&quot;method&quot;: &quot;analog_read_reply&quot;, 
+          &quot;params&quot;: [PIN, ANALOG_DATA_VALUE]}</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@asyncio.coroutine</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="analog_write"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">analog_write</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">command</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.analog_write">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method writes a value to an analog pin.</p>
+  <p>It is used to set the output of a PWM pin or the angle of a Servo.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>command</code></strong> - {&quot;method&quot;: &quot;analog_write&quot;, 
+          &quot;params&quot;: [PIN, WRITE_VALUE]}</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No return message.</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@asyncio.coroutine</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="digital_read"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">digital_read</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">command</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.digital_read">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method reads and returns the last reported value for a digital 
+  pin. Normally not used since digital pin updates will be provided 
+  automatically as they occur with the digital_message_reply being sent to 
+  the client after set_pin_mode is called.. (see enable_digital_reporting 
+  for message format)</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>command</code></strong> - {&quot;method&quot;: &quot;digital_read&quot;, 
+          &quot;params&quot;: [PIN]}</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>{&quot;method&quot;: &quot;digital_read_reply&quot;, 
+          &quot;params&quot;: [PIN, DIGITAL_DATA_VALUE]}</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@asyncio.coroutine</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="digital_write"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">digital_write</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">command</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.digital_write">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method writes a zero or one to a digital pin.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>command</code></strong> - {&quot;method&quot;: &quot;digital_write&quot;, 
+          &quot;params&quot;: [PIN, DIGITAL_DATA_VALUE]}</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No return message..</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@asyncio.coroutine</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="disable_analog_reporting"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">disable_analog_reporting</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">command</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.disable_analog_reporting">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Disable Firmata reporting for an analog pin.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>command</code></strong> - {&quot;method&quot;: &quot;disable_analog_reporting&quot;, 
+          &quot;params&quot;: [PIN]}</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No return message..</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@asyncio.coroutine</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="disable_digital_reporting"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">disable_digital_reporting</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">command</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.disable_digital_reporting">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Disable Firmata reporting for a digital pin.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>command</code></strong> - {&quot;method&quot;: &quot;disable_digital_reporting&quot;, 
+          &quot;params&quot;: [PIN]}</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No return message.</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@asyncio.coroutine</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="enable_analog_reporting"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">enable_analog_reporting</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">command</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.enable_analog_reporting">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Enable Firmata reporting for an analog pin.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>command</code></strong> - {&quot;method&quot;: &quot;enable_analog_reporting&quot;, 
+          &quot;params&quot;: [PIN]}</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>{&quot;method&quot;: &quot;analog_message_reply&quot;, 
+          &quot;params&quot;: [PIN, ANALOG_DATA_VALUE]}</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@asyncio.coroutine</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="enable_digital_reporting"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">enable_digital_reporting</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">command</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.enable_digital_reporting">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Enable Firmata reporting for a digital pin.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>command</code></strong> - {&quot;method&quot;: &quot;enable_digital_reporting&quot;, 
+          &quot;params&quot;: [PIN]}</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>{&quot;method&quot;: &quot;digital_message_reply&quot;, 
+          &quot;params&quot;: [PIN, DIGITAL_DATA_VALUE]}</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@asyncio.coroutine</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="encoder_config"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">encoder_config</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">command</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.encoder_config">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Configure 2 pins for FirmataPlus encoder operation.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>command</code></strong> - {&quot;method&quot;: &quot;encoder_config&quot;, 
+          &quot;params&quot;: [PIN_A, PIN_B]}</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>{&quot;method&quot;: &quot;encoder_data_reply&quot;, 
+          &quot;params&quot;: [ENCODER_DATA]}</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@asyncio.coroutine</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="encoder_read"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">encoder_read</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">command</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.encoder_read">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This is a polling method to read the last cached FirmataPlus encoder 
+  value. Normally not used. See encoder config for the asynchronous report 
+  message format.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>command</code></strong> - {&quot;method&quot;: &quot;encoder_read&quot;, 
+          &quot;params&quot;: [PIN_A]}</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>{&quot;method&quot;: &quot;encoder_read_reply&quot;, 
+          &quot;params&quot;: [PIN_A, ENCODER_VALUE]}</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@asyncio.coroutine</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_analog_latch_data"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_analog_latch_data</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">command</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.get_analog_latch_data">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method retrieves a latch table entry for an analog pin.</p>
+  <p>See constants.py for definition of reply message parameters.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>command</code></strong> - {&quot;method&quot;: &quot;get_analog_latch_data&quot;, 
+          &quot;params&quot;: [ANALOG_PIN]}</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>{&quot;method&quot;: &quot;get_analog_latch_data_reply&quot;, 
+          &quot;params&quot;: [ANALOG_PIN, LATCHED_STATE, THRESHOLD_TYPE,
+          THRESHOLD_TARGET, DATA_VALUE, TIME_STAMP ]}</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@asyncio.coroutine</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_analog_map"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_analog_map</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.get_analog_map">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method retrieves the Firmata analog map.</p>
+  <p>Refer to: http://firmata.org/wiki/Protocol#Analog_Mapping_Query to 
+  interpret the reply</p>
+  <p>The command JSON format is: 
+  {&quot;method&quot;:&quot;get_analog_map&quot;,&quot;params&quot;:[&quot;null&quot;]}</p>
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>{&quot;method&quot;: &quot;analog_map_reply&quot;, 
+          &quot;params&quot;: [ANALOG_MAP]}</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@asyncio.coroutine</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_capability_report"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_capability_report</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.get_capability_report">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method retrieves the Firmata capability report.</p>
+  <p>Refer to http://firmata.org/wiki/Protocol#Capability_Query</p>
+  <p>The command format is: 
+  {&quot;method&quot;:&quot;get_capability_report&quot;,&quot;params&quot;:[&quot;null&quot;]}</p>
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>{&quot;method&quot;: &quot;capability_report_reply&quot;, 
+          &quot;params&quot;: [RAW_CAPABILITY_REPORT]}</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@asyncio.coroutine</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_digital_latch_data"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_digital_latch_data</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">command</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.get_digital_latch_data">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method retrieves a latch table entry for a digital pin.</p>
+  <p>See constants.py for definition of reply message parameters.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>command</code></strong> - {&quot;method&quot;: &quot;get_digital_latch_data&quot;, 
+          &quot;params&quot;: [ANALOG_PIN]}</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>{&quot;method&quot;: &quot;get_digital_latch_data_reply&quot;, 
+          &quot;params&quot;: [DIGITAL_PIN, LATCHED_STATE, THRESHOLD_TYPE,
+          THRESHOLD_TARGET, DATA_VALUE, TIME_STAMP ]}</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@asyncio.coroutine</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_firmware_version"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_firmware_version</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.get_firmware_version">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method retrieves the Firmata firmware version.</p>
+  <p>See: 
+  http://firmata.org/wiki/Protocol#Query_Firmware_Name_and_Version</p>
+  <p>JSON command: {&quot;method&quot;: &quot;get_firmware_version&quot;, 
+  &quot;params&quot;: [&quot;null&quot;]}</p>
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>{&quot;method&quot;: &quot;firmware_version_reply&quot;, 
+          &quot;params&quot;: [FIRMWARE_VERSION]}</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@asyncio.coroutine</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_pinstate_report"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_pinstate_report</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">command</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.get_pinstate_report">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method retrieves a Firmata pin_state report for a pin..</p>
+  <p>See: http://firmata.org/wiki/Protocol#Pin_State_Query</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>command</code></strong> - {&quot;method&quot;: &quot;get_pin_state&quot;, 
+          &quot;params&quot;: [PIN]}</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>{&quot;method&quot;: &quot;get_pin_state_reply&quot;, 
+          &quot;params&quot;: [PIN_NUMBER, PIN_MODE, PIN_STATE]}</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@asyncio.coroutine</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_protocol_version"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_protocol_version</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.get_protocol_version">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method retrieves the Firmata protocol version.</p>
+  <p>JSON command: {&quot;method&quot;: &quot;get_protocol_version&quot;, 
+  &quot;params&quot;: [&quot;null&quot;]}</p>
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>{&quot;method&quot;: &quot;protocol_version_reply&quot;, 
+          &quot;params&quot;: [PROTOCOL_VERSION]}</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@asyncio.coroutine</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_pymata_version"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_pymata_version</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.get_pymata_version">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method retrieves the PyMata release version number.</p>
+  <p>JSON command: {&quot;method&quot;: &quot;get_pymata_version&quot;, 
+  &quot;params&quot;: [&quot;null&quot;]}</p>
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>{&quot;method&quot;: &quot;pymata_version_reply&quot;, 
+          &quot;params&quot;:[PYMATA_VERSION]}</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@asyncio.coroutine</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="i2c_config"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">i2c_config</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">command</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.i2c_config">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method initializes the I2c and sets the optional read delay (in 
+  microseconds).</p>
+  <p>It must be called before doing any other i2c operations for a given 
+  device.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>command</code></strong> - {&quot;method&quot;: &quot;i2c_config&quot;, &quot;params&quot;: 
+          [DELAY]}</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No Return message.</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@asyncio.coroutine</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="i2c_read_data"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">i2c_read_data</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">command</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.i2c_read_data">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method retrieves the last value read for an i2c device identified
+  by address. This is a polling implementation and i2c_read_request and 
+  i2c_read_request_reply may be a better alternative.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>command</code></strong> - {&quot;method&quot;: &quot;i2c_read_data&quot;, 
+          &quot;params&quot;: [I2C_ADDRESS ]}</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>{&quot;method&quot;: &quot;i2c_read_data_reply&quot;, 
+          &quot;params&quot;: i2c_data}</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@asyncio.coroutine</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="i2c_read_request"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">i2c_read_request</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">command</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.i2c_read_request">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method sends an I2C read request to Firmata. It is qualified by a
+  single shot, continuous read, or stop reading command.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>command</code></strong> - {&quot;method&quot;: &quot;i2c_read_request&quot;, 
+          &quot;params&quot;: [I2C_ADDRESS, I2C_REGISTER, NUMBER_OF_BYTES, 
+          I2C_READ_TYPE ]}</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>{&quot;method&quot;: &quot;i2c_read_request_reply&quot;, 
+          &quot;params&quot;: [DATA]}</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@asyncio.coroutine</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="i2c_write_request"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">i2c_write_request</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">command</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.i2c_write_request">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method performs an I2C write at a given I2C address,</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>command</code></strong> - {&quot;method&quot;: &quot;i2c_write_request&quot;, 
+          &quot;params&quot;: [I2C_DEVICE_ADDRESS, [DATA_TO_WRITE]]}</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No return message.</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@asyncio.coroutine</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="play_tone"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">play_tone</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">command</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.play_tone">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method controls a piezo device to play a tone. It is a 
+  FirmataPlus feature. Tone command is TONE_TONE to play, TONE_NO_TONE to 
+  stop playing.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>command</code></strong> - {&quot;method&quot;: &quot;play_tone&quot;, &quot;params&quot;: 
+          [PIN, TONE_COMMAND, FREQUENCY(Hz), DURATION(MS)]}</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No return message.</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@asyncio.coroutine</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_analog_latch"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_analog_latch</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">command</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.set_analog_latch">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method sets the an analog latch for a given analog pin, providing
+  the threshold type, and latching threshold.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>command</code></strong> - {&quot;method&quot;: &quot;set_analog_latch&quot;, 
+          &quot;params&quot;: [PIN, THRESHOLD_TYPE, THRESHOLD_VALUE]}</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>{&quot;method&quot;: &quot;analog_latch_data_reply&quot;, 
+          &quot;params&quot;: [PIN, DATA_VALUE_LATCHED, TIMESTAMP_STRING]}</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@asyncio.coroutine</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_digital_latch"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_digital_latch</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">command</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.set_digital_latch">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method sets the a digital latch for a given digital pin, the 
+  threshold type, and latching threshold.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>command</code></strong> - {&quot;method&quot;: &quot;set_digital_latch&quot;, 
+          &quot;params&quot;: [PIN, THRESHOLD (0 or 1)]}</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>{&quot;method&quot;: digital_latch_data_reply&quot;, 
+          &quot;params&quot;: [PIN, DATA_VALUE_LATCHED, TIMESTAMP_STRING]}</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@asyncio.coroutine</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_pin_mode"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_pin_mode</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">command</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.set_pin_mode">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method sets the pin mode for the selected pin. It handles: Input,
+  Analog(Input) PWM, and OUTPUT. Servo is handled by servo_config().</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>command</code></strong> - {&quot;method&quot;: &quot;set_pin_mode&quot;, 
+          &quot;params&quot;: [PIN, MODE]}</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No return message.</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@asyncio.coroutine</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_sampling_interval"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_sampling_interval</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">command</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.set_sampling_interval">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method sets the Firmata sampling interval in ms.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>command</code></strong> - {&quot;method&quot;: &quot;set_sampling_interval&quot;, 
+          &quot;params&quot;: [INTERVAL]}</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No return message.</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="sonar_config"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">sonar_config</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">command</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.sonar_config">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method configures 2 pins to support HC-SR04 Ping devices. This is
+  a FirmataPlus feature.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>command</code></strong> - {&quot;method&quot;: &quot;sonar_config&quot;, 
+          &quot;params&quot;: [TRIGGER_PIN, ECHO_PIN, 
+          PING_INTERVAL(default=50), MAX_DISTANCE(default= 200 cm]}</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>{&quot;method&quot;: &quot;sonar_data_reply&quot;, 
+          &quot;params&quot;: [DISTANCE_IN_CM]}</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@asyncio.coroutine</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="sonar_read"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">sonar_read</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">command</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.sonar_read">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method retrieves the last sonar data value that was cached. This 
+  is a polling method. After sonar config, sonar_data_reply messages will 
+  be sent automatically.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>command</code></strong> - {&quot;method&quot;: &quot;sonar_read&quot;, &quot;params&quot;: 
+          [TRIGGER_PIN]}</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>{&quot;method&quot;: &quot;sonar_read_reply&quot;, 
+          &quot;params&quot;: [TRIGGER_PIN, DATA_VALUE]}</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@asyncio.coroutine</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="servo_config"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">servo_config</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">command</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.servo_config">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method configures a pin for servo operation. The servo angle is 
+  set by using analog_write().</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>command</code></strong> - {&quot;method&quot;: &quot;servo_config&quot;, 
+          &quot;params&quot;: [PIN, MINIMUM_PULSE(ms), MAXIMUM_PULSE(ms)]}</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No message returned.</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@asyncio.coroutine</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="stepper_config"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">stepper_config</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">command</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.stepper_config">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method configures 4 pins for stepper motor operation. This is a 
+  FirmataPlus feature.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>command</code></strong> - {&quot;method&quot;: &quot;stepper_config&quot;, 
+          &quot;params&quot;: [STEPS_PER_REVOLUTION, [PIN1, PIN2, PIN3, 
+          PIN4]]}</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No message returned.</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@asyncio.coroutine</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="stepper_step"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">stepper_step</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">command</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.stepper_step">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method activates a stepper motor motion. This is a FirmataPlus 
+  feature.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>command</code></strong> - {&quot;method&quot;: &quot;stepper_step&quot;, 
+          &quot;params&quot;: [SPEED, NUMBER_OF_STEPS]}</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No message returned.</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@asyncio.coroutine</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="onClose"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">onClose</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">was_clean</span>,
+        <span class="sig-arg">code</span>,
+        <span class="sig-arg">reason</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.onClose">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Websocket management message. This message is received when the client
+  closes the connection. A console status message is printed and and the 
+  interface is shutdown before exiting.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>was_clean</code></strong> - Autobahn provided flag</li>
+        <li><strong class="pname"><code>code</code></strong> - Autobahn provided flag</li>
+        <li><strong class="pname"><code>reason</code></strong> - Autobahn provided flag</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>Console message is generated.</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="onConnect"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">onConnect</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">request</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.onConnect">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>WebSocket management method. This method issues a console status 
+  message for Websocket connection establishment.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>request</code></strong> - Websocket request</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No return value.</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="onMessage"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">onMessage</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">payload</span>,
+        <span class="sig-arg">is_binary</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.onMessage">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Websocket management method. This method receives JSON messages from 
+  the Websocket client. All messages are assumed to be text. If a binary 
+  message is sent, a console status message is generated.</p>
+  <p>The JSON command is interpreted and translated to a method call to 
+  handle the command request.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>payload</code></strong> - JSON command</li>
+        <li><strong class="pname"><code>is_binary</code></strong> - True if message is binary. Assumed to always be False</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No value is returned.</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="onOpen"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">onOpen</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.onOpen">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>WebSocket management method. This method issues a console status 
+  message for the opening of a Websocket connection. It sends a Firmata 
+  reset command to the Arduino.</p>
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>No return value.</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="analog_callback"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">analog_callback</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">data</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.analog_callback">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method handles the analog message received from pymata_core</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>data</code></strong> - analog callback message</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>{&quot;method&quot;: &quot;analog_message_reply&quot;, 
+          &quot;params&quot;: [PIN, DATA_VALUE}</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="analog_latch_callback"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">analog_latch_callback</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">data</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.analog_latch_callback">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method handles analog_latch data received from pymata_core</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>data</code></strong> - analog latch callback message</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>{&quot;method&quot;: &quot;analog_latch_data_reply&quot;, 
+          &quot;params&quot;: [ANALOG_PIN, VALUE_AT_TRIGGER, 
+          TIME_STAMP_STRING]}</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="digital_callback"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">digital_callback</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">data</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.digital_callback">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method handles the digital message received from pymata_core</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>data</code></strong> - digital callback message</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>{&quot;method&quot;: &quot;digital_message_reply&quot;, 
+          &quot;params&quot;: [PIN, DATA_VALUE]}</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="digital_latch_callback"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">digital_latch_callback</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">data</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.digital_latch_callback">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method handles the digital latch data message received from 
+  pymata_core</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>data</code></strong> - digital latch callback message</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>s{&quot;method&quot;: &quot;digital_latch_data_reply&quot;, 
+          &quot;params&quot;: [PIN, DATA_VALUE_AT_TRIGGER, 
+          TIME_STAMP_STRING]}</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="encoder_callback"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">encoder_callback</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">data</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.encoder_callback">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method handles the encoder data message received from 
+  pymata_core</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>data</code></strong> - encoder data callback message</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>{&quot;method&quot;: &quot;encoder_data_reply&quot;, 
+          &quot;params&quot;: [ENCODER VALUE]}</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="i2c_read_request_callback"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">i2c_read_request_callback</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">data</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.i2c_read_request_callback">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method handles the i2c read data message received from 
+  pymata_core.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>data</code></strong> - i2c read data callback message</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>{&quot;method&quot;: &quot;i2c_read_request_reply&quot;, 
+          &quot;params&quot;: [DATA_VALUE]}</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="i2c_read_data_callback"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">i2c_read_data_callback</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">data</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.i2c_read_data_callback">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method handles the i2c cached read data received from 
+  pymata_core.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>data</code></strong> - i2c read cached data callback message</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>{&quot;method&quot;: &quot;i2c_read_data_reply&quot;, 
+          &quot;params&quot;: [DATA_VALUE]}</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="sonar_callback"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">sonar_callback</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">data</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata_iot-pysrc.html#PymataIOT.sonar_callback">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method handles sonar data received from pymata_core.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>data</code></strong> - sonar data callback message</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>{&quot;method&quot;: &quot;sonar_data_reply&quot;, 
+          &quot;params&quot;: [DATA_VALUE]}</dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="pymata_aio-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jul  7 16:41:41 2015
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

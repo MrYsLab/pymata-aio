@@ -1,0 +1,1914 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>pymata_aio.pymata3.PyMata3</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="pymata_aio-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="pymata_aio-module.html">Package&nbsp;pymata_aio</a> ::
+        <a href="pymata_aio.pymata3-module.html">Module&nbsp;pymata3</a> ::
+        Class&nbsp;PyMata3
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="pymata_aio.pymata3.PyMata3-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class PyMata3</h1><p class="nomargin-top"><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3">source&nbsp;code</a></span></p>
+<p>This class exposes and implements a proxy API for the pymata_core 
+  asyncio API,  If your application does not use asyncio directly, this is 
+  the API that you should use..</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">arduino_wait</span>=<span class="summary-sig-default">2</span>,
+        <span class="summary-sig-arg">com_port</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Constructor for the PyMata3 API</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#analog_read" class="summary-sig-name">analog_read</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pin</span>)</span><br />
+      Retrieve the last data update for the specified analog pin.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.analog_read">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#analog_write" class="summary-sig-name">analog_write</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pin</span>,
+        <span class="summary-sig-arg">value</span>)</span><br />
+      Set the selected PWM pin to the specified value.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.analog_write">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#digital_read" class="summary-sig-name">digital_read</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pin</span>)</span><br />
+      Retrieve the last data update for the specified digital pin.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.digital_read">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#digital_write" class="summary-sig-name">digital_write</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pin</span>,
+        <span class="summary-sig-arg">value</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Set the specified digital input pin to the provided value</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.digital_write">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#disable_analog_reporting" class="summary-sig-name">disable_analog_reporting</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pin</span>)</span><br />
+      Disables analog reporting for a single analog pin.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.disable_analog_reporting">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#disable_digital_reporting" class="summary-sig-name">disable_digital_reporting</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pin</span>)</span><br />
+      Disables digital reporting.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.disable_digital_reporting">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#encoder_config" class="summary-sig-name">encoder_config</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pin_a</span>,
+        <span class="summary-sig-arg">pin_b</span>,
+        <span class="summary-sig-arg">cb</span>=<span class="summary-sig-default">None</span>)</span><br />
+      This command enables the rotary encoder (2 pin + ground) and will 
+      enable encoder reporting.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.encoder_config">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#encoder_read" class="summary-sig-name">encoder_read</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pin</span>)</span><br />
+      This method retrieves the latest encoder data value.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.encoder_read">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#enable_analog_reporting" class="summary-sig-name">enable_analog_reporting</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pin</span>)</span><br />
+      Enables analog reporting for a single analog pin,</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.enable_analog_reporting">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#enable_digital_reporting" class="summary-sig-name">enable_digital_reporting</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pin</span>)</span><br />
+      Enables digital reporting.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.enable_digital_reporting">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#extended_analog" class="summary-sig-name">extended_analog</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pin</span>,
+        <span class="summary-sig-arg">data</span>)</span><br />
+      This method will send an extended-data analog write command to the 
+      selected pin..</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.extended_analog">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#get_analog_latch_data" class="summary-sig-name">get_analog_latch_data</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pin</span>)</span><br />
+      A list is returned containing the latch state for the pin, the 
+      latched value, and the time stamp [pin_num, latch_state, 
+      latched_value, time_stamp] If the the latch state is LATCH_LATCHED, 
+      the table is reset (data and timestamp set to zero) It is intended to
+      be used for a polling application.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.get_analog_latch_data">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#get_analog_map" class="summary-sig-name">get_analog_map</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">cb</span>=<span class="summary-sig-default">None</span>)</span><br />
+      This method requests and returns an analog map.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.get_analog_map">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#get_capability_report" class="summary-sig-name">get_capability_report</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">raw</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">cb</span>=<span class="summary-sig-default">None</span>)</span><br />
+      This method retrieves the Firmata capability report</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.get_capability_report">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#get_digital_latch_data" class="summary-sig-name">get_digital_latch_data</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pin</span>)</span><br />
+      A list is returned containing the latch state for the pin, the 
+      latched value, and the time stamp [pin_num, latch_state, 
+      latched_value, time_stamp] If the the latch state is LATCH_LATCHED, 
+      the table is reset (data and timestamp set to zero).</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.get_digital_latch_data">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#get_firmware_version" class="summary-sig-name">get_firmware_version</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">cb</span>=<span class="summary-sig-default">None</span>)</span><br />
+      This method retrieves the Firmata firmware version</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.get_firmware_version">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#get_protocol_version" class="summary-sig-name">get_protocol_version</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">cb</span>=<span class="summary-sig-default">None</span>)</span><br />
+      This method retrieves the Firmata protocol version</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.get_protocol_version">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#get_pin_state" class="summary-sig-name">get_pin_state</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pin</span>,
+        <span class="summary-sig-arg">cb</span>=<span class="summary-sig-default">None</span>)</span><br />
+      This method retrieves a pin state report for the specified pin</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.get_pin_state">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#get_pymata_version" class="summary-sig-name">get_pymata_version</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      This method retrieves the PyMata version number</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.get_pymata_version">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#i2c_config" class="summary-sig-name">i2c_config</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">read_delay_time</span>=<span class="summary-sig-default">0</span>)</span><br />
+      This method configures Arduino i2c with an optional read delay time.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.i2c_config">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#i2c_read_data" class="summary-sig-name">i2c_read_data</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">address</span>)</span><br />
+      Retrieve result of last data read from i2c device.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.i2c_read_data">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#i2c_read_request" class="summary-sig-name">i2c_read_request</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">address</span>,
+        <span class="summary-sig-arg">register</span>,
+        <span class="summary-sig-arg">number_of_bytes</span>,
+        <span class="summary-sig-arg">read_type</span>,
+        <span class="summary-sig-arg">cb</span>=<span class="summary-sig-default">None</span>)</span><br />
+      This method issues an i2c read request for a single read,continuous 
+      read or a stop, specified by the read_type.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.i2c_read_request">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#i2c_write_request" class="summary-sig-name">i2c_write_request</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">address</span>,
+        <span class="summary-sig-arg">*args</span>)</span><br />
+      Write data to an i2c device.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.i2c_write_request">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#play_tone" class="summary-sig-name">play_tone</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pin</span>,
+        <span class="summary-sig-arg">tone_command</span>,
+        <span class="summary-sig-arg">frequency</span>,
+        <span class="summary-sig-arg">duration</span>)</span><br />
+      This method will call the Tone library for the selected pin.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.play_tone">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#send_reset" class="summary-sig-name">send_reset</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Send a Firmata reset command</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.send_reset">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#servo_config" class="summary-sig-name">servo_config</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pin</span>,
+        <span class="summary-sig-arg">min_pulse</span>=<span class="summary-sig-default">544</span>,
+        <span class="summary-sig-arg">max_pulse</span>=<span class="summary-sig-default">2400</span>)</span><br />
+      This method configures the Arduino for servo operation.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.servo_config">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#set_analog_latch" class="summary-sig-name">set_analog_latch</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pin</span>,
+        <span class="summary-sig-arg">threshold_type</span>,
+        <span class="summary-sig-arg">threshold_value</span>,
+        <span class="summary-sig-arg">cb</span>=<span class="summary-sig-default">None</span>)</span><br />
+      This method &quot;arms&quot; an analog pin for its data to be latched
+      and saved in the latching table If a callback method is provided, 
+      when latching criteria is achieved, the callback function is called 
+      with latching data notification.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.set_analog_latch">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#set_digital_latch" class="summary-sig-name">set_digital_latch</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pin</span>,
+        <span class="summary-sig-arg">threshold_value</span>,
+        <span class="summary-sig-arg">cb</span>=<span class="summary-sig-default">None</span>)</span><br />
+      This method &quot;arms&quot; a digital pin for its data to be latched
+      and saved in the latching table If a callback method is provided, 
+      when latching criteria is achieved, the callback function is called 
+      with latching data notification.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.set_digital_latch">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#set_pin_mode" class="summary-sig-name">set_pin_mode</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pin_number</span>,
+        <span class="summary-sig-arg">pin_state</span>,
+        <span class="summary-sig-arg">callback</span>=<span class="summary-sig-default">None</span>)</span><br />
+      This method sets the  pin mode for the specified pin.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.set_pin_mode">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#set_sampling_interval" class="summary-sig-name">set_sampling_interval</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">interval</span>)</span><br />
+      This method sets the sampling interval for the Firmata loop method</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.set_sampling_interval">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#sleep" class="summary-sig-name">sleep</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">time</span>)</span><br />
+      Perform an asyncio sleep for the time specified in seconds.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.sleep">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#shutdown" class="summary-sig-name">shutdown</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Shutdown the application and exit</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.shutdown">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#sonar_data_retrieve" class="summary-sig-name">sonar_data_retrieve</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Retrieve Ping (HC-SR04 type) data.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.sonar_data_retrieve">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#sonar_config" class="summary-sig-name">sonar_config</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">trigger_pin</span>,
+        <span class="summary-sig-arg">echo_pin</span>,
+        <span class="summary-sig-arg">cb</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">ping_interval</span>=<span class="summary-sig-default">50</span>,
+        <span class="summary-sig-arg">max_distance</span>=<span class="summary-sig-default">200</span>)</span><br />
+      Configure the pins,ping interval and maximum distance for an HC-SR04 
+      type device.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.sonar_config">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#stepper_config" class="summary-sig-name">stepper_config</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">steps_per_revolution</span>,
+        <span class="summary-sig-arg">stepper_pins</span>)</span><br />
+      Configure stepper motor prior to operation.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.stepper_config">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="pymata_aio.pymata3.PyMata3-class.html#stepper_step" class="summary-sig-name">stepper_step</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">motor_speed</span>,
+        <span class="summary-sig-arg">number_of_steps</span>)</span><br />
+      Move a stepper motor for the number of steps at the specified speed 
+      This is a FirmataPlus feature.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.stepper_step">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">arduino_wait</span>=<span class="sig-default">2</span>,
+        <span class="sig-arg">com_port</span>=<span class="sig-default">None</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Constructor for the PyMata3 API</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>arduino_wait</code></strong> - Amount of time to allow Arduino to finish its reset (2 seconds 
+          for Uno, Leonardo can be 0)</li>
+        <li><strong class="pname"><code>com_port</code></strong> - If specified, auto port detection will not be performed and this 
+          com port will be used.</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>None</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="analog_read"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">analog_read</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">pin</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.analog_read">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Retrieve the last data update for the specified analog pin. It is 
+  intended for a polling application.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>pin</code></strong> - Analog pin number (ex. A2 is specified as 2)</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>Last value reported for the analog pin</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="analog_write"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">analog_write</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">pin</span>,
+        <span class="sig-arg">value</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.analog_write">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Set the selected PWM pin to the specified value.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>pin</code></strong> - PWM pin number</li>
+        <li><strong class="pname"><code>value</code></strong> - Set the selected pin to the specified value. 0-0x4000 (14 bits)</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No return value</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="digital_read"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">digital_read</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">pin</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.digital_read">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Retrieve the last data update for the specified digital pin. It is 
+  intended for a polling application.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>pin</code></strong> - Digital pin number</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>Last value reported for the digital pin</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="digital_write"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">digital_write</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">pin</span>,
+        <span class="sig-arg">value</span>=<span class="sig-default">0</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.digital_write">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Set the specified digital input pin to the provided value</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>pin</code></strong> - Digital pin to be set</li>
+        <li><strong class="pname"><code>value</code></strong> - 0 or 1</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No return value</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="disable_analog_reporting"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">disable_analog_reporting</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">pin</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.disable_analog_reporting">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Disables analog reporting for a single analog pin.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>pin</code></strong> - Analog pin number. For example for A0, the number is 0.</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No return value</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="disable_digital_reporting"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">disable_digital_reporting</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">pin</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.disable_digital_reporting">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Disables digital reporting. By turning reporting off for this pin, 
+  reporting is disabled for all 8 bits in the &quot;port&quot; -</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>pin</code></strong> - Pin and all pins for this port</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No return value</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="encoder_config"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">encoder_config</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">pin_a</span>,
+        <span class="sig-arg">pin_b</span>,
+        <span class="sig-arg">cb</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.encoder_config">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This command enables the rotary encoder (2 pin + ground) and will 
+  enable encoder reporting.</p>
+  <p>This is a FirmataPlus feature.</p>
+  <p>Encoder data is retrieved by performing a digital_read from pin a 
+  (encoder pin 1)</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>pin_a</code></strong> - Encoder pin 1.</li>
+        <li><strong class="pname"><code>pin_b</code></strong> - Encoder pin 2.</li>
+        <li><strong class="pname"><code>cb</code></strong> - callback function to report encoder changes</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No return value</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="encoder_read"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">encoder_read</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">pin</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.encoder_read">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method retrieves the latest encoder data value. It is a 
+  FirmataPlus feature.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>pin</code></strong> - Encoder Pin</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>encoder data value</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="enable_analog_reporting"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">enable_analog_reporting</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">pin</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.enable_analog_reporting">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Enables analog reporting for a single analog pin,</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>pin</code></strong> - Analog pin number. For example for A0, the number is 0.</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No return value</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="enable_digital_reporting"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">enable_digital_reporting</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">pin</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.enable_digital_reporting">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Enables digital reporting. By turning reporting on for all 8 bits in 
+  the &quot;port&quot; - This is part of Firmata's protocol 
+  specification.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>pin</code></strong> - Pin and all pins for this port</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No return value</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="extended_analog"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">extended_analog</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">pin</span>,
+        <span class="sig-arg">data</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.extended_analog">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method will send an extended-data analog write command to the 
+  selected pin..</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>pin</code></strong> - 0 - 127</li>
+        <li><strong class="pname"><code>data</code></strong> - 0 - 0-0x4000 (14 bits)</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No return value</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_analog_latch_data"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_analog_latch_data</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">pin</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.get_analog_latch_data">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>A list is returned containing the latch state for the pin, the latched
+  value, and the time stamp [pin_num, latch_state, latched_value, 
+  time_stamp] If the the latch state is LATCH_LATCHED, the table is reset 
+  (data and timestamp set to zero) It is intended to be used for a polling 
+  application.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>pin</code></strong> - Pin number.</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>[latched_state, threshold_type, threshold_value, latched_data, 
+          time_stamp]</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_analog_map"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_analog_map</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">cb</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.get_analog_map">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method requests and returns an analog map.</p>
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>An analog map response or None if a timeout occurs</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_capability_report"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_capability_report</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">raw</span>=<span class="sig-default">True</span>,
+        <span class="sig-arg">cb</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.get_capability_report">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method retrieves the Firmata capability report</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>raw</code></strong> - If True, it either stores or provides the callback with a report 
+          as list. If False, prints a formatted report to the console</li>
+        <li><strong class="pname"><code>cb</code></strong> - Optional callback reference to receive a raw report</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>capability report</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_digital_latch_data"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_digital_latch_data</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">pin</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.get_digital_latch_data">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>A list is returned containing the latch state for the pin, the latched
+  value, and the time stamp [pin_num, latch_state, latched_value, 
+  time_stamp] If the the latch state is LATCH_LATCHED, the table is reset 
+  (data and timestamp set to zero). It is intended for use by a polling 
+  application.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>pin</code></strong> - Pin number.</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>[latched_state, threshold_type, threshold_value, latched_data, 
+          time_stamp]</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_firmware_version"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_firmware_version</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">cb</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.get_firmware_version">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method retrieves the Firmata firmware version</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>cb</code></strong> - Reference to a callback function</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>If no callback is specified, the firmware version</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_protocol_version"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_protocol_version</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">cb</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.get_protocol_version">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method retrieves the Firmata protocol version</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>cb</code></strong> - Optional callback reference.</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>If no callback is specified, the firmware version</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_pin_state"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_pin_state</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">pin</span>,
+        <span class="sig-arg">cb</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.get_pin_state">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method retrieves a pin state report for the specified pin</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>pin</code></strong> - Pin of interest</li>
+        <li><strong class="pname"><code>cb</code></strong> - optional callback reference</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>pin state report</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_pymata_version"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_pymata_version</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.get_pymata_version">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method retrieves the PyMata version number</p>
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>PyMata version number.</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="i2c_config"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">i2c_config</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">read_delay_time</span>=<span class="sig-default">0</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.i2c_config">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method configures Arduino i2c with an optional read delay 
+  time.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>read_delay_time</code></strong> - firmata i2c delay time</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No return value</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="i2c_read_data"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">i2c_read_data</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">address</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.i2c_read_data">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Retrieve result of last data read from i2c device. i2c_read_request 
+  should be called before trying to retrieve data. It is intended for use 
+  by a polling application.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>address</code></strong> - i2c</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>last data read or None if no data is present.</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="i2c_read_request"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">i2c_read_request</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">address</span>,
+        <span class="sig-arg">register</span>,
+        <span class="sig-arg">number_of_bytes</span>,
+        <span class="sig-arg">read_type</span>,
+        <span class="sig-arg">cb</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.i2c_read_request">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method issues an i2c read request for a single read,continuous 
+  read or a stop, specified by the read_type. Because different i2c devices
+  return data at different rates, if a callback is not specified, the user 
+  must first call this method and then call i2c_read_data  after waiting 
+  for sufficient time for the i2c device to respond.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>address</code></strong> - i2c device</li>
+        <li><strong class="pname"><code>register</code></strong> - i2c register number</li>
+        <li><strong class="pname"><code>number_of_bytes</code></strong> - number of bytes to be returned</li>
+        <li><strong class="pname"><code>read_type</code></strong> - Constants.I2C_READ, Constants.I2C_READ_CONTINUOUSLY or 
+          Constants.I2C_STOP_READING</li>
+        <li><strong class="pname"><code>cb</code></strong> - optional callback reference</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No return value</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="i2c_write_request"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">i2c_write_request</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">address</span>,
+        <span class="sig-arg">*args</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.i2c_write_request">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Write data to an i2c device.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>address</code></strong> - i2c device address</li>
+        <li><strong class="pname"><code>args</code></strong> - A variable number of bytes to be sent to the device</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No return value</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="play_tone"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">play_tone</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">pin</span>,
+        <span class="sig-arg">tone_command</span>,
+        <span class="sig-arg">frequency</span>,
+        <span class="sig-arg">duration</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.play_tone">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method will call the Tone library for the selected pin. It 
+  requires FirmataPlus to be loaded onto the arduino If the tone command is
+  set to TONE_TONE, then the specified tone will be played. Else, if the 
+  tone command is TONE_NO_TONE, then any currently playing tone will be 
+  disabled. It is intended for a future release of Arduino Firmata</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>pin</code></strong> - Pin number</li>
+        <li><strong class="pname"><code>tone_command</code></strong> - Either TONE_TONE, or TONE_NO_TONE</li>
+        <li><strong class="pname"><code>frequency</code></strong> - Frequency of tone</li>
+        <li><strong class="pname"><code>duration</code></strong> - Duration of tone in milliseconds</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No return value</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="send_reset"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">send_reset</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.send_reset">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Send a Firmata reset command</p>
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>No return value</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="servo_config"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">servo_config</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">pin</span>,
+        <span class="sig-arg">min_pulse</span>=<span class="sig-default">544</span>,
+        <span class="sig-arg">max_pulse</span>=<span class="sig-default">2400</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.servo_config">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method configures the Arduino for servo operation.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>pin</code></strong> - Servo control pin</li>
+        <li><strong class="pname"><code>min_pulse</code></strong> - Minimum pulse width</li>
+        <li><strong class="pname"><code>max_pulse</code></strong> - Maximum pulse width</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No return value</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_analog_latch"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_analog_latch</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">pin</span>,
+        <span class="sig-arg">threshold_type</span>,
+        <span class="sig-arg">threshold_value</span>,
+        <span class="sig-arg">cb</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.set_analog_latch">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method &quot;arms&quot; an analog pin for its data to be latched 
+  and saved in the latching table If a callback method is provided, when 
+  latching criteria is achieved, the callback function is called with 
+  latching data notification.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>pin</code></strong> - Analog pin number (value following an 'A' designator, i.e. A5 = 5</li>
+        <li><strong class="pname"><code>threshold_type</code></strong> - Constants.LATCH_GT | Constants.LATCH_LT  | Constants.LATCH_GTE | 
+          Constants.LATCH_LTE</li>
+        <li><strong class="pname"><code>threshold_value</code></strong> - numerical value - between 0 and 1023</li>
+        <li><strong class="pname"><code>cb</code></strong> - callback method</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>True if successful, False if parameter data is invalid</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_digital_latch"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_digital_latch</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">pin</span>,
+        <span class="sig-arg">threshold_value</span>,
+        <span class="sig-arg">cb</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.set_digital_latch">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method &quot;arms&quot; a digital pin for its data to be latched 
+  and saved in the latching table If a callback method is provided, when 
+  latching criteria is achieved, the callback function is called with 
+  latching data notification.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>pin</code></strong> - Digital pin number</li>
+        <li><strong class="pname"><code>threshold_value</code></strong> - 0 or 1</li>
+        <li><strong class="pname"><code>cb</code></strong> - callback function</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>True if successful, False if parameter data is invalid</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_pin_mode"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_pin_mode</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">pin_number</span>,
+        <span class="sig-arg">pin_state</span>,
+        <span class="sig-arg">callback</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.set_pin_mode">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method sets the  pin mode for the specified pin.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>pin_number</code></strong> - Arduino Pin Number</li>
+        <li><strong class="pname"><code>pin_state</code></strong> - INPUT/OUTPUT/ANALOG/PWM - for SERVO use servo_config()</li>
+        <li><strong class="pname"><code>callback</code></strong> - Optional: A reference to a call back function to be called when 
+          pin data value changes</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No return value</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_sampling_interval"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_sampling_interval</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">interval</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.set_sampling_interval">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method sets the sampling interval for the Firmata loop method</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>interval</code></strong> - time in milliseconds</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No return value</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="sleep"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">sleep</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">time</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.sleep">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Perform an asyncio sleep for the time specified in seconds. This 
+  method should be used in place of time.sleep()</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>time</code></strong> - time in seconds</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No return value</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="shutdown"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">shutdown</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.shutdown">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Shutdown the application and exit</p>
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>No return value</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="sonar_data_retrieve"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">sonar_data_retrieve</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.sonar_data_retrieve">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Retrieve Ping (HC-SR04 type) data. The data is presented as a 
+  dictionary. The 'key' is the trigger pin specified in sonar_config() and 
+  the 'data' is the current measured distance (in centimeters) for that 
+  pin. If there is no data, the value is set to None. This is a FirmataPlus
+  feature.</p>
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>active_sonar_map</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="sonar_config"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">sonar_config</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">trigger_pin</span>,
+        <span class="sig-arg">echo_pin</span>,
+        <span class="sig-arg">cb</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">ping_interval</span>=<span class="sig-default">50</span>,
+        <span class="sig-arg">max_distance</span>=<span class="sig-default">200</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.sonar_config">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Configure the pins,ping interval and maximum distance for an HC-SR04 
+  type device. Single pin configuration may be used. To do so, set both the
+  trigger and echo pins to the same value. Up to a maximum of 6 SONAR 
+  devices is supported If the maximum is exceeded a message is sent to the 
+  console and the request is ignored. NOTE: data is measured in centimeters
+  This is FirmataPlus feature.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>trigger_pin</code></strong> - The pin number of for the trigger (transmitter).</li>
+        <li><strong class="pname"><code>echo_pin</code></strong> - The pin number for the received echo.</li>
+        <li><strong class="pname"><code>cb</code></strong> - optional callback function to report sonar data changes</li>
+        <li><strong class="pname"><code>ping_interval</code></strong> - Minimum interval between pings. Lowest number to use is 33 ms.Max
+          is 127</li>
+        <li><strong class="pname"><code>max_distance</code></strong> - Maximum distance in cm. Max is 200.</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No return value</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="stepper_config"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">stepper_config</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">steps_per_revolution</span>,
+        <span class="sig-arg">stepper_pins</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.stepper_config">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Configure stepper motor prior to operation. This is a FirmataPlus 
+  feature.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>steps_per_revolution</code></strong> - number of steps per motor revolution</li>
+        <li><strong class="pname"><code>stepper_pins</code></strong> - a list of control pin numbers - either 4 or 2</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>No return value</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="stepper_step"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">stepper_step</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">motor_speed</span>,
+        <span class="sig-arg">number_of_steps</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="pymata_aio.pymata3-pysrc.html#PyMata3.stepper_step">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Move a stepper motor for the number of steps at the specified speed 
+  This is a FirmataPlus feature.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>motor_speed</code></strong> - 21 bits of data to set motor speed</li>
+        <li><strong class="pname"><code>number_of_steps</code></strong> - 14 bits for number of steps &amp; direction positive is forward, 
+          negative is reverse</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="pymata_aio-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Jul  7 16:41:41 2015
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
