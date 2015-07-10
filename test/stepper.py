@@ -1,4 +1,5 @@
-__author__ = 'Copyright (c) 2014 Alan Yorinks All rights reserved.'
+#!/usr/bin/env python3
+
 
 """
 Copyright (c) 2013 Alan Yorinks All rights reserved.

@@ -1,8 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
-__author__ = 'Alan Yorinks'
 """
-Copyright (c) 2013 Alan Yorinks All rights reserved.
+Copyright (c) 2015 Alan Yorinks All rights reserved.
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU  General Public
