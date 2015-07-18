@@ -69,6 +69,7 @@ class PymataCore:
                                  PrivateConstants.CAPABILITY_RESPONSE: None,
                                  PrivateConstants.ANALOG_MAPPING_RESPONSE: None,
                                  PrivateConstants.PIN_STATE_RESPONSE: None}
+                                 # PrivateConstants.PYMATA_VERSION: 'PyMata_aio version 1.01'}
 
         # An i2c_map entry consists of a device i2c address as the key, and the value of the key consists of a
         # dictionary containing 2 entries. The first entry. 'value' contains the last value reported, and
