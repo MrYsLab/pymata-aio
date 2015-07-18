@@ -1,3 +1,5 @@
+__author__ = 'Copyright (c) 2013 Alan Yorinks All rights reserved.'
+
 """
 Copyright (c) 2015 Alan Yorinks All rights reserved.
 
@@ -55,15 +57,16 @@ class BiColorDisplayController:
     MAX_BRIGHTNESS = 15
 
     # the display buffer
-    # This is an 16x16 matrix that stores pixel data for the display
+    # This is a 8x8 matrix that stores pixel data for the display
     # Even rows store the green pixel data and odd rows store the red pixel data.
     #
     # A physical row on the device is controlled by a row pair (ie 0,1 and 2,3, etc) for the 2 colors.
     #
     # To output yellow the red and green information for the rows will be set high.
     #
-    # noinspection PyRedeclaration
-    display_buffer = [[0 for x in range(8)] for x in range(8)]
+
+    # create an 8x8 buffer
+    display_buffer = [[0 for x in range(8)] for y in range(8)]
 
     def __init__(self, address, blink_rate, brightness):
 
@@ -74,10 +77,9 @@ class BiColorDisplayController:
         @param blink_rate: desired blink rate
         @param brightness: brightness level for the display
         """
-        self.firmata = None
 
         # create a PyMata instance
-        self.firmata = PyMata3(2)
+        self.firmata = PyMata3()
 
         self.board_address = address
         self.blink_rate = blink_rate
@@ -85,7 +87,7 @@ class BiColorDisplayController:
         self.clear_display_buffer()
 
         # configure firmata for i2c on an UNO
-        self.firmata.i2c_config(0)
+        self.firmata.i2c_config()
 
         # turn on oscillator
         self.oscillator_set(self.OSCILLATOR_ON)
@@ -104,14 +106,14 @@ class BiColorDisplayController:
         if b > 3:
             b = 0  # turn off if not sure
         self.firmata.i2c_write_request(self.board_address,
-                                       (self.HT16K33_BLINK_CMD | self.HT16K33_BLINK_DISPLAYON | (b << 1)))
+                                       [(self.HT16K33_BLINK_CMD | self.HT16K33_BLINK_DISPLAYON | (b << 1))])
 
     def oscillator_set(self, osc_mode):
         """
         Turn oscillator on or off
         @param osc_mode: osc mode (OSCILLATOR_ON or OSCILLATOR_OFF)
         """
-        self.firmata.i2c_write_request(self.board_address, osc_mode)
+        self.firmata.i2c_write_request(self.board_address, [osc_mode])
 
     def set_brightness(self, brightness):
         """
@@ -122,7 +124,7 @@ class BiColorDisplayController:
             brightness = 15
         brightness |= 0xE0
         self.brightness = brightness
-        self.firmata.i2c_write_request(0x70, brightness)
+        self.firmata.i2c_write_request(0x70, [brightness])
 
     def set_pixel(self, row, column, color, suppress_write):
         # rows 0,2,4,6,8,10,12,14 are green
@@ -137,6 +139,7 @@ class BiColorDisplayController:
         @param color: pixel color (yellow is both red and green both on)
         @param suppress_write: if true, just sets the internal data structure, else writes out the pixel to the display
         """
+
         if (row < 0) or (row >= 8):
             print("set_pixel(): ROW out of range")
             return
@@ -167,8 +170,8 @@ class BiColorDisplayController:
                 red &= ~(1 << col)
 
         if not suppress_write:
-            self.firmata.i2c_write_request(0x70, row * 2, 0, green)
-            self.firmata.i2c_write_request(0x70, row * 2 + 1, 0, red)
+            self.firmata.i2c_write_request(0x70, [row * 2, green])
+            self.firmata.i2c_write_request(0x70, [row * 2 + 1, red])
 
     def set_bit_map(self, shape, color):
         """
@@ -207,16 +210,17 @@ class BiColorDisplayController:
                     green &= ~(1 << col)
                     red &= ~(1 << col)
 
-            self.firmata.i2c_write_request(0x70, row * 2, 0, green)
-            self.firmata.i2c_write_request(0x70, row * 2 + 1, 0, red)
+            self.firmata.i2c_write_request(0x70, [row * 2, green])
+
+            self.firmata.i2c_write_request(0x70, [row * 2 + 1, red])
 
     def clear_display_buffer(self):
         """
         Set all led's to off.
         """
         for row in range(0, 8):
-            self.firmata.i2c_write_request(0x70, row * 2, 0, 0)
-            self.firmata.i2c_write_request(0x70, (row * 2) + 1, 0, 0)
+            self.firmata.i2c_write_request(0x70, [row * 2, 0])
+            self.firmata.i2c_write_request(0x70, [((row * 2) + 1), 0])
 
             for column in range(0, 8):
                 self.display_buffer[row][column] = 0
