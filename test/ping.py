@@ -28,7 +28,7 @@ from pymata_aio.pymata3 import PyMata3
 
 # ping callback function
 def cb_ping(data):
-    print(str(data[2]) + ' centimeters')
+    print(str(data[1]) + ' centimeters')
 
 
 # create a PyMata instance

@@ -68,8 +68,7 @@ class PymataCore:
                                  PrivateConstants.REPORT_FIRMWARE: '',
                                  PrivateConstants.CAPABILITY_RESPONSE: None,
                                  PrivateConstants.ANALOG_MAPPING_RESPONSE: None,
-                                 PrivateConstants.PIN_STATE_RESPONSE: None,
-                                 PrivateConstants.PYMATA_VERSION: 'PyMata_aio version 1.0'}
+                                 PrivateConstants.PIN_STATE_RESPONSE: None}
 
         # An i2c_map entry consists of a device i2c address as the key, and the value of the key consists of a
         # dictionary containing 2 entries. The first entry. 'value' contains the last value reported, and
@@ -119,8 +118,8 @@ class PymataCore:
 
         self.latch_map = {}
 
-        print('{}{}{}'.format('\n', self.query_reply_data.get(PrivateConstants.PYMATA_VERSION),
-                              '\t\tCopyright (c) 2015 Alan Yorinks All rights reserved.\n'))
+        print('{}{}{}'.format('\n',  "pymata_aio Version " +  PrivateConstants.PYMATA_VERSION,
+                              '\tCopyright (c) 2015 Alan Yorinks All rights reserved.\n'))
         sys.stdout.flush()
 
         if com_port is None:
@@ -479,11 +478,13 @@ class PymataCore:
         """
         This method requests the read of an i2c device. Results are retrieved by a call to
         i2c_get_read_data(). or by callback.
-        If a callback method is provided, when data is received from the device it will be sent to the callback method
+        If a callback method is provided, when data is received from the device it will be sent to the callback method.
+        Some devices require that transmission be restarted (e.g. MMA8452Q acceleromater).
+        Use I2C_READ | I2C_RESTART_TX for those cases.
         @param address: i2c device address
         @param register: register number (can be set to zero)
         @param number_of_bytes: number of bytes expected to be returned
-        @param read_type: I2C_READ  or I2C_READ_CONTINUOUSLY
+        @param read_type: I2C_READ  or I2C_READ_CONTINUOUSLY. I2C_RESTART_TX may be OR'ed when required
         @param cb: Optional callback function to report i2c data as result of read command
         @return: No return value.
         """
@@ -496,16 +497,19 @@ class PymataCore:
         yield from self._send_sysex(PrivateConstants.I2C_REQUEST, data)
 
     @asyncio.coroutine
-    def i2c_write_request(self, address, *args):
+    def i2c_write_request(self, address, args):
         """
         Write data to an i2c device.
         @param address: i2c device address
-        @param args: A variable number of bytes to be sent to the device
+        @param args: A variable number of bytes to be sent to the device passed in as a list
         @return: No return value.
         """
         data = [address, Constants.I2C_WRITE]
         for item in args:
-            data.append(item)
+            item_lsb = item & 0x7f
+            data.append(item_lsb)
+            item_msb = item >> 7
+            data.append(item_msb)
         yield from self._send_sysex(PrivateConstants.I2C_REQUEST, data)
 
     @asyncio.coroutine
@@ -535,7 +539,7 @@ class PymataCore:
         # turn off tone
         else:
             data = [tone_command, pin]
-        yield from self._send_sysex(PrivateConstants.TONE_PLAY, data)
+        yield from self._send_sysex(PrivateConstants.TONE_DATA, data)
 
     @asyncio.coroutine
     def send_reset(self):
@@ -719,7 +723,7 @@ class PymataCore:
         @return: active_sonar_map
         """
         # sonar_pin_entry = self.active_sonar_map[pin]
-        sonar_pin_entry = self.active_sonar_map.get(pin)
+        sonar_pin_entry = self.active_sonar_map.get(trigger_pin)
         value = sonar_pin_entry[1]
         return value
 
@@ -919,13 +923,8 @@ class PymataCore:
         reply_data = []
         address = (data[0] & 0x7f) + (data[1] << 7)
         if address in self.i2c_map:
-
-            register = data[2] & 0x7f + data[3] << 7
-            reply_data.append(register)
-            for i in range(4, len(data), 2):
-                data_item = (data[i] & 0x7f) + (data[i + 1] << 7)
-                reply_data.append(data_item)
-            # retrieve the data entry for this address from the i2c map
+            for i in range(0, len(data)):
+                reply_data.append(data[i])
             map_entry = self.i2c_map.get(address)
             map_entry['value'] = reply_data
             self.i2c_map[address] = map_entry
@@ -1232,8 +1231,8 @@ def _signal_handler(the_signal, frame):
     @return: never returns.
     """
     print('You pressed Ctrl+C!')
-    # to get coverage data or profileing data the code using pymata_iot, uncomment out the following line
-    #exit()
+    # to get coverage data or profiling data the code using pymata_iot, uncomment out the following line
+    # exit()
     try:
         loop = asyncio.get_event_loop()
         for t in asyncio.Task.all_tasks(loop):

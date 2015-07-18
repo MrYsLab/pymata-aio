@@ -22,6 +22,7 @@ class PinData:
     Each analog and digital input pin is described by an instance of this class. It contains both
     the last data value received and a potential callback reference.
     """
+
     def __init__(self):
         # current data value
         self._current_value = 0

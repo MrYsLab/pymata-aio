@@ -54,9 +54,9 @@ for x in range(0, 10):
 
     if data:
         # do some calculations on the raw data returned
-        TemperatureSum = (data[1] << 8 | data[2]) >> 4
+        raw_temperature = (data[4] << 8 | data[6]) >> 4
 
-        celsius = TemperatureSum * 0.0625
+        celsius = raw_temperature * 0.0625
         print(celsius)
 
         fahrenheit = (1.8 * celsius) + 32

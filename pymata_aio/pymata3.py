@@ -28,6 +28,7 @@ class PyMata3:
     This class exposes and implements a proxy API for the pymata_core asyncio API,  If your application
     does not use asyncio directly, this is the API that you should use..
     """
+
     def __init__(self, arduino_wait=2, com_port=None):
         """
         Constructor for the PyMata3 API
@@ -305,25 +306,28 @@ class PyMata3:
         Because different i2c devices return data at different rates, if a callback is not specified,
         the user must first call this method and then call i2c_read_data  after waiting for sufficient time for the
         i2c device to respond.
+        Some devices require that transmission be restarted (e.g. MMA8452Q accelerometer).
+        Use I2C_READ | I2C_RESTART_TX for those cases.
         @param address: i2c device
         @param register: i2c register number
         @param number_of_bytes: number of bytes to be returned
-        @param read_type:  Constants.I2C_READ, Constants.I2C_READ_CONTINUOUSLY or Constants.I2C_STOP_READING
+        @param read_type:  Constants.I2C_READ, Constants.I2C_READ_CONTINUOUSLY or Constants.I2C_STOP_READING.
+        Constants.I2C_RESTART_TX may be OR'ed when required
         @param cb: optional callback reference
         @return: No return value        """
         # loop = asyncio.get_event_loop()
         asyncio.async(self.core.i2c_read_request(address, register, number_of_bytes, read_type, cb))
 
-    def i2c_write_request(self, address, *args):
+    def i2c_write_request(self, address, args):
         """
         Write data to an i2c device.
         @param address: i2c device address
-        @param args: A variable number of bytes to be sent to the device
+        @param args: A variable number of bytes to be sent to the device passed in as a list.
         @return: No return value        """
         loop = asyncio.get_event_loop()
-        asyncio.async(self.core.i2c_write_request(address, *args))
+        asyncio.async(self.core.i2c_write_request(address, args))
 
-        loop.run_until_complete(self.core.i2c_write_request(address, *args))
+        loop.run_until_complete(self.core.i2c_write_request(address, args))
 
     def play_tone(self, pin, tone_command, frequency, duration):
         """

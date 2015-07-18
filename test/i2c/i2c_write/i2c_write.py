@@ -31,7 +31,7 @@ It utilizes the bi_color_display_controller which, in turn, utilizes PyFirmata f
 # from  examples.i2c.pymata_i2c_write.bicolor_display_controller import BiColorDisplayController
 
 
-from test.bicolor_display_controller import BiColorDisplayController
+from test.i2c.i2c_write.bicolor_display_controller import BiColorDisplayController
 
 frown = [0x3C, 0x42, 0xA5, 0x91, 0x91, 0xA5, 0x42, 0x3C]
 neutral = [0x3C, 0x42, 0x95, 0x91, 0x91, 0x95, 0x42, 0x3C]
@@ -45,7 +45,6 @@ display = BiColorDisplayController(0x70, 0, 7)
 display.clear_display_buffer()
 
 # let's make some faces
-
 display.set_bit_map(frown, display.LED_RED)
 display.firmata.sleep(1)
 display.clear_display_buffer()

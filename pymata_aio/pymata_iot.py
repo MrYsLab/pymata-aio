@@ -19,16 +19,15 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 import json
+import asyncio
+import datetime
+import argparse
 
 from autobahn.asyncio.websocket import WebSocketServerProtocol, \
     WebSocketServerFactory
 
 from pymata_aio.pymata_core import PymataCore
-
 from pymata_aio.constants import Constants
-import asyncio
-import datetime
-import argparse
 
 
 class PymataIOT(WebSocketServerProtocol):
@@ -408,6 +407,16 @@ class PymataIOT(WebSocketServerProtocol):
         """
         This method sends an I2C read request to Firmata. It is qualified by a single shot, continuous
         read, or stop reading command.
+        Special Note: for the read type supply one of the following strings:
+
+        "I2C_READ"
+
+        "I2C_READ | I2C_END_TX_MASK"
+
+        "I2C_READ_CONTINUOUSLY"
+
+        "I2C_READ_CONTINUOUSLY | I2C_END_TX_MASK"
+
         @param command: {"method": "i2c_read_request", "params": [I2C_ADDRESS, I2C_REGISTER,
                 NUMBER_OF_BYTES, I2C_READ_TYPE ]}
         @return: {"method": "i2c_read_request_reply", "params": [DATA]}

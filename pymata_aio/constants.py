@@ -45,6 +45,10 @@ class Constants:
     I2C_READ_CONTINUOUSLY = 0B00010000
     I2C_STOP_READING = 0B00011000
     I2C_READ_WRITE_MODE_MASK = 0B00011000
+    I2C_10BIT_ADDRESS_MODE_MASK = 0B00100000
+    I2C_END_TX_MASK = 0B01000000
+    I2C_STOP_TX = 1
+    I2C_RESTART_TX = 0
 
     # latch states
     LATCH_IGNORE = 0  # this item currently not participating in latching

@@ -38,12 +38,11 @@ class PrivateConstants:
     REPORT_VERSION = 0xF9  # report protocol version
 
     # start of FirmataPlus defined SYSEX commands
-    ENCODER_CONFIG = 0x20  # create and enable encoder object
-    TONE_PLAY = 0x5F  # play a tone at a specified frequency and duration
-    SONAR_CONFIG = 0x60  # configure pins to control a Ping type sonar distance device
-
-    ENCODER_DATA = 0x21  # current encoder position data
-    SONAR_DATA = 0x61  # distance data returned
+    TONE_DATA = 0x5F  # play a tone at a specified frequency and duration
+    ENCODER_CONFIG = 0x60  # create and enable encoder object
+    ENCODER_DATA = 0x61  # current encoder position data
+    SONAR_CONFIG = 0x62  # configure pins to control a Ping type sonar distance device
+    SONAR_DATA = 0x63  # distance data returned
     # end of FirmataPlus defined SYSEX commands
 
     SERVO_CONFIG = 0x70  # set servo pin and max and min angles
@@ -68,7 +67,7 @@ class PrivateConstants:
     SYSEX_REALTIME = 0x7F  # MIDI Reserved for realtime messages
 
     # reserved for PyMata
-    PYMATA_VERSION = 1.00
+    PYMATA_VERSION = "1.1"
 
     # each byte represents a digital port and its value contains the current port settings
     DIGITAL_OUTPUT_PORT_PINS = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,

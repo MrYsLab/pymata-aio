@@ -83,11 +83,11 @@ class TestAnalogInput:
 
     def test_get_firmware_version(self):
         fv = self.board.get_firmware_version()
-        assert fv == "2.4 StandardFirmata.ino"
+        assert fv == "2.4 FirmataPlus.ino"
 
     def test_get_firmware_version_cb(self):
         self.board.get_firmware_version(self.my_callback)
-        assert self.result == "2.4 StandardFirmata.ino"
+        assert self.result == "2.4 FirmataPlus.ino"
 
     def test_get_capability_report(self):
         cr = self.board.get_capability_report()
@@ -109,13 +109,16 @@ class TestAnalogInput:
         l = len(self.result)
         assert l == 20
 
+
     def test_get_pin_state_mode(self):
+        self.board.set_pin_mode(5, Constants.OUTPUT)
         ps = self.board.get_pin_state(5)
         assert ps == [5, 1, 0]
 
     def test_get_pin_state_mode_cb(self):
+        self.board.set_pin_mode(5, Constants.INPUT)
         self.board.get_pin_state(5, self.my_callback)
-        assert self.result == [5, 1, 0]
+        assert self.result == [5, 0, 0]
 
     def test_servo(self):
         # observer that motor moves
