@@ -23,7 +23,7 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3 :: Only',
         'Topic :: Utilities',
-        'Topic:: Education',
+        'Topic :: Education',
         'Topic :: Home Automation',
     ],
 )
