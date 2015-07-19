@@ -1,9 +1,8 @@
-#from distutils.core import setup
 from setuptools import setup
 
 setup(
     name='pymata-aio',
-    version='1.1',
+    version='1.2',
     packages=['pymata_aio'],
     install_requires=['pyserial>=2.7', 'autobahn[asyncio]>=0.10.4'],
     url='https://github.com/MrYsLab/pymata-aio/wiki',

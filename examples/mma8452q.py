@@ -105,7 +105,8 @@ class MMA8452Q:
         self.callback_data = []
 
         # beginning of data returned is located at position 4
-        self.data_start = 4
+        # 0 is the device address
+        self.data_start = 2
 
         # pymata3 is acting as a proxy for the Wire library here
         self.board = PyMata3()
@@ -365,31 +366,21 @@ class MMA8452Q:
         # get x y z data
         xyz = self.wait_for_read_result()
 
-        # value = (data[PrivateConstants.MSB] << 7) + data[PrivateConstants.LSB]
-        xmsb = xyz[self.data_start] & 0x7f
-        xmsb += (xyz[self.data_start + 1] & 0x7f) << 7
-
-        xlsb = xyz[self.data_start + 2] & 0x7f
-        xlsb += (xyz[self.data_start + 3] & 0x7f) << 7
+        # string off address and register bytes
+        xyz = xyz[2:]
+        xmsb = xyz[0]
+        xlsb = xyz[1]
+        ymsb = xyz[2]
+        ylsb = xyz[3]
+        zmsb = xyz[4]
+        zlsb = xyz[5]
 
         # OR the 2 pieces together, shift 4 places to get 12 bits
         x = (xmsb << 8 | xlsb) >> 4
 
-        ymsb = xyz[self.data_start + 4] & 0x7f
-        ymsb += (xyz[self.data_start + 5] & 0x7f) << 7
-
-        ylsb = xyz[self.data_start + 6] & 0x7f
-        ylsb += (xyz[self.data_start + 7] & 0x7f) << 7
-
         y = (ymsb << 8 | ylsb) >> 4
 
-        zmsb = xyz[self.data_start + 8] & 0x7f
-        zmsb += (xyz[self.data_start + 9] & 0x7f) << 7
-
-        zlsb = xyz[self.data_start + 10] & 0x7f
-        zlsb += (xyz[self.data_start + 11] & 0x7f) << 7
-
-        z = (zmsb << 8 | ylsb) >> 4
+        z = (zmsb << 8 | zlsb) >> 4
 
         cx = float(x) / float(2048) * float(self.scale)
         cy = float(y) / float(2048) * float(self.scale)

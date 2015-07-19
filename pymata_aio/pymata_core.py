@@ -69,7 +69,6 @@ class PymataCore:
                                  PrivateConstants.CAPABILITY_RESPONSE: None,
                                  PrivateConstants.ANALOG_MAPPING_RESPONSE: None,
                                  PrivateConstants.PIN_STATE_RESPONSE: None}
-                                 # PrivateConstants.PYMATA_VERSION: 'PyMata_aio version 1.01'}
 
         # An i2c_map entry consists of a device i2c address as the key, and the value of the key consists of a
         # dictionary containing 2 entries. The first entry. 'value' contains the last value reported, and
@@ -119,7 +118,7 @@ class PymataCore:
 
         self.latch_map = {}
 
-        print('{}{}{}'.format('\n',  "pymata_aio Version " +  PrivateConstants.PYMATA_VERSION,
+        print('{}{}{}'.format('\n', "pymata_aio Version " + PrivateConstants.PYMATA_VERSION,
                               '\tCopyright (c) 2015 Alan Yorinks All rights reserved.\n'))
         sys.stdout.flush()
 
@@ -480,7 +479,7 @@ class PymataCore:
         This method requests the read of an i2c device. Results are retrieved by a call to
         i2c_get_read_data(). or by callback.
         If a callback method is provided, when data is received from the device it will be sent to the callback method.
-        Some devices require that transmission be restarted (e.g. MMA8452Q acceleromater).
+        Some devices require that transmission be restarted (e.g. MMA8452Q accelerometer).
         Use I2C_READ | I2C_RESTART_TX for those cases.
         @param address: i2c device address
         @param register: register number (can be set to zero)
@@ -922,15 +921,23 @@ class PymataCore:
         # remove the start and end sysex commands from the data
         data = data[1:-1]
         reply_data = []
+        # reassemble the data from the firmata 2 byte format
         address = (data[0] & 0x7f) + (data[1] << 7)
+
+        # if we have an entry in the i2c_map, proceed
         if address in self.i2c_map:
-            for i in range(0, len(data)):
-                reply_data.append(data[i])
+            # get 2 bytes, combine them and append to reply data list
+            for i in range(0, len(data), 2):
+                combined_data = (data[i] & 0x7f) + (data[i+1] << 7)
+                reply_data.append(combined_data)
+
+            # place the data in the i2c map without storing the address byte or register byte (returned data only)
             map_entry = self.i2c_map.get(address)
-            map_entry['value'] = reply_data
+            map_entry['value'] = reply_data[2:]
             self.i2c_map[address] = map_entry
             cb = map_entry.get('callback')
             if cb:
+                # send everything, including address and register bytes back to caller
                 cb(reply_data)
                 yield from asyncio.sleep(self.sleep_tune)
 

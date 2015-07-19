@@ -407,15 +407,17 @@ class PymataIOT(WebSocketServerProtocol):
         """
         This method sends an I2C read request to Firmata. It is qualified by a single shot, continuous
         read, or stop reading command.
-        Special Note: for the read type supply one of the following strings:
+        Special Note: for the read type supply one of the following string values:
 
-        "I2C_READ"
+         "0" = I2C_READ
 
-        "I2C_READ | I2C_END_TX_MASK"
+         "1" = I2C_READ | I2C_END_TX_MASK"
 
-        "I2C_READ_CONTINUOUSLY"
+         "2" = I2C_READ_CONTINUOUSLY
 
-        "I2C_READ_CONTINUOUSLY | I2C_END_TX_MASK"
+         "3" = I2C_READ_CONTINUOUSLY | I2C_END_TX_MASK
+
+         "4" = I2C_STOP_READING
 
         @param command: {"method": "i2c_read_request", "params": [I2C_ADDRESS, I2C_REGISTER,
                 NUMBER_OF_BYTES, I2C_READ_TYPE ]}
@@ -425,14 +427,20 @@ class PymataIOT(WebSocketServerProtocol):
         register = int(command[1])
         number_of_bytes = int(command[2])
 
-        if command[3] == "I2C_READ_CONTINUOUS":
+        if command[3] == "0":
             read_type = Constants.I2C_READ_CONTINUOUSLY
-        elif command[3] == "I2C_READ":
+        elif command[3] == "1":
             read_type = Constants.I2C_READ
-        else:
+        elif command[3] == "2":
+            read_type = Constants.I2C_READ | Constants.I2C_END_TX_MASK
+        elif command[3] == "3":
+            read_type = Constants.I2C_READ_CONTINUOUSLY | Constants.I2C_END_TX_MASK
+        else:    # the default case stop reading valid request or invalid request
             read_type = Constants.I2C_STOP_READING
+
         yield from self.core.i2c_read_request(device_address, register, number_of_bytes, read_type,
                                               self.i2c_read_request_callback)
+        yield from asyncio.sleep(1)
 
     @asyncio.coroutine
     def i2c_write_request(self, command):
@@ -444,7 +452,7 @@ class PymataIOT(WebSocketServerProtocol):
         device_address = int(command[0])
         params = command[1]
         params = [int(i) for i in params]
-        yield from self.core.i2c_write_request(device_address, *params)
+        yield from self.core.i2c_write_request(device_address, params)
 
     @asyncio.coroutine
     def play_tone(self, command):
