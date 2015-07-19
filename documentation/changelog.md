@@ -1,5 +1,14 @@
 #Change Log
 
+###Release 1.2
+
+19 July 2015
+
+Data format returned from i2c_read_request was normalized from Firmata 2byte format to expected data 
+representation.
+
+
+
 ###Release 1.1
 
 18 July 2015
