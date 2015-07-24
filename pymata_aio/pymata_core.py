@@ -20,7 +20,7 @@ import asyncio
 import sys
 import time
 import signal
-# import os
+import logging
 
 import serial
 
@@ -38,14 +38,25 @@ class PymataCore:
     After instantiating this class, its "start" method MUST be called to perform Arduino pin auto-detection.
     """
 
-    def __init__(self, arduino_wait=2, sleep_tune=.001, com_port=None):
+    def __init__(self, arduino_wait=2, sleep_tune=.001, log_output=False, com_port=None):
         """
         This is the "constructor" method for the PymataCore class.
+
+        If log_output is set to True, a log file called 'pymata_log'
+
+        will be created in the current directory and all pymata_aio output will be redirected
+        to the log with no output appearing on the console.
+
         @param arduino_wait: Amount of time to wait for Arduino to reset. UNO takes 2 seconds, Leonardo can be zero
         @param sleep_tune: This parameter sets the amount of time PyMata core uses to set asyncio.sleep
+        @param log_output: If false, all output goes to console, else output redirected to log file.
         @param com_port: Manually selected com port - normally it is auto-detected
         @return: This method never returns
         """
+        self.log_output = log_output
+        if log_output:
+            logging.basicConfig(filename='./pymata_aio.log', filemode='w', level=logging.DEBUG)
+
         self.sleep_tune = sleep_tune
         self.arduino_wait = arduino_wait
         self.com_port = com_port
@@ -118,9 +129,14 @@ class PymataCore:
 
         self.latch_map = {}
 
-        print('{}{}{}'.format('\n', "pymata_aio Version " + PrivateConstants.PYMATA_VERSION,
-                              '\tCopyright (c) 2015 Alan Yorinks All rights reserved.\n'))
-        sys.stdout.flush()
+        if self.log_output:
+            log_string = 'pymata_aio Version ' + PrivateConstants.PYMATA_VERSION + \
+                         ' Copyright (c) 2015 Alan Yorinks All rights reserved.'
+            logging.info(log_string)
+        else:
+            print('{}{}{}'.format('\n', 'pymata_aio Version ' + PrivateConstants.PYMATA_VERSION,
+                                  '\tCopyright (c) 2015 Alan Yorinks All rights reserved.\n'))
+            sys.stdout.flush()
 
         if com_port is None:
             self.com_port = self._discover_port()
@@ -142,9 +158,13 @@ class PymataCore:
         """
         self.loop = asyncio.get_event_loop()
         try:
-            self.serial_port = PymataSerial(self.com_port, 57600, self.sleep_tune)
+            self.serial_port = PymataSerial(self.com_port, 57600, self.sleep_tune, self.log_output)
         except serial.SerialException:
-            print('Cannot instantiate serial interface: ' + self.com_port)
+            if self.log_output:
+                log_string = 'Cannot instantiate serial interface: ' + self.com_port
+                logging.exception(log_string)
+            else:
+                print('Cannot instantiate serial interface: ' + self.com_port)
             sys.exit(0)
 
         # wait for arduino to go through a reset cycle if need be
@@ -160,9 +180,12 @@ class PymataCore:
         # try to get an analog report. if it comes back as none - shutdown
         report = self.loop.run_until_complete(self.get_analog_map())
         if not report:
-            print('\n\n{} {} ***'.format('*** Analog map query timed out waiting for port:',
-                                         self.serial_port.com_port))
-            print('\nIs your Arduino plugged in?')
+            if self.log_output:
+                log_string = '*** Analog map query timed out waiting for port:' + \
+                             self.serial_port.com_port
+                logging.exception(log_string)
+            else:
+                print('\nIs your Arduino plugged in and do you have a Firmata sketch uploaded to the board?')
             try:
                 loop = asyncio.get_event_loop()
                 for t in asyncio.Task.all_tasks(loop):
@@ -185,8 +208,13 @@ class PymataCore:
                 analog_data = PinData()
                 self.analog_pins.append(analog_data)
 
-        print('{} {} {} {} {}'.format('Auto-discovery complete. Found', len(self.digital_pins), 'Digital Pins and',
-                                      len(self.analog_pins), 'Analog Pins\n\n'))
+        if self.log_output:
+            log_string = 'Auto-discovery complete. Found ' + str(len(self.digital_pins)) + ' Digital Pins and ' + \
+                         str(len(self.analog_pins)) + ' Analog Pins'
+            logging.info(log_string)
+        else:
+            print('{} {} {} {} {}'.format('Auto-discovery complete. Found', len(self.digital_pins), 'Digital Pins and',
+                                          len(self.analog_pins), 'Analog Pins\n\n'))
 
     @asyncio.coroutine
     def analog_read(self, pin):
@@ -623,7 +651,11 @@ class PymataCore:
             elif pin_state == Constants.ANALOG:
                 self.analog_pins[pin_number].cb = callback
             else:
-                print('{} {}'.format('set_pin_mode: callback ignored for pin state:', pin_state))
+                if self.log_output:
+                    log_string = 'set_pin_mode: callback ignored for pin state: ' + pin_state
+                    logging.info(log_string)
+                else:
+                    print('{} {}'.format('set_pin_mode: callback ignored for pin state:', pin_state))
         #
         if pin_state == Constants.INPUT or pin_state == Constants.ANALOG:
             pin_mode = Constants.INPUT
@@ -655,7 +687,11 @@ class PymataCore:
         This method attempts an orderly shutdown
         @return: No return value
         """
-        print('Shutting down ...')
+        if self.log_output:
+            logging.info('Shutting down ...')
+        else:
+            print('Shutting down ...')
+
         yield from self.send_reset()
         yield from asyncio.sleep(1)
         signal.alarm(1)
@@ -670,7 +706,10 @@ class PymataCore:
         try:
             yield from asyncio.sleep(sleep_time)
         except RuntimeError:
-            print('sleep exception')
+            if self.log_output:
+                logging.info('sleep exception')
+            else:
+                print('sleep exception')
             self.shutdown()
 
     @asyncio.coroutine
@@ -703,10 +742,11 @@ class PymataCore:
         self.set_pin_mode(echo_pin, Constants.SONAR, Constants.INPUT)
         # update the ping data map for this pin
         if len(self.active_sonar_map) > 6:
+            if self.log_output:
+                logging.exception('sonar_config: maximum number of devices assigned - ignoring request')
+            else:
+                print('sonar_config: maximum number of devices assigned - ignoring request')
 
-            # if self.verbose:
-            print("sonar_config: maximum number of devices assigned - ignoring request")
-            # return
         else:
             self.active_sonar_map[trigger_pin] = [cb, 0]
 
@@ -815,7 +855,10 @@ class PymataCore:
                     # yield from asyncio.sleep(self.sleep_tune)
             except Exception as ex:
                 # should never get here
-                print(ex)
+                if self.log_output:
+                    logging.exception(ex)
+                else:
+                    print(ex)
                 raise  # re-raise exception.
 
     '''
@@ -928,7 +971,7 @@ class PymataCore:
         if address in self.i2c_map:
             # get 2 bytes, combine them and append to reply data list
             for i in range(0, len(data), 2):
-                combined_data = (data[i] & 0x7f) + (data[i+1] << 7)
+                combined_data = (data[i] & 0x7f) + (data[i + 1] << 7)
                 reply_data.append(combined_data)
 
             # place the data in the i2c map without storing the address byte or register byte (returned data only)
@@ -1050,7 +1093,10 @@ class PymataCore:
             reply_data = x
             if reply_data:
                 reply += chr(reply_data)
-        print(reply)
+        if self.log_output:
+            logging.info(reply)
+        else:
+            print(reply)
 
     '''
     utilities
@@ -1098,9 +1144,9 @@ class PymataCore:
         locations = ['dev/ttyACM0', '/dev/ttyACM0', '/dev/ttyACM1', '/dev/ttyACM2', '/dev/ttyACM3', '/dev/ttyACM4',
                      '/dev/ttyACM5', '/dev/ttyUSB0', '/dev/ttyUSB1', '/dev/ttyUSB2', '/dev/ttyUSB3', '/dev/ttyUSB4',
                      '/dev/ttyUSB5', '/dev/ttyUSB6', '/dev/ttyUSB7', '/dev/ttyUSB8', '/dev/ttyUSB9', '/dev/ttyUSB10',
-                     '/dev/ttyS0', '/dev/ttyS1', '/dev/ttyS2', 'com2', 'com3', 'com4', 'com5', 'com6', 'com7', 'com8',
-                     'com9', 'com10', 'com11', 'com12', 'com13', 'com14', 'com15', 'com16', 'com17', 'com18', 'com19',
-                     'com20', 'com21', 'com1', 'end'
+                     '/dev/ttyS0', '/dev/ttyS1', '/dev/ttyS2', '/dev/tty.usbserial', '/dev/tty.usbmodem', 'com2',
+                     'com3', 'com4', 'com5', 'com6', 'com7', 'com8', 'com9', 'com10', 'com11', 'com12', 'com13',
+                     'com14', 'com15', 'com16', 'com17', 'com18', 'com19', 'com20', 'com21', 'com1', 'end'
                      ]
         detected = None
         for device in locations:
@@ -1111,40 +1157,54 @@ class PymataCore:
                 break
             except serial.SerialException:
                 if device == 'end':
-                    print('Unable to find Serial Port, Please plug in cable or check cable connections.')
+                    if self.log_output:
+                        logging.exception(
+                            'Unable to find Serial Port, Please plug in cable or check cable connections.')
+                    else:
+                        print('Unable to find Serial Port, Please plug in cable or check cable connections.')
                     detected = None
                     exit()
-        print('{}{}\n'.format("Using COM Port:", detected))
+        if self.log_output:
+            log_string = 'Using COM Port: ' + detected
+            logging.info(log_string)
+        else:
+            print('{}{}\n'.format('Using COM Port:', detected))
         return detected
 
     # noinspection PyMethodMayBeStatic
     def _format_capability_report(self, data):
         """
         This is a private utility method.
-        This method formats a capability report if the user wishes to send it to the console
+        This method formats a capability report if the user wishes to send it to the console.
+        If log_output = True, no output is generated
         @param data: Capability report
         @return: None
         """
-        pin_modes = {0: 'Digital_Input', 1: 'Digital_Output', 2: 'Analog', 3: 'PWM', 4: 'Servo',
-                     5: 'Shift', 6: 'I2C', 7: 'One Wire', 8: 'Stepper', 9: 'Encoder'}
-        x = 0
-        pin = 0
 
-        print('\nCapability Report')
-        print('-----------------\n')
-        while x < len(data):
-            # get index of next end marker
-            print('{} {}{}'.format('Pin', str(pin), ':'))
-            while data[x] != 127:
-                mode_str = ""
-                pin_mode = pin_modes.get(data[x])
-                mode_str += pin_mode
+        if self.log_output:
+            return
+
+        else:
+            pin_modes = {0: 'Digital_Input', 1: 'Digital_Output', 2: 'Analog', 3: 'PWM', 4: 'Servo',
+                         5: 'Shift', 6: 'I2C', 7: 'One Wire', 8: 'Stepper', 9: 'Encoder'}
+            x = 0
+            pin = 0
+
+            print('\nCapability Report')
+            print('-----------------\n')
+            while x < len(data):
+                # get index of next end marker
+                print('{} {}{}'.format('Pin', str(pin), ':'))
+                while data[x] != 127:
+                    mode_str = ""
+                    pin_mode = pin_modes.get(data[x])
+                    mode_str += pin_mode
+                    x += 1
+                    bits = data[x]
+                    print('{:>5}{}{} {}'.format('  ', mode_str, ':', bits))
+                    x += 1
                 x += 1
-                bits = data[x]
-                print('{:>5}{}{} {}'.format('  ', mode_str, ':', bits))
-                x += 1
-            x += 1
-            pin += 1
+                pin += 1
 
     @asyncio.coroutine
     def _process_latching(self, key, latching_entry):
@@ -1186,7 +1246,10 @@ class PymataCore:
             try:
                 result = yield from self.serial_port.write(data)
             except():
-                print('cannot send command')
+                if self.log_output:
+                    logging.exception('cannot send command')
+                else:
+                    print('cannot send command')
         return result
 
     @asyncio.coroutine
@@ -1258,4 +1321,5 @@ def _signal_handler(the_signal, frame):
 
 signal.signal(signal.SIGINT, _signal_handler)
 signal.signal(signal.SIGTERM, _signal_handler)
-signal.signal(signal.SIGALRM, _signal_handler)
+# removed sigalrm since Windows can't handle it
+# signal.signal(signal.SIGALRM, _signal_handler)

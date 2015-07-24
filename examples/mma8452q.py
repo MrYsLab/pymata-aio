@@ -130,7 +130,7 @@ class MMA8452Q:
             self.set_output_data_rate(self.output_data_rate)
 
             # Set up portrait/landscape detection
-            self.setup_potrait_landscape()
+            self.setup_portrait_landscape()
 
             # Disable x, y, set z to 0.5g
             self.setup_tap(0x80, 0x80, 0x08)
@@ -212,11 +212,11 @@ class MMA8452Q:
         control_reg = self.wait_for_read_result()
         control_reg = control_reg[self.data_start]
 
-        control_reg &= 0xCF  # Mask out data rate bits
+        control_reg &= 0xC7  # Mask out data rate bits
         control_reg |= (output_data_rate << 3)
         self.board.i2c_write_request(self.address, [register, control_reg])
 
-    def setup_potrait_landscape(self):
+    def setup_portrait_landscape(self):
         """
         Setup the portrait/landscape registers
         Device must be in standby before calling this function
@@ -235,7 +235,7 @@ class MMA8452Q:
 
         register = self.MMA8452Q_Register['PL_COUNT']
 
-        # 2. Set the debounce rate
+        # 2. Set the de-bounce rate
         self.board.i2c_write_request(self.address, [register, 0x50])
 
     def read_portrait_landscape(self):
@@ -360,7 +360,8 @@ class MMA8452Q:
         Call available() first to make sure new data is really available.
         """
         register = self.MMA8452Q_Register['OUT_X_MSB']
-        self.board.i2c_read_request(self.address, register, 6, Constants.I2C_READ | Constants.I2C_END_TX_MASK,
+        self.board.i2c_read_request(self.address, register, 6,
+                                    Constants.I2C_READ | Constants.I2C_END_TX_MASK,
                                     self.data_val)
 
         # get x y z data

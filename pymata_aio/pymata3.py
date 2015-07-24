@@ -18,6 +18,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import asyncio
 import os
+import logging
 
 from .pymata_core import PymataCore
 
@@ -29,15 +30,21 @@ class PyMata3:
     does not use asyncio directly, this is the API that you should use..
     """
 
-    def __init__(self, arduino_wait=2, com_port=None):
+    def __init__(self, arduino_wait=2, log_output=False, com_port=None):
         """
         Constructor for the PyMata3 API
+        If log_output is set to True, a log file called 'pymata_log'
+
+        will be created in the current directory and all pymata_aio output will be redirected
+        to the log with no output appearing on the console.
         @param arduino_wait: Amount of time to allow Arduino to finish its reset (2 seconds for Uno, Leonardo can be 0)
+        @param log_output: If True, pymata_aio.log is created and all console output is redirected to this file.
         @param com_port: If specified, auto port detection will not be performed and this com port will be used.
         @return: None
         """
+        self.log_out = log_output
         self.sleep_tune = .001
-        self.core = PymataCore(arduino_wait, self.sleep_tune, com_port)
+        self.core = PymataCore(arduino_wait, self.sleep_tune, log_output, com_port)
         self.core.start()
         self.sleep(1)
 
@@ -433,7 +440,8 @@ class PyMata3:
         """
         Shutdown the application and exit
         @return: No return value        """
-        print('Shutting down ...')
+        if not self.log_out:
+            print('Shutting down ...')
         try:
             loop = asyncio.get_event_loop()
             # self.send_reset()
@@ -451,7 +459,10 @@ class PyMata3:
             # ignore
             pass
         except Exception as ex:
-            print(ex)
+            if self.log_out:
+                logging.exception(ex)
+            else:
+                print(ex)
 
     def sonar_data_retrieve(self):
         """

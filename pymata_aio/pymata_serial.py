@@ -18,7 +18,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 import asyncio
 import sys
-
+import logging
 import serial
 
 
@@ -28,14 +28,18 @@ class PymataSerial:
     It provides a 'futures' interface to make Pyserial compatible with asyncio
     """
 
-    def __init__(self, com_port='/dev/ttyACM0', speed=57600, sleep_tune=.001):
+    def __init__(self, com_port='/dev/ttyACM0', speed=57600, sleep_tune=.001, log_output=False):
         """
         This is the constructor for the aio serial handler
         :param com_port: Com port designator
         :param speed: baud rate
         :return: None
         """
-        print('Initializing Arduino - Please wait...', end=" ")
+        self.log_output = log_output
+        if self.log_output:
+            logging.info('Initializing Arduino - Please wait...')
+        else:
+            print('Initializing Arduino - Please wait...', end=" ")
         sys.stdout.flush()
         self.my_serial = serial.Serial(com_port, speed, timeout=1, writeTimeout=1)
         self.com_port = com_port
@@ -62,7 +66,10 @@ class PymataSerial:
         try:
             result = self.my_serial.write(bytes([ord(data)]))
         except serial.SerialException:
-            print('Write exception')
+            if self.log_output:
+                logging.exception('Write exception')
+            else:
+                print('Write exception')
             loop = asyncio.get_event_loop()
             for t in asyncio.Task.all_tasks(loop):
                 t.cancel()

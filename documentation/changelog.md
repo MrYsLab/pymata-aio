@@ -1,5 +1,17 @@
 #Change Log
 
+###Release 1.3
+23 July 2015
+
+* Auto detection of OS X serial ports added
+
+* Added a logging feature to optionally redirect console output to a log file.
+
+* Removed SIGALRM from Control-C handler to support Windows.
+
+
+
+
 ###Release 1.2
 
 19 July 2015

@@ -41,7 +41,7 @@ class PymataIOT(WebSocketServerProtocol):
     within the description.
 
     usage: pymata_iot.py [-h] [-host HOSTNAME] [-port PORT] [-wait WAIT]
-                     [-comport COM] [-sleep SLEEP]
+                     [-comport COM] [-sleep SLEEP] [-log LOG]
 
         optional arguments:
           -h, --help      show this help message and exit
@@ -50,6 +50,7 @@ class PymataIOT(WebSocketServerProtocol):
           -wait WAIT      Arduino wait time
           -comport COM    Arduino COM port
           -sleep SLEEP    sleep tune in ms.
+          -log LOG        True = send output to file, False = send output to console
     """
     parser = argparse.ArgumentParser()
     parser.add_argument("-host", dest="hostname", default="localhost", help="Server name or IP address")
@@ -57,6 +58,7 @@ class PymataIOT(WebSocketServerProtocol):
     parser.add_argument("-wait", dest="wait", default="2", help="Arduino wait time")
     parser.add_argument("-comport", dest="com", default="None", help="Arduino COM port")
     parser.add_argument("-sleep", dest="sleep", default=".001", help="sleep tune in ms.")
+    parser.add_argument("-log", dest="log", default="False", help="redirect console output to log file")
     args = parser.parse_args()
 
     ip_addr = args.hostname
@@ -67,7 +69,12 @@ class PymataIOT(WebSocketServerProtocol):
     else:
         comport = args.com
 
-    core = PymataCore(int(args.wait), float(args.sleep), comport)
+    if args.log == 'True':
+        log = True
+    else:
+        log = False
+
+    core = PymataCore(int(args.wait), float(args.sleep), log, comport)
     core.start()
 
     def __init__(self):
@@ -435,7 +442,7 @@ class PymataIOT(WebSocketServerProtocol):
             read_type = Constants.I2C_READ | Constants.I2C_END_TX_MASK
         elif command[3] == "3":
             read_type = Constants.I2C_READ_CONTINUOUSLY | Constants.I2C_END_TX_MASK
-        else:    # the default case stop reading valid request or invalid request
+        else:  # the default case stop reading valid request or invalid request
             read_type = Constants.I2C_STOP_READING
 
         yield from self.core.i2c_read_request(device_address, register, number_of_bytes, read_type,
@@ -707,6 +714,7 @@ class PymataIOT(WebSocketServerProtocol):
         @return:{"method": "i2c_read_request_reply", "params": [DATA_VALUE]}
         """
         reply = json.dumps({"method": "i2c_read_request_reply", "params": data})
+        # print(reply);
         self.sendMessage(reply.encode('utf8'))
 
     def i2c_read_data_callback(self, data):
@@ -730,15 +738,12 @@ class PymataIOT(WebSocketServerProtocol):
 
 
 if __name__ == '__main__':
-
-    # factory = WebSocketServerFactory("ws://localhost:9000", debug=False)
     ws_string = 'ws://' + PymataIOT.ip_addr + ':' + PymataIOT.ip_port
     print('Websocket server operating on: ' + ws_string)
     factory = WebSocketServerFactory(ws_string, debug=False)
     factory.protocol = PymataIOT
 
     loop = asyncio.get_event_loop()
-    # coro = loop.create_server(factory, '0.0.0.0', 9000)
     coro = loop.create_server(factory, '0.0.0.0', int(PymataIOT.ip_port))
     server = loop.run_until_complete(coro)
 
