@@ -408,7 +408,8 @@ class PyMata3:
         @param pin_number: Arduino Pin Number
         @param pin_state: INPUT/OUTPUT/ANALOG/PWM - for SERVO use servo_config()
         @param callback: Optional: A reference to a call back function to be called when pin data value changes
-        @return: No return value        """
+        @return: No return value
+        """
         loop = asyncio.get_event_loop()
         asyncio.async(self.core.set_pin_mode(pin_number, pin_state, callback))
 

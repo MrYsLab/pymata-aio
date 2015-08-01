@@ -1,5 +1,11 @@
 #Change Log
 
+###Release 1.4
+1 Aug 2015
+
+* Auto Detection for OS X ports repaired from release 1.3. Tested and functioning now.
+
+
 ###Release 1.3
 23 July 2015
 
