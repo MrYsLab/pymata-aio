@@ -62,6 +62,8 @@ class PymataCore:
         self.arduino_wait = arduino_wait
         self.com_port = com_port
 
+        self.hall_encoder = False
+
         # this dictionary for mapping incoming Firmata message types to handlers for the messages
         self.command_dictionary = {PrivateConstants.REPORT_VERSION: self._report_version,
                                    PrivateConstants.REPORT_FIRMWARE: self._report_firmware,
@@ -83,15 +85,16 @@ class PymataCore:
                                  PrivateConstants.PIN_STATE_RESPONSE: None}
 
         # An i2c_map entry consists of a device i2c address as the key, and the value of the key consists of a
-        # dictionary containing 2 entries. The first entry. 'value' contains the last value reported, and
+        # dictionary containing 3 entries. The first entry. 'value' contains the last value reported, and
         # the second, 'callback' contains a reference to a callback function.
-        # For example: {12345: {'value': 23, 'callback': None}}
+        # the third, callback_type contains the callback type selector (None = Direct, 1 = yield from)
+        # For example: {12345: {'value': 23, 'callback': None, 'callback_type: None}}
         self.i2c_map = {}
 
         # the active_sonar_map maps the sonar trigger pin number (the key) to the current data value returned
         # if a callback was specified, it is stored in the map as well.
         # an entry in the map consists of:
-        #   pin: [callback,[current_data_returned]]
+        #   pin: [callback,, callback_type, [current_data_returned]]
         self.active_sonar_map = {}
 
         # The latch_map is a dictionary that stores all latches setup by the user.
@@ -154,10 +157,12 @@ class PymataCore:
     def start(self):
         """
         This method must be called immediately after the class is instantiated. It instantiates the serial
-        interface and then performs auto pin discovery.
+        interface and then performs auto pin discovery. It is intended for use by pymata3 applications that do not
+        use asyncio coroutines directly.
         @return:No return value.
         """
         self.loop = asyncio.get_event_loop()
+
         try:
             self.serial_port = PymataSerial(self.com_port, 57600, self.sleep_tune, self.log_output)
         except serial.SerialException:
@@ -196,6 +201,78 @@ class PymataCore:
                 loop.stop()
                 sys.exit(0)
             except RuntimeError:
+                # this suppresses the Event Loop Is Running message, which may be a bug in python 3.4.3
+                sys.exit(0)
+            except TypeError:
+                sys.exit(0)
+
+        # custom assemble the pin lists
+        for pin in report:
+            digital_data = PinData()
+            self.digital_pins.append(digital_data)
+            if pin != Constants.IGNORE:
+                analog_data = PinData()
+                self.analog_pins.append(analog_data)
+
+        if self.log_output:
+            log_string = 'Auto-discovery complete. Found ' + str(len(self.digital_pins)) + ' Digital Pins and ' + \
+                         str(len(self.analog_pins)) + ' Analog Pins'
+            logging.info(log_string)
+        else:
+            print('{} {} {} {} {}'.format('Auto-discovery complete. Found', len(self.digital_pins), 'Digital Pins and',
+                                          len(self.analog_pins), 'Analog Pins\n\n'))
+
+    @asyncio.coroutine
+    def start_aio(self):
+        """
+        This method must be called immediately after the class is instantiated. It instantiates the serial
+        interface and then performs auto pin discovery. It is intended for use by applications that directly use
+        asyncio.
+        @return:No return value.
+        """
+        self.loop = asyncio.get_event_loop()
+
+        try:
+            self.serial_port = PymataSerial(self.com_port, 57600, self.sleep_tune, self.log_output)
+        except serial.SerialException:
+            if self.log_output:
+                log_string = 'Cannot instantiate serial interface: ' + self.com_port
+                logging.exception(log_string)
+            else:
+                print('Cannot instantiate serial interface: ' + self.com_port)
+            sys.exit(0)
+
+        # wait for arduino to go through a reset cycle if need be
+        time.sleep(self.arduino_wait)
+
+        # register the get_command method with the event loop
+        self.loop = asyncio.get_event_loop()
+        self.the_task = self.loop.create_task(self._command_dispatcher())
+
+        # get an analog pin map
+        asyncio.async(self.get_analog_map())
+
+        # try to get an analog report. if it comes back as none - shutdown
+        report = yield from self.get_analog_map()
+        if not report:
+            if self.log_output:
+                log_string = '*** Analog map query timed out waiting for port:' + \
+                             self.serial_port.com_port
+                logging.exception(log_string)
+            else:
+                print('\nIs your Arduino plugged in and do you have a Firmata sketch uploaded to the board?')
+            try:
+                loop = asyncio.get_event_loop()
+                for t in asyncio.Task.all_tasks(loop):
+                    t.cancel()
+                loop.run_until_complete(asyncio.sleep(.1))
+                # yield from asyncio.sleep(.1)
+                loop.stop()
+                loop.close()
+                sys.exit(0)
+            except RuntimeError:
+                self.the_task.cancel()
+                time.sleep(1)
                 # this suppresses the Event Loop Is Running message, which may be a bug in python 3.4.3
                 sys.exit(0)
             except TypeError:
@@ -298,24 +375,32 @@ class PymataCore:
         yield from self._send_command(command)
 
     @asyncio.coroutine
-    def encoder_config(self, pin_a, pin_b, cb=None):
+    def encoder_config(self, pin_a, pin_b, cb=None, cb_type=None, hall_encoder=False):
         """
-        This command enables the rotary encoder (2 pin + ground) and will
-        enable encoder reporting.
+        This command enables the rotary encoder support and will enable encoder reporting.
 
-        NOTE: This command is not currently part of standard arduino firmata, but is provided for legacy
-        support of CodeShield on an Arduino UNO.
+        This command is not part of StandardFirmata. For 2 pin + ground encoders, FirmataPlus is required to be
+        used for 2 pin rotary encoder,, and for hell effect wheel encoder support, FirmataPlusRB is required.
 
-        Encoder data is retrieved by performing a digital_read from pin a (encoder pin_a)
+        Encoder data is retrieved by performing a digital_read from pin a (encoder pin_a).
+
+        When using 2 hall effect sensors (e.g. 2 wheel robot) specify pin_a for 1st encoder and pin_b for 2nd encoder.
 
         @param pin_a: Encoder pin 1.
         @param pin_b: Encoder pin 2.
         @param cb: callback function to report encoder changes
+        @param cb_type: Constants.CB_TYPE_DIRECT = direct call or Constants.CB_TYPE_ASYNCIO = asyncio coroutine
+        @param hall_encoder: wheel hall_encoder - set to True to select hall encoder support support.
         @return: No return value
         """
+        # checked when encoder data is returned
+        self.hall_encoder = hall_encoder
         data = [pin_a, pin_b]
         if cb:
             self.digital_pins[pin_a].cb = cb
+        if cb_type:
+            self.digital_pins[pin_a].cb_type = cb_type
+
         yield from self._send_sysex(PrivateConstants.ENCODER_CONFIG, data)
 
     @asyncio.coroutine
@@ -503,24 +588,25 @@ class PymataCore:
             return None
 
     @asyncio.coroutine
-    def i2c_read_request(self, address, register, number_of_bytes, read_type, cb=None):
+    def i2c_read_request(self, address, register, number_of_bytes, read_type, cb=None, cb_type=None):
         """
         This method requests the read of an i2c device. Results are retrieved by a call to
         i2c_get_read_data(). or by callback.
         If a callback method is provided, when data is received from the device it will be sent to the callback method.
         Some devices require that transmission be restarted (e.g. MMA8452Q accelerometer).
-        Use I2C_READ | I2C_RESTART_TX for those cases.
+        Use Constants.I2C_READ | Constants.I2C_RESTART_TX for those cases.
         @param address: i2c device address
         @param register: register number (can be set to zero)
         @param number_of_bytes: number of bytes expected to be returned
         @param read_type: I2C_READ  or I2C_READ_CONTINUOUSLY. I2C_RESTART_TX may be OR'ed when required
         @param cb: Optional callback function to report i2c data as result of read command
+        @param cb_type: Constants.CB_TYPE_DIRECT = direct call or Constants.CB_TYPE_ASYNCIO = asyncio coroutine
         @return: No return value.
         """
 
         if address not in self.i2c_map:
             # self.i2c_map[address] = [None, cb]
-            self.i2c_map[address] = {'value': None, 'callback': cb}
+            self.i2c_map[address] = {'value': None, 'callback': cb, 'callback_type': cb_type}
         data = [address, read_type, register & 0x7f, register >> 7,
                 number_of_bytes & 0x7f, number_of_bytes >> 7]
         yield from self._send_sysex(PrivateConstants.I2C_REQUEST, data)
@@ -595,7 +681,7 @@ class PymataCore:
         yield from self._send_sysex(PrivateConstants.SERVO_CONFIG, command)
 
     @asyncio.coroutine
-    def set_analog_latch(self, pin, threshold_type, threshold_value, cb=None):
+    def set_analog_latch(self, pin, threshold_type, threshold_value, cb=None, cb_type=None):
         """
         This method "arms" an analog pin for its data to be latched and saved in the latching table
         If a callback method is provided, when latching criteria is achieved, the callback function is called
@@ -605,18 +691,19 @@ class PymataCore:
         @param threshold_type: ANALOG_LATCH_GT | ANALOG_LATCH_LT  | ANALOG_LATCH_GTE | ANALOG_LATCH_LTE
         @param threshold_value: numerical value - between 0 and 1023
         @param cb: callback method
+        @param cb_type: Constants.CB_TYPE_DIRECT = direct call or Constants.CB_TYPE_ASYNCIO = asyncio coroutine
         @return: True if successful, False if parameter data is invalid
         """
         if Constants.LATCH_GT <= threshold_type <= Constants.LATCH_LTE:
             key = 'A' + str(pin)
             if 0 <= threshold_value <= 1023:
-                self.latch_map[key] = [Constants.LATCH_ARMED, threshold_type, threshold_value, 0, 0, cb]
+                self.latch_map[key] = [Constants.LATCH_ARMED, threshold_type, threshold_value, 0, 0, cb, cb_type]
                 return True
         else:
             return False
 
     @asyncio.coroutine
-    def set_digital_latch(self, pin, threshold_value, cb=None):
+    def set_digital_latch(self, pin, threshold_value, cb=None, cb_type=None):
         """
         This method "arms" a digital pin for its data to be latched and saved in the latching table
         If a callback method is provided, when latching criteria is achieved, the callback function is called
@@ -625,40 +712,46 @@ class PymataCore:
         @param pin: Digital pin number
         @param threshold_value: 0 or 1
         @param cb: callback function
+        @param cb_type: Constants.CB_TYPE_DIRECT = direct call or Constants.CB_TYPE_ASYNCIO = asyncio coroutine
         @return: True if successful, False if parameter data is invalid
         """
         if 0 <= threshold_value <= 1:
             key = 'D' + str(pin)
-            self.latch_map[key] = [Constants.LATCH_ARMED, Constants.LATCH_EQ, threshold_value, 0, 0, cb]
+            self.latch_map[key] = [Constants.LATCH_ARMED, Constants.LATCH_EQ, threshold_value, 0, 0, cb, cb_type]
             return True
         else:
             return False
 
     @asyncio.coroutine
-    def set_pin_mode(self, pin_number, pin_state, callback=None):
+    def set_pin_mode(self, pin_number, pin_state, callback=None, callback_type=None):
         """
         This method sets the pin mode for the specified pin. For Servo, use servo_config() instead.
         @param pin_number: Arduino Pin Number
         @param pin_state:INPUT/OUTPUT/ANALOG/PWM/
         @param callback: Optional: A reference to a call back function to be called when pin data value changes
+        @param callback_type: direct call or asyncio yield from
         @return: No return value.
         """
+        # There is a potential start up race condition when running pymata3. This is a workaround for that
+        # race condition
+        if not len(self.digital_pins):
+            yield from asyncio.sleep(2)
         if callback:
             if pin_state == Constants.INPUT:
                 self.digital_pins[pin_number].cb = callback
+                self.digital_pins[pin_number].cb_type = callback_type
             elif pin_state == Constants.ANALOG:
                 self.analog_pins[pin_number].cb = callback
+                self.analog_pins[pin_number].cb_type = callback_type
+                # pin_number = pin_number + (len(self.digital_pins) -(len(self.analog_pins) ))
             else:
                 if self.log_output:
                     log_string = 'set_pin_mode: callback ignored for pin state: ' + pin_state
                     logging.info(log_string)
                 else:
                     print('{} {}'.format('set_pin_mode: callback ignored for pin state:', pin_state))
-        #
-        if pin_state == Constants.INPUT or pin_state == Constants.ANALOG:
-            pin_mode = Constants.INPUT
-        else:
-            pin_mode = pin_state
+
+        pin_mode = pin_state
         command = [PrivateConstants.SET_PIN_MODE, pin_number, pin_mode]
         yield from self._send_command(command)
         if pin_state == Constants.ANALOG:
@@ -711,7 +804,7 @@ class PymataCore:
             self.shutdown()
 
     @asyncio.coroutine
-    def sonar_config(self, trigger_pin, echo_pin, cb=None, ping_interval=50, max_distance=200):
+    def sonar_config(self, trigger_pin, echo_pin, cb=None, ping_interval=50, max_distance=200, cb_type=None):
         """
         Configure the pins,ping interval and maximum distance for an HC-SR04 type device.
         Single pin configuration may be used. To do so, set both the trigger and echo pins to the same value.
@@ -723,10 +816,9 @@ class PymataCore:
         @param cb: optional callback function to report sonar data changes
         @param ping_interval: Minimum interval between pings. Lowest number to use is 33 ms.Max is 127
         @param max_distance: Maximum distance in cm. Max is 200.
+        @param cb_type: Constants.CB_TYPE_DIRECT = direct call or Constants.CB_TYPE_ASYNCIO = asyncio coroutine
         @return:No return value.
-
         """
-
         # if there is an entry for the trigger pin in existence, just exit
         if trigger_pin in self.active_sonar_map:
             return
@@ -744,9 +836,8 @@ class PymataCore:
                 logging.exception('sonar_config: maximum number of devices assigned - ignoring request')
             else:
                 print('sonar_config: maximum number of devices assigned - ignoring request')
-
         else:
-            self.active_sonar_map[trigger_pin] = [cb, 0]
+            self.active_sonar_map[trigger_pin] = [cb, cb_type, 0]
 
         yield from self._send_sysex(PrivateConstants.SONAR_CONFIG, data)
 
@@ -773,7 +864,6 @@ class PymataCore:
         @param steps_per_revolution: number of steps per motor revolution
         @param stepper_pins: a list of control pin numbers - either 4 or 2
         @return:No return value.
-
         """
         data = [PrivateConstants.STEPPER_CONFIGURE, steps_per_revolution & 0x7f, steps_per_revolution >> 7]
         for pin in range(len(stepper_pins)):
@@ -789,7 +879,6 @@ class PymataCore:
         @param number_of_steps: 14 bits for number of steps & direction
                                 positive is forward, negative is reverse
         @return:No return value.
-
         """
         if number_of_steps > 0:
             direction = 1
@@ -889,8 +978,11 @@ class PymataCore:
             # append pin number to return value and return as a list
             # self.analog_pins[pin].cb(value)
             value = [pin, value]
-            loop = asyncio.get_event_loop()
-            loop.call_soon(self.analog_pins[pin].cb, value)
+            if self.analog_pins[pin].cb_type:
+                yield from self.analog_pins[pin].cb(value)
+            else:
+                loop = asyncio.get_event_loop()
+                loop.call_soon(self.analog_pins[pin].cb, value)
 
         # is there a latch entry for this pin?
         key = 'A' + str(pin)
@@ -922,7 +1014,13 @@ class PymataCore:
             self.digital_pins[pin].current_value = port_data & 0x01
             data = [pin, self.digital_pins[pin].current_value]
             if self.digital_pins[pin].cb:
-                self.digital_pins[pin].cb(data)
+                if self.digital_pins[pin].cb_type:
+                    yield from self.digital_pins[pin].cb(data)
+                else:
+                    # self.digital_pins[pin].cb(data)
+                    loop = asyncio.get_event_loop()
+                    loop.call_soon(self.digital_pins[pin].cb, data)
+
                 # is there a latch entry for this pin?
                 key = 'D' + str(pin)
                 if key in self.latch_map:
@@ -940,15 +1038,29 @@ class PymataCore:
         # strip off sysex start and end
         data = data[1:-1]
         pin = data[0]
-        val = int((data[PrivateConstants.MSB] << 7) + data[PrivateConstants.LSB])
-        # set value so that it shows positive and negative values
-        if val > 8192:
-            val -= 16384
-        # if this value is different that is what is already in the table store it and check for callback
-        if val != self.digital_pins[pin].current_value:
-            self.digital_pins[pin].current_value = val
-            if self.digital_pins[pin].cb:
-                self.digital_pins[pin].cb([pin, val])
+        if not self.hall_encoder:
+            val = int((data[PrivateConstants.MSB] << 7) + data[PrivateConstants.LSB])
+            # set value so that it shows positive and negative values
+            if val > 8192:
+                val -= 16384
+            # if this value is different that is what is already in the table store it and check for callback
+            if val != self.digital_pins[pin].current_value:
+                self.digital_pins[pin].current_value = val
+                if self.digital_pins[pin].cb:
+                    # self.digital_pins[pin].cb([pin, val])
+                    if self.digital_pins[pin].cb_type:
+                        yield from self.digital_pins[pin].cb(val)
+                    else:
+                        # self.digital_pins[pin].cb(data)
+                        loop = asyncio.get_event_loop()
+                        loop.call_soon(self.digital_pins[pin].cb, val)
+        else:
+            if self.digital_pins[pin].cb_type:
+                yield from self.digital_pins[pin].cb(data)
+            else:
+                # self.digital_pins[pin].cb(data)
+                loop = asyncio.get_event_loop()
+                loop.call_soon(self.digital_pins[pin].cb, data)
 
     @asyncio.coroutine
     def _i2c_reply(self, data):
@@ -977,9 +1089,14 @@ class PymataCore:
             map_entry['value'] = reply_data[2:]
             self.i2c_map[address] = map_entry
             cb = map_entry.get('callback')
+            cb_type = map_entry.get('callback_type')
             if cb:
                 # send everything, including address and register bytes back to caller
-                cb(reply_data)
+                if cb_type:
+                    yield from cb(reply_data)
+                else:
+                    loop = asyncio.get_event_loop()
+                    loop.call_soon(cb, reply_data)
                 yield from asyncio.sleep(self.sleep_tune)
 
     @asyncio.coroutine
@@ -1070,7 +1187,12 @@ class PymataCore:
                 self.active_sonar_map[pin_number] = sonar_pin_entry
                 # Do a callback if one is specified in the table
                 if sonar_pin_entry[0]:
-                    sonar_pin_entry[0]([pin_number, val])
+                    if sonar_pin_entry[1]:
+                        yield from sonar_pin_entry[0]([pin_number, val])
+                    else:
+                        # sonar_pin_entry[0]([pin_number, val])
+                        loop = asyncio.get_event_loop()
+                        loop.call_soon(sonar_pin_entry[0], pin_number, val)
         # update the data in the table with latest value
         # sonar_pin_entry[1] = val
         self.active_sonar_map[pin_number] = sonar_pin_entry
@@ -1308,23 +1430,25 @@ def _signal_handler(the_signal, frame):
     @return: never returns.
     """
     print('You pressed Ctrl+C!')
-    # to get coverage data or profiling data the code using pymata_iot, uncomment out the following line
-    # exit()
+    # o get coverage data or profiling data the code using pymata_iot, uncomment out the following line
+    exit()
     try:
+        #
         loop = asyncio.get_event_loop()
         for t in asyncio.Task.all_tasks(loop):
+            print(t)
             t.cancel()
         loop.run_until_complete(asyncio.sleep(.01))
-        loop.close()
         loop.stop()
-        # os._exit(0)
+        loop.close()
         sys.exit(0)
     except RuntimeError:
         # this suppresses the Event Loop Is Running message, which may be a bug in python 3.4.3
-        # os._exit(1)
         sys.exit(1)
 
 
+#
+#
 signal.signal(signal.SIGINT, _signal_handler)
 signal.signal(signal.SIGTERM, _signal_handler)
 

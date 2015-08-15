@@ -1,4 +1,15 @@
 #Change Log
+###Release 1.5
+15 Aug 2015
+
+* Callbacks for both pymata_core and pymata3 can selected to be either asyncio coroutines or direct calls.
+    * Default is direct call.
+    
+* Option provided in encoder_config() for support of hall effect wheel encoders.
+
+* Minor bug fixes.
+
+* Code cleanup.
 
 ###Release 1.4
 1 Aug 2015

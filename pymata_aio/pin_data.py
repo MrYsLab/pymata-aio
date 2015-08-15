@@ -20,7 +20,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 class PinData:
     """
     Each analog and digital input pin is described by an instance of this class. It contains both
-    the last data value received and a potential callback reference.
+    the last data value received and a potential callback reference and the callback method type.
+    The callback method type default is a non-asyncio call, but can be optionally be set to use
+    yield from when required.
     """
 
     def __init__(self):
@@ -28,6 +30,8 @@ class PinData:
         self._current_value = 0
         # callback reference
         self._cb = None
+        # call back to be executed with yield from or direct call - direct call is the default
+        self._cb_type = None
 
     @property
     def current_value(self):
@@ -44,3 +48,11 @@ class PinData:
     @cb.setter
     def cb(self, value):
         self._cb = value
+
+    @property
+    def cb_type(self):
+        return self._cb_type
+
+    @cb_type.setter
+    def cb_type(self, value):
+        self._cb_type = value
