@@ -109,7 +109,7 @@ class PyMata3:
         """
         asyncio.async(self.core.disable_analog_reporting(pin))
 
-    def encoder_config(self, pin_a, pin_b, cb=None):
+    def encoder_config(self, pin_a, pin_b, cb=None, cb_type=None):
         """
         This command enables the rotary encoder (2 pin + ground) and will
         enable encoder reporting.
@@ -121,9 +121,10 @@ class PyMata3:
         @param pin_a: Encoder pin 1.
         @param pin_b: Encoder pin 2.
         @param cb: callback function to report encoder changes
+        @param cb_type: Constants.CB_TYPE_DIRECT = direct call or Constants.CB_TYPE_ASYNCIO = asyncio coroutine
         @return: No return value
         """
-        asyncio.async(self.core.encoder_config(pin_a, pin_b, cb))
+        asyncio.async(self.core.encoder_config(pin_a, pin_b, cb, cb_type))
 
     def encoder_read(self, pin):
         """
@@ -307,7 +308,7 @@ class PyMata3:
         value = loop.run_until_complete(self.core.i2c_read_data(address))
         return value
 
-    def i2c_read_request(self, address, register, number_of_bytes, read_type, cb=None):
+    def i2c_read_request(self, address, register, number_of_bytes, read_type, cb=None, cb_type=None):
         """
         This method issues an i2c read request for a single read,continuous read or a stop, specified by the read_type.
         Because different i2c devices return data at different rates, if a callback is not specified,
@@ -321,9 +322,10 @@ class PyMata3:
         @param read_type:  Constants.I2C_READ, Constants.I2C_READ_CONTINUOUSLY or Constants.I2C_STOP_READING.
         Constants.I2C_RESTART_TX may be OR'ed when required
         @param cb: optional callback reference
+        @param cb_type: Constants.CB_TYPE_DIRECT = direct call or Constants.CB_TYPE_ASYNCIO = asyncio coroutine
         @return: No return value        """
         # loop = asyncio.get_event_loop()
-        asyncio.async(self.core.i2c_read_request(address, register, number_of_bytes, read_type, cb))
+        asyncio.async(self.core.i2c_read_request(address, register, number_of_bytes, read_type, cb, cb_type))
 
     def i2c_write_request(self, address, args):
         """
@@ -368,7 +370,7 @@ class PyMata3:
         @return: No return value        """
         asyncio.async(self.core.servo_config(pin, min_pulse, max_pulse))
 
-    def set_analog_latch(self, pin, threshold_type, threshold_value, cb=None):
+    def set_analog_latch(self, pin, threshold_type, threshold_value, cb=None, cb_type=None):
         """
         This method "arms" an analog pin for its data to be latched and saved in the latching table
         If a callback method is provided, when latching criteria is achieved, the callback function is called
@@ -377,16 +379,17 @@ class PyMata3:
         @param threshold_type: Constants.LATCH_GT | Constants.LATCH_LT  | Constants.LATCH_GTE | Constants.LATCH_LTE
         @param threshold_value: numerical value - between 0 and 1023
         @param cb: callback method
+        @param cb_type: Constants.CB_TYPE_DIRECT = direct call or Constants.CB_TYPE_ASYNCIO = asyncio coroutine
         @return: True if successful, False if parameter data is invalid
         """
         loop = asyncio.get_event_loop()
-        asyncio.async(self.core.set_analog_latch(pin, threshold_type, threshold_value, cb))
+        asyncio.async(self.core.set_analog_latch(pin, threshold_type, threshold_value, cb, cb_type))
 
         result = loop.run_until_complete(self.core.set_analog_latch(pin,
                                                                     threshold_type, threshold_value, cb))
         return result
 
-    def set_digital_latch(self, pin, threshold_value, cb=None):
+    def set_digital_latch(self, pin, threshold_value, cb=None, cb_type=None):
         """
         This method "arms" a digital pin for its data to be latched and saved in the latching table
         If a callback method is provided, when latching criteria is achieved, the callback function is called
@@ -394,26 +397,28 @@ class PyMata3:
         @param pin: Digital pin number
         @param threshold_value: 0 or 1
         @param cb: callback function
+        @param cb_type: Constants.CB_TYPE_DIRECT = direct call or Constants.CB_TYPE_ASYNCIO = asyncio coroutine
         @return: True if successful, False if parameter data is invalid
         """
         loop = asyncio.get_event_loop()
-        asyncio.async(self.core.set_digital_latch(pin, threshold_value, cb))
+        asyncio.async(self.core.set_digital_latch(pin, threshold_value, cb, cb_type))
 
-        result = loop.run_until_complete(self.core.set_digital_latch(pin, threshold_value, cb))
+        result = loop.run_until_complete(self.core.set_digital_latch(pin, threshold_value, cb, cb_type))
         return result
 
-    def set_pin_mode(self, pin_number, pin_state, callback=None):
+    def set_pin_mode(self, pin_number, pin_state, callback=None, cb_type=None):
         """
         This method sets the  pin mode for the specified pin.
         @param pin_number: Arduino Pin Number
         @param pin_state: INPUT/OUTPUT/ANALOG/PWM - for SERVO use servo_config()
         @param callback: Optional: A reference to a call back function to be called when pin data value changes
+        @param cb_type: Constants.CB_TYPE_DIRECT = direct call or Constants.CB_TYPE_ASYNCIO = asyncio coroutine
         @return: No return value
         """
         loop = asyncio.get_event_loop()
-        asyncio.async(self.core.set_pin_mode(pin_number, pin_state, callback))
+        asyncio.async(self.core.set_pin_mode(pin_number, pin_state, callback, cb_type))
 
-        loop.run_until_complete(self.core.set_pin_mode(pin_number, pin_state, callback))
+        loop.run_until_complete(self.core.set_pin_mode(pin_number, pin_state, callback, cb_type))
 
     def set_sampling_interval(self, interval):
         """
@@ -479,7 +484,7 @@ class PyMata3:
         return sonar_data
 
     # noinspection PyUnusedLocal
-    def sonar_config(self, trigger_pin, echo_pin, cb=None, ping_interval=50, max_distance=200):
+    def sonar_config(self, trigger_pin, echo_pin, cb=None, ping_interval=50, max_distance=200, cb_type=None):
         """
         Configure the pins,ping interval and maximum distance for an HC-SR04 type device.
         Single pin configuration may be used. To do so, set both the trigger and echo pins to the same value.
@@ -492,10 +497,11 @@ class PyMata3:
         @param cb: optional callback function to report sonar data changes
         @param ping_interval: Minimum interval between pings. Lowest number to use is 33 ms.Max is 127
         @param max_distance: Maximum distance in cm. Max is 200.
+        @param cb_type: direct call or asyncio yield from
         @return: No return value
         """
-        asyncio.async(self.core.sonar_config(trigger_pin, echo_pin, cb, ping_interval=50,
-                                             max_distance=200))
+        asyncio.async(self.core.sonar_config(trigger_pin, echo_pin, cb, ping_interval,
+                                             max_distance, cb_type))
 
     def stepper_config(self, steps_per_revolution, stepper_pins):
         """
