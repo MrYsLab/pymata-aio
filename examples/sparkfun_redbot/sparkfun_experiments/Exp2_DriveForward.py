@@ -21,8 +21,10 @@ motors = RedBotMotors(board)
 
 
 def setup():
+    print("Left and right motors at full speed forward")
     motors.drive(255)   # Turn on Left and right motors at full speed forward.
     board.sleep(2.0)    # Waits for 2 seconds
+    print("Stop both motors")
     motors.stop()       # Stops both motors
 
 
