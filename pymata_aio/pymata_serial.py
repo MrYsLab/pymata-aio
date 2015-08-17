@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 import asyncio
 import sys
 import logging
+
 import serial
 
 
@@ -149,9 +150,23 @@ class PymataSerial:
     @asyncio.coroutine
     def close(self):
         """
-        This is an asyncio adapted version of pyserial read. It provides a non-blocking read and returns a line of
-        data read.
-        :return: A line of data
+        Close the serial port
         """
         # future = asyncio.Future()
         self.my_serial.close()
+
+    @asyncio.coroutine
+    def open(self):
+        """
+        Open the serial port
+        """
+        # future = asyncio.Future()
+        self.my_serial.open()
+
+    @asyncio.coroutine
+    def set_dtr(self, state):
+        """
+        Set DTR state
+        """
+        # future = asyncio.Future()
+        self.my_serial.setDTR(state)

@@ -67,7 +67,7 @@ class PrivateConstants:
     SYSEX_REALTIME = 0x7F  # MIDI Reserved for realtime messages
 
     # reserved for PyMata
-    PYMATA_VERSION = "1.4"
+    PYMATA_VERSION = "1.5"
 
     # each byte represents a digital port and its value contains the current port settings
     DIGITAL_OUTPUT_PORT_PINS = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,

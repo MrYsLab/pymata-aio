@@ -50,6 +50,10 @@ class Constants:
     I2C_STOP_TX = 1
     I2C_RESTART_TX = 0
 
+    # callback types
+    CB_TYPE_DIRECT = None
+    CB_TYPE_ASYNCIO = 1
+
     # latch states
     LATCH_IGNORE = 0  # this item currently not participating in latching
     LATCH_ARMED = 1  # When the next pin value change is received for this pin, if it matches the latch criteria
