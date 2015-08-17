@@ -1,0 +1,929 @@
+<!--
+Copyright (c) 2015 Alan Yorinks All rights reserved.
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU  General Public
+License as published by the Free Software Foundation; either
+version 3 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+-->
+
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="RGraph/libraries/RGraph.common.core.js"></script>
+    <script src="RGraph/libraries/RGraph.common.dynamic.js"></script>
+    <script src="RGraph/libraries/RGraph.common.effects.js"></script>
+    <script src="RGraph/libraries/RGraph.gauge.js"></script>
+    <script src="RGraph/libraries/RGraph.bar.js"></script>
+    <script src="RGraph/libraries/RGraph.vprogress.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.0.js"></script>
+
+    <meta name="viewport" content="width=640, initial-scale=1.0"/>
+
+    <style>
+
+
+        .my_images img {
+            width: 25px;
+            height: 25px
+        }
+
+        .left-panel {
+            background-color: #ffffff;
+            width: 31%;
+            height: 870px;
+            padding-left: 1%;
+            margin: 2px 0;
+            float: left;
+            border: 2px solid darkblue;
+        }
+
+        .right-panel {
+            background-color: #ffffff;
+            width: 31%;
+            height: 870px;
+            float: left;
+            padding-left: 1%;
+            border: 2px solid darkblue;
+            margin: 2px 0;
+        }
+
+        .accel-panel {
+            background-color: #ffffff;
+            width: 31%;
+            height: 870px;
+            float: left;
+            padding-left: 1%;
+            border: 2px solid darkblue;
+            margin: 2px 0;
+        }
+
+        .main-div {
+            background-color: #ffffff;
+            float: left;
+            padding-left: 1%;
+            margin: 0 auto;
+            width: 100%;
+            height: 900px;
+            border-radius: 3px;
+        }
+
+        .plug-dev {
+            background-color: #ffffff;
+            float: left;
+            padding-left: 1%;
+            margin: 0 auto;
+            width: 100%;
+            height: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            position: relative;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        h3 {
+            text-align: left;
+            padding-left: 20%;
+
+        }
+
+        hr {
+            display: block;
+            width: 80% margin-top : 0.5 em;
+            margin-bottom: 0.5em;
+            margin-left: 0.5em;
+            margin-right: 0.5em;
+            border-style: inset;
+            border-width: 2px;
+        }
+    </style>
+    <script type="text/javascript">
+
+        var device = null;
+        var socket = null;
+        var isopen = false;
+
+        var t, z;
+
+        var d = new Date();
+        var start_time = d.getTime();
+        console.log('start_time = ' + start_time);
+        var time_sample;
+        var diff_time;
+
+        window.onload = function () {
+            window.socket = new WebSocket("ws://127.0.0.1:9000");
+
+
+            socket.onopen = function () {
+
+                var msg = JSON.stringify({
+                    "command": "ready"
+                });
+
+                window.socket.send(msg);
+
+                console.log("Connected!");
+                isopen = true;
+
+
+            };
+
+            socket.onmessage = function (message) {
+
+                var msg = JSON.parse(message.data);
+
+                switch (msg['info']) {
+                    case 'axis':
+                        var xx = msg['x'];
+                        var yy = msg['y'];
+                        var zz = msg['z'];
+
+                        Window.vprogressx.value = xx;
+                        Window.vprogressy.value = yy;
+                        Window.vprogressz.value = zz;
+
+                        Window.vprogressx.draw();
+                        Window.vprogressy.draw();
+                        Window.vprogressz.draw();
+                        break;
+                    case 'encoders':
+                        var left = msg['left'];
+                        var right = msg['right'];
+                        Window.gauge2.value = right;
+                        Window.gauge4.value = left;
+                        Window.gauge2.draw();
+                        Window.gauge4.draw();
+                        break;
+                    case 'ir1':
+                        val = msg['data'];
+                        $('#ir1').val(val);
+                        break;
+                    case 'ir2':
+                        val = msg['data'];
+                        $('#ir2').val(val);
+                        break;
+                    case 'ir3':
+                        var val = msg['data'];
+                        $('#ir3').val(val);
+                        break;
+                    case 'pl':
+                        val = msg['data'];
+                        $('#orientation').val(val);
+                        break;
+                    case 'tap':
+                        val = msg['data'];
+                        if (val) {
+                           var vstring = "Bumped";
+                        }
+                        else
+                            vstring = "Accelerometer";
+
+                        $('#abump').val(vstring);
+                        break;
+                    case 'l_bump':
+                        val = msg['data'];
+                        if (val) {
+                            vstring = "Bumped";
+                        }
+                        else
+                            vstring = "Left Bumper";
+
+                        $('#lbump').val(vstring);
+                        break;
+                    case 'r_bump':
+                        val = msg['data'];
+                        if (val) {
+                            vstring = "Bumped";
+                        }
+                        else
+                            vstring = "Right Bumper";
+
+                        $('#rbump').val(vstring);
+                        break;
+                }
+            };
+
+
+            //noinspection JSUnusedLocalSymbols
+            socket.onclose = function (e) {
+                console.log("Connection closed.");
+                socket = null;
+                isopen = false;
+            }
+
+        };
+
+    </script>
+
+</head>
+<body>
+
+<h1><a href="http://"><img src="MrYLogo.png" height="42" width="42"></a> RedBot DashBoard</h1>
+
+<div class="main-div">
+
+    <div class="left-panel">
+        <h2>Left Motor</h2>
+
+        <canvas id="cvs" width="220" height="220" style="background-color: black; border-radius: 125px;
+                box-shadow: 0 0 25px gray; border: 5px solid #ddd">
+            [No canvas support]
+        </canvas>
+        &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;
+
+
+        <canvas id="cvs2" width="220" height="220" style="background-color: black; border-radius: 125px;
+                box-shadow: 0 0 25px gray; border: 5px solid #ddd">
+            [No canvas support]
+        </canvas>
+
+
+        <div>
+            <br>
+            &nbsp;&nbsp;&nbsp;
+            <b>Select speed by clicking</b>
+            <br>
+            &nbsp;&nbsp;&nbsp;
+            <b> on the desired speed above,</b>
+            &nbsp;&nbsp;&nbsp;
+            <br>
+            &nbsp;&nbsp;&nbsp;
+            <b>then click <em>Submit Now.</em></b>
+            <br>
+            &nbsp;&nbsp;&nbsp;
+            <b>Both motors will updated.</b>
+
+            <br>
+            &nbsp;&nbsp;&nbsp;
+
+
+            <form name="left_motor" action="">
+                <fieldset style="width: 200px; height: 140px;">
+                    <legend>Motor Operation</legend>
+                    <input type="radio" name="leftMotor" checked="checked" value="Coast"/>Coast<br/>
+                    <input type="radio" name="leftMotor" value="Brake"/>Brake<br/>
+                    <input type="radio" name="leftMotor" value="Forward"/>Run Forward <br/>
+                    <input type="radio" name="leftMotor" value="Reverse"/>Run Reverse<br/>
+                    <input type="radio" name="leftMotor" value="NoChange"/>No Change<br/>
+                    <input type="button" value="Submit Now" onclick="motorControl();"/>
+                </fieldset>
+            </form>
+        </div>
+        <br> <br>
+
+
+    </div>
+    <div class="accel-panel">
+        <h2>Accelerometer (g's)</h2>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+
+
+        <canvas id="x" width="100" height="400">
+            [No canvas support]
+        </canvas>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;
+        <canvas id="y" width="100" height="400">
+            [No canvas support]
+        </canvas>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;
+        <canvas id="z" width="100" height="400">
+            [No canvas support]
+        </canvas>
+        <br> &nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;
+        <b>Orientation:</b>&nbsp;&nbsp;&nbsp;&nbsp;
+        <textarea id="orientation" style="resize:none"  name="Orien" cols="30" rows="1"
+                  readonly>Flat</textarea>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;
+
+        <hr>
+        <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;Bumpers</h3>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;
+        <textarea style="resize: none;" id="abump" name="bumpa" cols="12" rows="1" readonly>Accelerometer</textarea>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <textarea style="resize: none;" id="lbump" name="bumpl" cols="12" rows="1" readonly>Left Bumper</textarea>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <textarea style="resize: none;" id="rbump" name="bumpr" cols="12" rows="1" readonly>Right Bumper</textarea>
+
+
+        <hr>
+        <h2>IR Sensors</h2>
+        <b>Left:</b>&nbsp;&nbsp;
+        <textarea id="ir1" style="resize:none" name="ir1x" cols="5" rows="1" readonly>0</textarea>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;
+
+
+        <b>Center:</b>&nbsp;&nbsp;
+        <textarea id="ir2" style="resize:none"  name="ir2x" cols="5" rows="1" readonly>0</textarea>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <b>Right:</b>&nbsp;&nbsp;
+        <textarea id="ir3" style="resize:none" name="ir3x" cols="5" rows="1" readonly>0</textarea>
+
+        <hr>
+
+
+        <h4>&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;Press User Button To Activate LED 13 and Buzzer</h4>
+
+    </div>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <div class="right-panel">
+        <h2>Right Motor</h2>
+        <canvas id="cvsr" width="220" height="220" style="background-color: black; border-radius: 125px;
+                box-shadow: 0 0 25px gray; border: 5px solid #ddd">
+            [No canvas support]
+        </canvas>
+        &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+
+        <canvas id="cvsr2" width="220" height="220" style="background-color: black; border-radius: 125px;
+                box-shadow: 0 0 25px gray; border: 5px solid #ddd">
+            [No canvas support]
+        </canvas>
+        &nbsp;&nbsp;&nbsp;
+
+
+        <div>
+            <br>
+            &nbsp;&nbsp;&nbsp;
+            <b>Select speed by clicking</b>
+            <br>
+            &nbsp;&nbsp;&nbsp;
+            <b> on the desired speed above,</b>
+            &nbsp;&nbsp;&nbsp;
+            <br>
+            &nbsp;&nbsp;&nbsp;
+            <b>then click <em>Submit Now.</em></b>
+            <br>
+            &nbsp;&nbsp;&nbsp;
+            <b>Both motors will updated.</b>
+
+            <br>
+            &nbsp;&nbsp;&nbsp;
+
+            <form name="right_motor" action="">
+                <fieldset style="width: 200px; height: 140px;">
+                    <legend>Motor Operation</legend>
+                    <input type="radio" name="rightMotor" checked="checked" value="Coast"/>Coast<br/>
+                    <input type="radio" name="rightMotor" value="Brake"/>Brake<br/>
+                    <input type="radio" name="rightMotor" value="Forward"/>Run Forward <br/>
+                    <input type="radio" name="rightMotor" value="Reverse"/>Run Reverse<br/>
+                    <input type="radio" name="rightMotor" value="NoChange"/>No Change<br/>
+                    <input type="button" value="Submit Now" onclick="motorControl();"/>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+    <em>
+        <div class='plug-dev'>This page was crafted with <a href=" https://github.com/MrYsLab/pymata-aio">pymata_aio</a>
+        </div>
+    </em>
+</div>
+
+
+<script>
+
+    // This code creates the rgraph widgets. Another comment is further down, which indicates where widget creation
+    // ends.
+    $(document).ready(function () {
+        var gauge = new RGraph.Gauge({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: 0,
+            options: {
+                angles: {
+                    start: RGraph.PI - (RGraph.PI / 8),
+                    end: RGraph.TWOPI + (RGraph.PI / 8)
+                },
+                shadow: false,
+                text: {
+                    color: 'white'
+                },
+                tickmarks: {
+                    big: {
+                        color: 'white'
+                    },
+                    medium: {
+                        color: 'white'
+                    },
+                    small: {
+                        color: 'white'
+                    }
+                },
+                colors: {
+                    ranges: []
+                },
+                background: {
+                    color: 'black'
+                },
+                border: {
+                    inner: 'black',
+                    outer: 'black',
+                    outline: 'black'
+                },
+                needle: {
+                    colors: ['red'],
+                    type: 'line',
+                    tail: true
+                },
+                centerpin: {
+                    radius: 0.1
+                },
+                title: {
+                    top: {
+                        self: 'Speed',
+                        color: 'white'
+                    },
+                    bottom: {
+                        self: '% Max',
+                        color: '#aaa'
+                    },
+                },
+                labels: {
+                    centered: true,
+                    offset: 7
+                }
+            }
+        }).draw();
+
+
+        /**
+         * This draws a simple gray circle over the centerpin
+         */
+        function myCenterpin(obj) {
+            // This circle becomes the border of the centerpin
+            obj.context.beginPath();
+            obj.context.fillStyle = '#aaa';
+            obj.context.arc(obj.centerx, obj.centery, 10, 0, RGraph.TWOPI, false);
+            obj.context.fill();
+        }
+
+        RGraph.AddCustomEventListener(gauge, 'ondraw', myCenterpin);
+
+        gauge.draw();
+
+        /**
+         * This event listener facilitates you being able to click and adjust the gauge
+         */
+        gauge.canvas.onclick = function (e) {
+            var obj = e.target.__object__;
+            //noinspection UnnecessaryLocalVariableJS
+            var value = obj.getValue(e);
+
+            obj.value = value;
+            Window.leftSpeed = value;
+
+            obj.grow();
+        }
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        Window.gauge2 = new RGraph.Gauge({
+            id: 'cvs2',
+            min: 0,
+            max: 200,
+            value: 0,
+            options: {
+                angles: {
+                    start: RGraph.PI - (RGraph.PI / 8),
+                    end: RGraph.TWOPI + (RGraph.PI / 8)
+                },
+                shadow: false,
+                text: {
+                    color: 'white'
+                },
+                tickmarks: {
+                    big: {
+                        color: 'white'
+                    },
+                    medium: {
+                        color: 'white'
+                    },
+                    small: {
+                        color: 'white'
+                    }
+                },
+                colors: {
+                    ranges: []
+                },
+                background: {
+                    color: 'black'
+                },
+                border: {
+                    inner: 'black',
+                    outer: 'black',
+                    outline: 'black'
+                },
+                needle: {
+                    colors: ['red'],
+                    type: 'line',
+                    tail: true
+                },
+                centerpin: {
+                    radius: 0.1
+                },
+                title: {
+                    top: {
+                        self: 'Ticks/200 ms',
+                        color: 'white',
+                        size: '12'
+                    }
+                },
+                labels: {
+                    centered: true,
+                    offset: 7
+                }
+            }
+        }).draw();
+
+
+        /**
+         * This draws a simple gray circle over the centerpin
+         */
+        function myCenterpin(obj) {
+            // This circle becomes the border of the centerpin
+            obj.context.beginPath();
+            obj.context.fillStyle = '#aaa';
+            obj.context.arc(obj.centerx, obj.centery, 10, 0, RGraph.TWOPI, false);
+            obj.context.fill();
+        }
+
+        RGraph.AddCustomEventListener(Window.gauge2, 'ondraw', myCenterpin);
+
+        Window.gauge2.draw();
+
+        /**
+         * This event listener facilitates you being able to click and adjust the gauge
+         */
+        //gauge.canvas.onclick = function (e) {
+        //    var obj = e.target.__object__;
+        //    var value = obj.getValue(e);
+
+        //    obj.value = value;
+
+        //   obj.grow();
+        //}
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        Window.vprogressx = new RGraph.VProgress({
+            id: 'x',
+            min: 0,
+            max: 5,
+            value: 0,
+            options: {
+                colors: ['Gradient(green:red)'],
+                title: 'X',
+
+                numticks: 5,
+                scale: {
+                    decimals: 1
+                },
+                gutter: {
+                    right: 50
+                },
+                margin: 15,
+                tickmarks: {
+                    inner: true,
+                    zerostart: true
+                },
+            }
+        }).draw()
+    })
+</script>
+<script>
+    $(document).ready(function () {
+        Window.vprogressy = new RGraph.VProgress({
+            id: 'y',
+            min: 0,
+            max: 5,
+            value: 0,
+            options: {
+                colors: ['Gradient(green:red)'],
+                gutter: {
+                    right: 50
+                },
+                title: 'Y',
+                numticks: 5,
+                scale: {
+                    decimals: 1
+                },
+                margin: 15,
+                tickmarks: {
+                    inner: true,
+                    zerostart: true
+                },
+            }
+        }).draw()
+    })
+</script>
+<script>
+    $(document).ready(function () {
+        Window.vprogressz = new RGraph.VProgress({
+            id: 'z',
+            min: 0,
+            max: 5,
+            value: 0,
+            options: {
+                title: 'Z',
+                numticks: 5,
+                scale: {
+                    decimals: 1
+                },
+
+                colors: ['Gradient(green:red)'],
+                gutter: {
+                    right: 50
+                },
+                margin: 15,
+                tickmarks: {
+                    inner: true,
+                    zerostart: true
+                },
+            }
+        }).draw()
+    })
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        var gauge3 = new RGraph.Gauge({
+            id: 'cvsr',
+            min: 0,
+            max: 100,
+            value: 0,
+            options: {
+                angles: {
+                    start: RGraph.PI - (RGraph.PI / 8),
+                    end: RGraph.TWOPI + (RGraph.PI / 8)
+                },
+                shadow: false,
+                text: {
+                    color: 'white'
+                },
+                tickmarks: {
+                    big: {
+                        color: 'white'
+                    },
+                    medium: {
+                        color: 'white'
+                    },
+                    small: {
+                        color: 'white'
+                    }
+                },
+                colors: {
+                    ranges: []
+                },
+                background: {
+                    color: 'black'
+                },
+                border: {
+                    inner: 'black',
+                    outer: 'black',
+                    outline: 'black'
+                },
+                needle: {
+                    colors: ['red'],
+                    type: 'line',
+                    tail: true
+                },
+                centerpin: {
+                    radius: 0.1
+                },
+                title: {
+                    top: {
+                        self: 'Speed',
+                        color: 'white'
+                    },
+                    bottom: {
+                        self: '% Max',
+                        color: '#aaa'
+                    },
+                },
+                labels: {
+                    centered: true,
+                    offset: 7
+                }
+            }
+        }).draw();
+
+
+        /**
+         * This draws a simple gray circle over the centerpin
+         */
+        function myCenterpin(obj) {
+            // This circle becomes the border of the centerpin
+            obj.context.beginPath();
+            obj.context.fillStyle = '#aaa';
+            obj.context.arc(obj.centerx, obj.centery, 10, 0, RGraph.TWOPI, false);
+            obj.context.fill();
+        }
+
+        RGraph.AddCustomEventListener(gauge3, 'ondraw', myCenterpin);
+
+        gauge3.draw();
+
+        /**
+         * This event listener facilitates you being able to click and adjust the gauge
+         */
+        gauge3.canvas.onclick = function (e) {
+            var obj = e.target.__object__;
+            //noinspection UnnecessaryLocalVariableJS,UnnecessaryLocalVariableJS
+            var value = obj.getValue(e);
+
+            obj.value = value;
+            Window.rightSpeed = value;
+
+            obj.grow();
+        }
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        Window.gauge4 = new RGraph.Gauge({
+            id: 'cvsr2',
+            min: 0,
+            max: 200,
+            value: 0,
+            options: {
+                angles: {
+                    start: RGraph.PI - (RGraph.PI / 8),
+                    end: RGraph.TWOPI + (RGraph.PI / 8)
+                },
+                shadow: false,
+                text: {
+                    color: 'white'
+
+                },
+                tickmarks: {
+                    big: {
+                        color: 'white'
+                    },
+                    medium: {
+                        color: 'white'
+                    },
+                    small: {
+                        color: 'white'
+                    }
+                },
+                colors: {
+                    ranges: []
+                },
+                background: {
+                    color: 'black'
+                },
+                border: {
+                    inner: 'black',
+                    outer: 'black',
+                    outline: 'black'
+                },
+                needle: {
+                    colors: ['red'],
+                    type: 'line',
+                    tail: true
+                },
+                centerpin: {
+                    radius: 0.1
+                },
+                title: {
+                    top: {
+                        self: 'Ticks/200 ms',
+                        color: 'white',
+                        size: '12'
+                    }
+                },
+                labels: {
+                    centered: true,
+                    offset: 7
+                }
+            }
+        }).draw();
+
+
+        /**
+         * This draws a simple gray circle over the centerpin
+         */
+        function myCenterpin(obj) {
+            // This circle becomes the border of the centerpin
+            obj.context.beginPath();
+            obj.context.fillStyle = '#aaa';
+            obj.context.arc(obj.centerx, obj.centery, 10, 0, RGraph.TWOPI, false);
+            obj.context.fill();
+        }
+
+        RGraph.AddCustomEventListener(Window.gauge4, 'ondraw', myCenterpin);
+
+        Window.gauge4.draw();
+
+        /**
+         * This event listener facilitates you being able to click and adjust the gauge
+         */
+        //gauge.canvas.onclick = function (e) {
+        //    var obj = e.target.__object__;
+        //    var value = obj.getValue(e);
+
+        //    obj.value = value;
+
+        //   obj.grow();
+        //}
+    });
+
+    // END OF RGraph widget creation.
+
+    function motorControl() {
+        var formdata = $('form').serialize();
+
+
+        var firstIndex = formdata.indexOf('=');
+        var secIndex = formdata.indexOf('&');
+
+        var left_command = formdata.slice(firstIndex + 1, secIndex);
+        console.log('left_command: ' + left_command);
+
+        console.log(formdata);
+        console.log('index 1: ' + firstIndex);
+        var thirdIndex = formdata.lastIndexOf('=');
+
+        var right_command = formdata.slice(thirdIndex + 1, formdata.length);
+        console.log('right_command: ' + right_command);
+
+        var speedLeft = Window.leftSpeed;
+        if (!speedLeft)
+            speedLeft = 0;
+        speedLeft = Math.floor(speedLeft);
+        speedLeft = speedLeft.toString();
+        console.log(speedLeft);
+        var speedRight = Window.rightSpeed;
+        if (!speedRight)
+            speedRight = 0;
+        speedRight = Math.floor(speedRight);
+        speedRight = speedRight.toString();
+        console.log(speedRight);
+        //console.log('999');
+
+        var msg = JSON.stringify({
+            "command": "motors", "left_command": left_command, "right_command": right_command,
+            "left_speed": speedLeft, "right_speed": speedRight
+        });
+        // z = [first, second, speedLeft, speedRight]
+        //var v = JSON.stringify(z);
+
+
+        //console.log("v = " + v);
+        window.socket.send(msg);
+
+
+    }
+</script>
+
+
+</body>
+</html>
