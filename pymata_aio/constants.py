@@ -22,6 +22,7 @@ class Constants:
     This class contains a set of constants that may be used by the applications writer.
     """
     # pin modes
+    INPUT_PULLUP = 0x0c  # pin set as input w/internal pull-up enabled
     INPUT = 0x00  # pin set as input
     OUTPUT = 0x01  # pin set as output
     ANALOG = 0x02  # analog pin in analogInput mode

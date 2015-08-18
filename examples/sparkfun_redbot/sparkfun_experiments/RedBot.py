@@ -37,7 +37,9 @@ class RedBotMotors:
         board.set_pin_mode(R_CTRL_2, Constants.OUTPUT)
         board.set_pin_mode(PWM_R, Constants.PWM) # Not done in RedBot motors but I just went ahead and added it.
 
+
     def drive(self, speed):
+
         """
             Starts both motors. It figures out whether the motors should go
             forward or revers, then calls the appropriate individual functions. Note
@@ -45,12 +47,33 @@ class RedBotMotors:
             have the range to reach full speed. The calls to the actual drive functions
             are only 8-bit, since we only have 8-bit PWM.
         """
+
+
+
         if speed > 0:
-            self.leftFwd(max(speed, 255))
-            self.rightFwd(max(speed, 255))
+            self.leftFwd(min(speed, 255))
+            self.rightFwd(min(speed, 255))
         else:
-            self.leftRev(max(abs(speed), 255))
-            self.rightRev(max(abs(speed), 255))
+            self.leftRev(min(abs(speed), 255))
+            self.rightRev(min(abs(speed), 255))
+
+    # def drive(self, leftSpeed=None,rightSpeed=None):
+    #
+    #     """
+    #       Uses drive command, but can control individual motor speeds separately
+    #     """
+    #
+    #     if rightSpeed==None:
+    #         rightSpeed=leftSpeed   # This allows a single speed input, with the right motor copying the left motor input
+    #
+    #     if leftSpeed > 0:
+    #         self.leftFwd(min(leftSpeed, 255))
+    #     else:
+    #         self.leftRev(min(abs(leftSpeed), 255))
+    #     if rightSpeed > 0:
+    #         self.rightFwd(min(rightSpeed, 255))
+    #     else:
+    #         self.rightRev(min(abs(rightSpeed), 255))
 
 
     def stop(self):
@@ -74,6 +97,19 @@ class RedBotMotors:
         self.board.digital_write(R_CTRL_1, 0)
         self.board.digital_write(R_CTRL_2, 0)
         self.board.analog_write(PWM_R, 0)
+
+    def pivot(self, pivotSpeed):
+        """
+            pivot() controls the pivot speed of the RedBot. The values of the pivot function inputs
+            range from -255:255, with -255 indicating a full speed counter-clockwise rotation.
+            255 indicates a full speed clockwise rotation
+        """
+        if pivotSpeed<0:
+            self.leftFwd(pivotSpeed)
+            self.rightRev(pivotSpeed)
+        else:
+            self.leftRev(pivotSpeed)
+            self.rightFwd(pivotSpeed)
 
 
 # ******************************************************************************
