@@ -38,6 +38,12 @@ class RedBotMotors:
         board.set_pin_mode(PWM_R, Constants.PWM) # Not done in RedBot motors but I just went ahead and added it.
 
 
+    def brake(self):
+        """effectively shorts the two leads of the motor together, which causes the motor to resist being turned. It stops quite quickly."""
+        self.leftBrake()
+        self.rightBrake()
+
+
     def drive(self, speed):
 
         """
@@ -47,9 +53,6 @@ class RedBotMotors:
             have the range to reach full speed. The calls to the actual drive functions
             are only 8-bit, since we only have 8-bit PWM.
         """
-
-
-
         if speed > 0:
             self.leftFwd(min(speed, 255))
             self.rightFwd(min(speed, 255))
@@ -84,6 +87,19 @@ class RedBotMotors:
         """
         self.leftStop()
         self.rightStop()
+
+    def leftBrake(self):
+        """allows left motor to coast to a stop"""
+        self.board.digital_write(L_CTRL_1, 1)
+        self.board.digital_write(L_CTRL_2, 1)
+        self.board.analog_write(PWM_L, 0)
+
+
+    def rightBrake(self):
+        """allows left motor to coast to a stop"""
+        self.board.digital_write(R_CTRL_1, 1)
+        self.board.digital_write(R_CTRL_2, 1)
+        self.board.analog_write(PWM_R, 0)
 
     def leftStop(self):
         """allows left motor to coast to a stop"""

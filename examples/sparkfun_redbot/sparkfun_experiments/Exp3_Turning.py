@@ -41,7 +41,7 @@ def setup():
 
 
 def loop():
-  #   Figure 8 pattern -- Turn Right, Turn Left, Repeat
+    # Figure 8 pattern -- Turn Right, Turn Left, Repeat
     print("Veering Right")
     motors.leftFwd(200),
     motors.rightFwd(80)
