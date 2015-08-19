@@ -1,4 +1,15 @@
 #Change Log
+
+###Release 1.6
+19 Aug 2015
+
+* Modifications in anticipation of the upcoming release of our [Sparkfun RedBot]
+(https://www.sparkfun.com/products/12649) support library.
+
+    * Modified data format returned for hall effect wheel encoders.
+
+    * Added an additional Arduino sketch, FirmataPlusRB, that will support the redbot sensors and actuators.
+
 ###Release 1.5
 15 Aug 2015
 

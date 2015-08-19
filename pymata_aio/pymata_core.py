@@ -1055,12 +1055,14 @@ class PymataCore:
                         loop = asyncio.get_event_loop()
                         loop.call_soon(self.digital_pins[pin].cb, val)
         else:
+            hall_data = [int((data[2] << 7) + data[1]), int((data[5] << 7) + data[4])]
+
             if self.digital_pins[pin].cb_type:
-                yield from self.digital_pins[pin].cb(data)
+                yield from self.digital_pins[pin].cb(hall_data)
             else:
                 # self.digital_pins[pin].cb(data)
                 loop = asyncio.get_event_loop()
-                loop.call_soon(self.digital_pins[pin].cb, data)
+                loop.call_soon(self.digital_pins[pin].cb, hall_data)
 
     @asyncio.coroutine
     def _i2c_reply(self, data):
