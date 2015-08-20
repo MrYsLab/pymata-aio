@@ -1,21 +1,18 @@
-#!/usr/bin/python3.4
-"""/***********************************************************************
- * Exp4_MakingSounds -- RedBot Experiment 4
- *
- * Push the button (D12) to make some noise and start running!
- *
- * Hardware setup:
- * Plug the included RedBot Buzzer board into the Servo header labeled 9.
- *
- * This sketch was written by SparkFun Electronics,with lots of help from
- * the Arduino community. This code is completely free for any use.
- *
- * 23 Sept 2013 N. Seidle/M. Hord
- * 29 Oct 2014 B. Huang
- ***********************************************************************/"""
+#!/usr/bin/python
+"""
+  Exp4_MakingSounds -- RedBot Experiment 4
+
+  Push the button (D12) to make some noise and start running!
+
+  Hardware setup:
+  Plug the included RedBot Buzzer board into the Servo header labeled 9.
+
+  This sketch was written by SparkFun Electronics, with lots of help from
+  the Arduino community. This code is completely free for any use.
+"""
 
 from pymata_aio.pymata3 import PyMata3
-from RedBot import RedBotMotors
+from library.redbot import RedBotMotors
 from pymata_aio.constants import Constants
 # This line "includes" the RedBot library into your sketch.
 # Provides special objects, methods, and functions for the RedBot.

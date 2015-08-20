@@ -1,4 +1,4 @@
-#!/usr/bin/python3.4
+#!/usr/bin/python
 """
   Exp1_BasicTest -- RedBot Experiment 1
 

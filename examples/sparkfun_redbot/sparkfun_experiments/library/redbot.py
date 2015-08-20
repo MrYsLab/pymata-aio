@@ -1,7 +1,7 @@
-#!/usr/bin/python3.4
+#!/usr/bin/python
 """
   This class is a port from the https://github.com/sparkfun/RedBot Arduino library into Pymata-aio
-  It is NOT a complete port. It just shows some of the main basic features.
+  It is NOT a complete port. It just shows some of the main basic features.  Feel free to port more.
 """
 
 from pymata_aio.constants import Constants

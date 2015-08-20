@@ -1,4 +1,4 @@
-#!/usr/bin/python3.4
+#!/usr/bin/python
 """
   Exp2_DriveForward -- RedBot Experiment 2
 
@@ -10,7 +10,8 @@
 """
 
 from pymata_aio.pymata3 import PyMata3
-from RedBot import RedBotMotors
+from library.redbot import RedBotMotors
+# from library.redbot import RedBotMotors
 # This line "includes" the RedBot library into your sketch.
 # Provides special objects, methods, and functions for the RedBot.
 

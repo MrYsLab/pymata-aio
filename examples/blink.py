@@ -1,4 +1,4 @@
-#!/usr/bin/python3.4
+#!/usr/bin/python
 """
   Turns on an LED on for one second, then off for one second, repeatedly.
 
