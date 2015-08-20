@@ -1,5 +1,12 @@
 #Change Log
 
+###Release 1.7
+20 Aug 2015
+
+Fixed issue #20 - Tone not properly activated when using pymata3
+
+FirmataPlusRB updated to report encoder readings every 100 ms.
+
 ###Release 1.6
 19 Aug 2015
 

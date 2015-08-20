@@ -351,7 +351,8 @@ class PyMata3:
         @param duration: Duration of tone in milliseconds
         @return: No return value
         """
-        asyncio.async(self.core.play_tone(pin, tone_command, frequency, duration))
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(self.core.play_tone(pin, tone_command, frequency, duration))
 
     def send_reset(self):
         """
