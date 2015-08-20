@@ -332,7 +332,8 @@ class PyMata3:
         Write data to an i2c device.
         @param address: i2c device address
         @param args: A variable number of bytes to be sent to the device passed in as a list.
-        @return: No return value        """
+        @return: No return value
+        """
         loop = asyncio.get_event_loop()
         asyncio.async(self.core.i2c_write_request(address, args))
 
