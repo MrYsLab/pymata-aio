@@ -1,4 +1,9 @@
 #Change Log
+###Release 1.8
+21 Aug 2015
+
+* Bug fix release for pymata3 - changed all calls from pymata3 to pymata_core to loop.run_until_complete
+* Duration parameter in play_tone for pymata3 set to a default of None
 
 ###Release 1.7
 20 Aug 2015
