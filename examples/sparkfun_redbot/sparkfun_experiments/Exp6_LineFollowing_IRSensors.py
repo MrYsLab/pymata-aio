@@ -15,7 +15,7 @@
 
 from pymata_aio.pymata3 import PyMata3
 from pymata_aio.constants import Constants
-from RedBot import RedBotMotors
+from examples.sparkfun_redbot.sparkfun_experiments.library.redbot import RedBotMotors
 
 # This line "includes" the RedBot library into your sketch.
 # Provides special objects, methods, and functions for the RedBot.
@@ -34,8 +34,8 @@ def setup():
 
 
 def loop():
-    print("IR Sensor Readings: {},   {},    {}".format(board.analog_read(3), board.analog_read(6), board.analog_read(
-        7)))
+    print("IR Sensor Readings: {},   {},    {}".format(board.analog_read(LEFT_LINE_FOLLOWER), board.analog_read(
+        CENTRE_LINE_FOLLOWER), board.analog_read(RIGHT_LINE_FOLLOWER)))
 
 
 if __name__ == "__main__":
