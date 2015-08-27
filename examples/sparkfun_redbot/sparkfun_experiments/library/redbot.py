@@ -51,12 +51,12 @@ class RedBotMotors:
         board.set_pin_mode(PWM_R, Constants.PWM)  # Not done in RedBot motors but I just went ahead and added it.
 
 
-        board.set_pin_mode(ENCODER_PIN_LEFT, Constants.INPUT, self.encoder_callback)
-        board.set_pin_mode(ENCODER_PIN_RIGHT, Constants.INPUT, self.encoder_callback)
+        board.set_pin_mode(ENCODER_PIN_LEFT, Constants.INPUT, self.encoderCallback)
+        board.set_pin_mode(ENCODER_PIN_RIGHT, Constants.INPUT, self.encoderCallback)
 
         #TODO: Work out how to make this a single call
-        board.encoder_config(ENCODER_PIN_LEFT, ENCODER_PIN_RIGHT, self.encoder_callback)
-        board.encoder_config(ENCODER_PIN_RIGHT, ENCODER_PIN_RIGHT, self.encoder_callback)
+        board.encoder_config(ENCODER_PIN_LEFT, ENCODER_PIN_RIGHT, self.encoderCallback)
+        board.encoder_config(ENCODER_PIN_RIGHT, ENCODER_PIN_RIGHT, self.encoderCallback)
 
 
 
@@ -224,7 +224,7 @@ class RedBotMotors:
 #     right_encoder_count+=1
 #     print("Left: {} , Right: {}".format(left_encoder_count,right_encoder_count))
 
-    def encoder_callback(self, data=None):
+    def encoderCallback(self, data=None):
         global left_encoder_count
         global right_encoder_count
         if type(data) == list:  #Ugly workaround to stop it throwing up errors, as the data var changes from list to
@@ -237,18 +237,24 @@ class RedBotMotors:
         # print("Left: {} , Right: {}".format(left_encoder_count,right_encoder_count))
         # print(type(data))
 
-    def right_encoder_callback(self, data=None):
+    def rightEncoderCallback(self, data=None):
         global right_encoder_count
         right_encoder_count += 1
         print("Left: {} , Right: {}".format(data,data))
 
-    def reset_encoder_count(self):
+    def clearEnc(self, flag=None):
         global left_encoder_count
         global right_encoder_count
-        left_encoder_count = 0
-        right_encoder_count = 0
+        if flag == None:
+            left_encoder_count = 0
+            right_encoder_count = 0
+        elif flag == ENCODER_PIN_RIGHT:
+            right_encoder_count = 0
+        elif flag == ENCODER_PIN_LEFT:
+            left_encoder_count = 0
 
-    def get_ticks(self, encoder):
+
+    def getTicks(self, encoder):
         if encoder == ENCODER_PIN_LEFT:
             return left_encoder_count
         elif encoder == ENCODER_PIN_RIGHT:

@@ -30,8 +30,8 @@ BUTTON_PIN = 12
 COUNTS_PER_REV = 192    # 4 pairs of N-S x 48:1 gearbox = 192 ticks per wheel rev
 
 # variables used to store the left and right encoder counts.
-l_count = 0
-r_count = 0
+lCount = 0
+rCount = 0
 
 
 def setup():
@@ -44,18 +44,17 @@ def setup():
 def loop():
     # wait for a button press to start driving.
     if board.digital_read(BUTTON_PIN) == 0:
-        motors.reset_encoder_count()  # Reset the counters
+        motors.clearEnc()  # Reset the counters
         motors.drive(150)  # Start driving forward
 
     # TODO: Find the 'proper' way to access these variables
-    global r_count
-    l_count = motors.get_ticks(ENCODER_PIN_LEFT)
-    r_count = motors.get_ticks(ENCODER_PIN_RIGHT)
-
-    print("{}       {}".format(l_count,r_count))  # stores the encoder count to a variable
+    global rCount
+    l_count = motors.getTicks(ENCODER_PIN_LEFT)
+    rCount = motors.getTicks(ENCODER_PIN_RIGHT)
+    print("{}       {}".format(l_count,rCount))  # stores the encoder count to a variable
 
     #  if either left or right motor are more than 5 revolutions, stop
-    if l_count >= 5 * COUNTS_PER_REV | r_count >= 5 * COUNTS_PER_REV:
+    if l_count >= 5 * COUNTS_PER_REV | rCount >= 5 * COUNTS_PER_REV:
         motors.brake()
 
 if __name__ == "__main__":
