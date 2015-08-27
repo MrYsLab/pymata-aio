@@ -15,8 +15,12 @@ R_CTRL_1 = 7
 R_CTRL_2 = 8
 PWM_R = 6
 
+ENCODER_PIN_LEFT = 16
+ENCODER_PIN_RIGHT = 10
 
 class RedBotEncoder:
+
+
     # TODO: Implement
     pass
 
@@ -28,6 +32,12 @@ class RedBotMotors:
     """Controls the motors on the RedBot"""
 
     def __init__(self, board):
+        global left_encoder_count
+        global right_encoder_count
+        left_encoder_count = 0
+        right_encoder_count = 0
+
+
         """Constructor for pin setup"""
         self.board = board
         # The interface to the motor driver is kind of ugly. It's three pins per
@@ -39,6 +49,15 @@ class RedBotMotors:
         board.set_pin_mode(R_CTRL_1, Constants.OUTPUT)
         board.set_pin_mode(R_CTRL_2, Constants.OUTPUT)
         board.set_pin_mode(PWM_R, Constants.PWM)  # Not done in RedBot motors but I just went ahead and added it.
+
+
+        board.set_pin_mode(ENCODER_PIN_LEFT, Constants.INPUT, self.encoder_callback)
+        board.set_pin_mode(ENCODER_PIN_RIGHT, Constants.INPUT, self.encoder_callback)
+
+        #TODO: Work out how to make this a single call
+        board.encoder_config(ENCODER_PIN_LEFT, ENCODER_PIN_RIGHT, self.encoder_callback)
+        board.encoder_config(ENCODER_PIN_RIGHT, ENCODER_PIN_RIGHT, self.encoder_callback)
+
 
 
     def brake(self):
@@ -190,3 +209,47 @@ class RedBotMotors:
         # in the right direction when ticks occur.
         if encoderObject:
             encoderObject.rDir = -1
+
+
+# Configure
+
+
+
+#TODO: Work out how to use encoder_callback correctly, the individual left and right callbacks are unneccessary
+
+# def encoder_callback(event=None):
+#     global left_encoder_count
+#     global right_encoder_count
+#     left_encoder_count+=1
+#     right_encoder_count+=1
+#     print("Left: {} , Right: {}".format(left_encoder_count,right_encoder_count))
+
+    def encoder_callback(self, data=None):
+        global left_encoder_count
+        global right_encoder_count
+        if type(data) == list:  #Ugly workaround to stop it throwing up errors, as the data var changes from list to
+        # int seemingly randomly
+            if data[0] == ENCODER_PIN_LEFT: # data[0] is the pin id, data[1] is the encoder_read value (0 or 1).
+                left_encoder_count += 1
+            elif data[0] == ENCODER_PIN_RIGHT:
+                right_encoder_count +=1
+
+        # print("Left: {} , Right: {}".format(left_encoder_count,right_encoder_count))
+        # print(type(data))
+
+    def right_encoder_callback(self, data=None):
+        global right_encoder_count
+        right_encoder_count += 1
+        print("Left: {} , Right: {}".format(data,data))
+
+    def reset_encoder_count(self):
+        global left_encoder_count
+        global right_encoder_count
+        left_encoder_count = 0
+        right_encoder_count = 0
+
+    def get_ticks(self, encoder):
+        if encoder == ENCODER_PIN_LEFT:
+            return left_encoder_count
+        elif encoder == ENCODER_PIN_RIGHT:
+            return right_encoder_count

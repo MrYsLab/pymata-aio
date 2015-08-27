@@ -22,41 +22,44 @@ from examples.sparkfun_redbot.sparkfun_experiments.library.redbot import RedBotM
 
 board = PyMata3()
 motors = RedBotMotors(board)
+ENCODER_PIN_LEFT = 16
+ENCODER_PIN_RIGHT = 10
 
-encoder_pin_left = 16
-encoder_pin_right = 10
-left_encoder_count = 0
-right_encoder_count = 0
+BUTTON_PIN = 12
 
+COUNTS_PER_REV = 192    # 4 pairs of N-S x 48:1 gearbox = 192 ticks per wheel rev
 
-# Configure
+# variables used to store the left and right encoder counts.
+l_count = 0
+r_count = 0
 
-
-
-def left_encoder_callback(event=None):
-    global left_encoder_count
-    left_encoder_count += 1
-    print("Left: {}".format(left_encoder_count))
-
-def right_encoder_callback(event=None):
-    global right_encoder_count
-    right_encoder_count += 1
-    print("Right: {}".format(right_encoder_count))
 
 def setup():
-    board.set_pin_mode(encoder_pin_left, Constants.INPUT, Constants.ENCODER)
-    board.set_pin_mode(encoder_pin_right, Constants.INPUT, Constants.ENCODER)
-    # board.encoder_config(encoder_pin_left, encoder_pin_right, left_encoder_callback)
-    board.encoder_config(encoder_pin_left, encoder_pin_left, left_encoder_callback)
-    board.encoder_config(encoder_pin_right, encoder_pin_right, right_encoder_callback)
+    board.set_pin_mode(BUTTON_PIN, Constants.INPUT)
+    board.digital_write(BUTTON_PIN, 1)  # writing pin high sets the pull-up resistor
+    print("Left     Right")
+    print("==============")
+
+
 def loop():
-    # print(board.digital_read(10))
-    pass
+    # wait for a button press to start driving.
+    if board.digital_read(BUTTON_PIN) == 0:
+        motors.reset_encoder_count()  # Reset the counters
+        motors.drive(150)  # Start driving forward
+
+    # TODO: Find the 'proper' way to access these variables
+    global r_count
+    l_count = motors.get_ticks(ENCODER_PIN_LEFT)
+    r_count = motors.get_ticks(ENCODER_PIN_RIGHT)
+
+    print("{}       {}".format(l_count,r_count))  # stores the encoder count to a variable
+
+    #  if either left or right motor are more than 5 revolutions, stop
+    if l_count >= 5 * COUNTS_PER_REV | r_count >= 5 * COUNTS_PER_REV:
+        motors.brake()
 
 if __name__ == "__main__":
     setup()
     while True:
-        board.sleep(.1)
         loop()
-
-
+        #  print("Encoder Read: {}".format(board.encoder_read(encoder_pin_right)))
