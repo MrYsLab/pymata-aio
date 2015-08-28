@@ -22,56 +22,56 @@ import math
 
 board = PyMata3()
 motors = RedBotMotors(board)
-encoderPinLeft = 16
-encoderPinRight = 10
+encoder_pin_left = 16
+encoder_pin_right = 10
 
-buttonPin = 12
+button_pin = 12
 
-countsPerRev = 192    # 4 pairs of N-S x 48:1 gearbox = 192 ticks per wheel rev
+counts_per_rev = 192    # 4 pairs of N-S x 48:1 gearbox = 192 ticks per wheel rev
 
-wheelDiam = 2.56 # diam = 65mm / 25.4 mm/in
-wheelCirc = math.pi * wheelDiam
+wheel_diam = 2.56 # diam = 65mm / 25.4 mm/in
+wheel_circ = math.pi * wheel_diam
 
 # variables used to store the left and right encoder counts.
-lCount = 0
-rCount = 0
+left_count = 0
+right_count = 0
 
 
 def setup():
-    board.set_pin_mode(buttonPin, Constants.INPUT)
-    board.digital_write(buttonPin, 1)  # writing pin high sets the pull-up resistor
+    board.set_pin_mode(button_pin, Constants.INPUT)
+    board.digital_write(button_pin, 1)  # writing pin high sets the pull-up resistor
 
 
 
 def loop():
     # wait for a button press to start driving.
-    if board.digital_read(buttonPin) == 0:
+    if board.digital_read(button_pin) == 0:
         driveDistance(12, 150)  # drive 12 inches at motor_power = 150
 
 
-def driveDistance(distance, motorPower):
-    global lCount
-    global rCount
-    lCount= 0
-    rCount = 0
-    numRev = float(distance/wheelCirc)
+def driveDistance(distance, motor_power):
+    global left_count
+    global right_count
+    left_count= 0
+    right_count = 0
+    numRev = float(distance/wheel_circ)
 
     # debug
-    print("drive_distance() {} inches at {} power".format(distance,motorPower))
+    print("drive_distance() {} inches at {} power".format(distance,motor_power))
 
 
     print(numRev)
     motors.clearEnc()  # clear the encoder count
-    motors.drive(motorPower)
+    motors.drive(motor_power)
     # TODO: Find the 'proper' way to access these variables
     iteration = 0
-    while rCount< numRev*countsPerRev:
+    while right_count< numRev*counts_per_rev:
 
-        lCount = motors.getTicks(encoderPinLeft)
-        rCount = motors.getTicks(encoderPinRight)
+        left_count = motors.getTicks(encoder_pin_left)
+        right_count = motors.getTicks(encoder_pin_right)
 
-        print("{}       {}".format(lCount,rCount))  # stores the encoder count to a variable
-        print(numRev*countsPerRev)
+        print("{}       {}".format(left_count,right_count))  # stores the encoder count to a variable
+        print(numRev*counts_per_rev)
         board.sleep(0.01)
     #  if either left or right motor are more than 5 revolutions, stop
     motors.brake()

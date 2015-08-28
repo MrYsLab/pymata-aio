@@ -10,18 +10,20 @@
   the Arduino community. This code is completely free for any use.
 
   8 Oct 2013 M. Hord
-  Revised, 31 Oct 2014 B. Huang
+  Revised, 31 Oct 2014 B. Huang+
  """
 
 from pymata_aio.pymata3 import PyMata3
 from pymata_aio.constants import Constants
-from examples.sparkfun_redbot.sparkfun_experiments.library.redbot import RedBotMotors
+from examples.sparkfun_redbot.sparkfun_experiments.library.redbot import RedBotMotors, RedBotEncoder
 
 # This line "includes" the RedBot library into your sketch.
 # Provides special objects, methods, and functions for the RedBot.
 
 board = PyMata3()
 motors = RedBotMotors(board)
+encoders = RedBotEncoder(board)
+
 ENCODER_PIN_LEFT = 16
 ENCODER_PIN_RIGHT = 10
 
@@ -30,8 +32,8 @@ BUTTON_PIN = 12
 COUNTS_PER_REV = 192    # 4 pairs of N-S x 48:1 gearbox = 192 ticks per wheel rev
 
 # variables used to store the left and right encoder counts.
-lCount = 0
-rCount = 0
+left_count = 0
+right_count = 0
 
 
 def setup():
@@ -44,17 +46,18 @@ def setup():
 def loop():
     # wait for a button press to start driving.
     if board.digital_read(BUTTON_PIN) == 0:
-        motors.clearEnc()  # Reset the counters
+        encoders.clearEnc()  # Reset the counters
         motors.drive(150)  # Start driving forward
 
     # TODO: Find the 'proper' way to access these variables
-    global rCount
-    l_count = motors.getTicks(ENCODER_PIN_LEFT)
-    rCount = motors.getTicks(ENCODER_PIN_RIGHT)
-    print("{}       {}".format(l_count,rCount))  # stores the encoder count to a variable
+    global left_count
+    global right_count
+    left_count = encoders.getTicks(ENCODER_PIN_LEFT)
+    right_count = encoders.getTicks(ENCODER_PIN_RIGHT)
+    # print("{}       {}".format(l_count, right_speed))  # stores the encoder count to a variable
 
     #  if either left or right motor are more than 5 revolutions, stop
-    if l_count >= 5 * COUNTS_PER_REV | rCount >= 5 * COUNTS_PER_REV:
+    if left_count >= 5 * COUNTS_PER_REV | right_count >= 5 * COUNTS_PER_REV:
         motors.brake()
 
 if __name__ == "__main__":

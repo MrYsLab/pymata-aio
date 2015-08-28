@@ -12,7 +12,7 @@
 """
 
 from pymata_aio.pymata3 import PyMata3
-from library.redbot import RedBotMotors
+from examples.sparkfun_redbot.sparkfun_experiments.library.redbot import RedBotMotors
 from pymata_aio.constants import Constants
 # This line "includes" the RedBot library into your sketch.
 # Provides special objects, methods, and functions for the RedBot.

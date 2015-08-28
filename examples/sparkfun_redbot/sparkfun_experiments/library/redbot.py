@@ -18,10 +18,55 @@ PWM_R = 6
 ENCODER_PIN_LEFT = 16
 ENCODER_PIN_RIGHT = 10
 
+
 class RedBotEncoder:
+    # TODO: Find way to put encoder code here without throwing up errors
 
+    # def __init__(self, board):
+    #
+    #     global left_encoder_count
+    #     global right_encoder_count
+    #
+    #     self.board = board
+    #
+    #     left_encoder_count = 0
+    #     right_encoder_count = 0
+    #
+    #     board.encoder_config(ENCODER_PIN_LEFT, ENCODER_PIN_RIGHT, self.encoderCallback, Constants.CB_TYPE_DIRECT, True)
+    #
+    #
 
-    # TODO: Implement
+    #
+    # def encoderCallback(self, data=None):
+    #     global left_encoder_count
+    #     global right_encoder_count
+    #     if type(data) == list:  # Ugly workaround to stop it throwing up errors, as the data var changes from list to
+    #         # int seemingly randomly
+    #         if data[0] == ENCODER_PIN_LEFT:  # data[0] is the pin id, data[1] is the encoder_read value (0 or 1).
+    #             left_encoder_count += 1
+    #         elif data[0] == ENCODER_PIN_RIGHT:
+    #             right_encoder_count += 1
+    #     print(data)
+    #     # print("Left: {} , Right: {}".format(left_encoder_count,right_encoder_count))
+    #     # print(type(data))
+    #
+    #
+    # def clearEnc(self, flag=None):
+    #     global left_encoder_count
+    #     global right_encoder_count
+    #     if flag == None:
+    #         left_encoder_count = 0
+    #         right_encoder_count = 0
+    #     elif flag == ENCODER_PIN_RIGHT:
+    #         right_encoder_count = 0
+    #     elif flag == ENCODER_PIN_LEFT:
+    #         left_encoder_count = 0
+    #
+    # def getTicks(self, encoder):
+    #     if encoder == ENCODER_PIN_LEFT:
+    #         return left_encoder_count
+    #     elif encoder == ENCODER_PIN_RIGHT:
+    #         return right_encoder_count
     pass
 
 
@@ -32,14 +77,14 @@ class RedBotMotors:
     """Controls the motors on the RedBot"""
 
     def __init__(self, board):
+        """Constructor for pin setup"""
         global left_encoder_count
         global right_encoder_count
         left_encoder_count = 0
         right_encoder_count = 0
-
-
-        """Constructor for pin setup"""
         self.board = board
+        board.encoder_config(ENCODER_PIN_LEFT, ENCODER_PIN_RIGHT, self.encoderCallback, Constants.CB_TYPE_DIRECT, True)
+
         # The interface to the motor driver is kind of ugly. It's three pins per
         # channel: two that define role (forward, reverse, stop, brake) and one
         # PWM input for speed.
@@ -50,21 +95,38 @@ class RedBotMotors:
         board.set_pin_mode(R_CTRL_2, Constants.OUTPUT)
         board.set_pin_mode(PWM_R, Constants.PWM)  # Not done in RedBot motors but I just went ahead and added it.
 
+    def encoderCallback(self, data=None):
+        global left_encoder_count
+        global right_encoder_count
+        if type(data) == list:  # Ugly workaround to stop it throwing up errors, as the data var changes from list to
+            # int seemingly randomly
+            if data[0] == ENCODER_PIN_LEFT:  # data[0] is the pin id, data[1] is the encoder_read value (0 or 1).
+                left_encoder_count += 1
+            elif data[0] == ENCODER_PIN_RIGHT:
+                right_encoder_count += 1
+        # print(data)
 
-        board.set_pin_mode(ENCODER_PIN_LEFT, Constants.INPUT, self.encoderCallback)
-        board.set_pin_mode(ENCODER_PIN_RIGHT, Constants.INPUT, self.encoderCallback)
+    def clearEnc(self, flag=None):
+        global left_encoder_count
+        global right_encoder_count
+        if flag == None:
+            left_encoder_count = 0
+            right_encoder_count = 0
+        elif flag == ENCODER_PIN_RIGHT:
+            right_encoder_count = 0
+        elif flag == ENCODER_PIN_LEFT:
+            left_encoder_count = 0
 
-        #TODO: Work out how to make this a single call
-        board.encoder_config(ENCODER_PIN_LEFT, ENCODER_PIN_RIGHT, self.encoderCallback)
-        board.encoder_config(ENCODER_PIN_RIGHT, ENCODER_PIN_RIGHT, self.encoderCallback)
-
-
+    def getTicks(self, encoder):
+        if encoder == ENCODER_PIN_LEFT:
+            return left_encoder_count
+        elif encoder == ENCODER_PIN_RIGHT:
+            return right_encoder_count
 
     def brake(self):
         """effectively shorts the two leads of the motor together, which causes the motor to resist being turned. It stops quite quickly."""
         self.leftBrake()
         self.rightBrake()
-
 
     def drive(self, speed, durationS=-1.0):
         """
@@ -85,7 +147,6 @@ class RedBotMotors:
             self.leftStop()
             self.rightStop()
 
-
     def leftMotor(self, speed, durationS=-1.0):
         """Basically the same as drive(), but omitting the right motor."""
         if speed > 0:
@@ -95,7 +156,6 @@ class RedBotMotors:
         if durationS > 0:
             self.board.sleep(durationS)
             self.leftStop()
-
 
     def rightMotor(self, speed, durationS=-1.0):
         """Basically the same as drive(), but omitting the left motor."""
@@ -107,7 +167,6 @@ class RedBotMotors:
             self.board.sleep(durationS)
             self.leftStop()
 
-
     def stop(self):
         """
             stop() allows the motors to coast to a stop, rather than trying to stop them
@@ -117,13 +176,11 @@ class RedBotMotors:
         self.leftStop()
         self.rightStop()
 
-
     def leftBrake(self):
         """allows left motor to coast to a stop"""
         self.board.digital_write(L_CTRL_1, 1)
         self.board.digital_write(L_CTRL_2, 1)
         self.board.analog_write(PWM_L, 0)
-
 
     def rightBrake(self):
         """allows left motor to coast to a stop"""
@@ -131,20 +188,17 @@ class RedBotMotors:
         self.board.digital_write(R_CTRL_2, 1)
         self.board.analog_write(PWM_R, 0)
 
-
     def leftStop(self):
         """allows left motor to coast to a stop"""
         self.board.digital_write(L_CTRL_1, 0)
         self.board.digital_write(L_CTRL_2, 0)
         self.board.analog_write(PWM_L, 0)
 
-
     def rightStop(self):
         """allows left motor to coast to a stop"""
         self.board.digital_write(R_CTRL_1, 0)
         self.board.digital_write(R_CTRL_2, 0)
         self.board.analog_write(PWM_R, 0)
-
 
     def pivot(self, speed, durationS=-1.0):
         """
@@ -163,7 +217,6 @@ class RedBotMotors:
             self.leftStop()
             self.rightStop()
 
-
     # ******************************************************************************
     #  Private functions for RedBotMotor
     # ******************************************************************************/
@@ -180,7 +233,6 @@ class RedBotMotors:
         if encoderObject:
             encoderObject.lDir = 1
 
-
     def leftRev(self, spd):
         self.board.digital_write(L_CTRL_1, 0)
         self.board.digital_write(L_CTRL_2, 1)
@@ -190,7 +242,6 @@ class RedBotMotors:
         if encoderObject:
             encoderObject.lDir = -1
 
-
     def rightFwd(self, spd):
         self.board.digital_write(R_CTRL_1, 1)
         self.board.digital_write(R_CTRL_2, 0)
@@ -199,7 +250,6 @@ class RedBotMotors:
         # in the right direction when ticks occur.
         if encoderObject:
             encoderObject.rDir = 1
-
 
     def rightRev(self, spd):
         self.board.digital_write(R_CTRL_1, 0)
@@ -211,51 +261,18 @@ class RedBotMotors:
             encoderObject.rDir = -1
 
 
-# Configure
+class RedBotBumper:
+    pin_number = 0
 
+    def __init__(self, board, pin_number):
+        self.pin_number = pin_number
+        self.board=board
+        self.board.sleep(0.5)
+        self.board.set_pin_mode(pin_number, Constants.INPUT)
+        self.board.sleep(0.5)
+        self.board.digital_write(pin_number, 1)  # sets pin pull-up resistor
+        pass
 
-
-#TODO: Work out how to use encoder_callback correctly, the individual left and right callbacks are unneccessary
-
-# def encoder_callback(event=None):
-#     global left_encoder_count
-#     global right_encoder_count
-#     left_encoder_count+=1
-#     right_encoder_count+=1
-#     print("Left: {} , Right: {}".format(left_encoder_count,right_encoder_count))
-
-    def encoderCallback(self, data=None):
-        global left_encoder_count
-        global right_encoder_count
-        if type(data) == list:  #Ugly workaround to stop it throwing up errors, as the data var changes from list to
-        # int seemingly randomly
-            if data[0] == ENCODER_PIN_LEFT: # data[0] is the pin id, data[1] is the encoder_read value (0 or 1).
-                left_encoder_count += 1
-            elif data[0] == ENCODER_PIN_RIGHT:
-                right_encoder_count +=1
-
-        # print("Left: {} , Right: {}".format(left_encoder_count,right_encoder_count))
-        # print(type(data))
-
-    def rightEncoderCallback(self, data=None):
-        global right_encoder_count
-        right_encoder_count += 1
-        print("Left: {} , Right: {}".format(data,data))
-
-    def clearEnc(self, flag=None):
-        global left_encoder_count
-        global right_encoder_count
-        if flag == None:
-            left_encoder_count = 0
-            right_encoder_count = 0
-        elif flag == ENCODER_PIN_RIGHT:
-            right_encoder_count = 0
-        elif flag == ENCODER_PIN_LEFT:
-            left_encoder_count = 0
-
-
-    def getTicks(self, encoder):
-        if encoder == ENCODER_PIN_LEFT:
-            return left_encoder_count
-        elif encoder == ENCODER_PIN_RIGHT:
-            return right_encoder_count
+    def read(self):
+        print(self.board.digital_read(self.pin_number))
+        return self.board.digital_read(self.pin_number)
