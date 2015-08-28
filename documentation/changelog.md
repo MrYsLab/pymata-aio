@@ -1,4 +1,15 @@
 #Change Log
+###Release 1.9
+28 Aug 2015
+
+Sparkfun Redbot Support Changes
+
+* Changed encoder pulse detection in FirmataPlusRB from both leading and rising edges to rising edge only.
+
+* Added paramater in pymata3, encoder_config to support hall effect sensors and be in sync with pymata_core.
+
+
+#Change Log
 ###Release 1.8
 21 Aug 2015
 
