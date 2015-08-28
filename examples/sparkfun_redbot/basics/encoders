@@ -16,9 +16,8 @@ pins = {"BUTTON_SWITCH": 12, "LEFT_ENCODER": 16, "RIGHT_ENCODER": 10,
 total_left_ticks = 0
 total_right_ticks = 0
 NUM_REVOLUTIONS = 5
-COUNTS_PER_REVOLUTION = 192 # 4 pairs of N-S x 48:1 gearbox = 192 ticks per wheel rev
-
-get_current_time_ms = lambda: int(round(time.time() * 1000))
+COUNTS_PER_REVOLUTION = 384 # 4 pairs of N-S x 48:1 gearbox = 192 rising edge ticks per wheel rev, 384 rising AND
+# falling edges due to current Firmata setup
 
 
 def setup():
@@ -34,52 +33,41 @@ def setup():
     board.encoder_config(pins["LEFT_ENCODER"],pins["RIGHT_ENCODER"], encoder_callback, Constants.CB_TYPE_DIRECT, True)
 
 def encoder_callback(data):
-    global total_left_ticks
-    global total_right_ticks
+    global total_left_ticks, total_right_ticks
+    total_left_ticks += data[0]
+    total_right_ticks += data[1]
 
-    # if this is the first call to this function then save the time it was called
-    if not hasattr(encoder_callback, "last_time_called_ms"):
-        encoder_callback.last_time_called_ms = get_current_time_ms()
-        total_left_ticks = data[0]
-        total_right_ticks = data[1]
-        return
-    left_speed = data[0]
-    right_speed = data[1]
 
-    current_time_ms = get_current_time_ms()
-    time_delta_s = (current_time_ms - encoder_callback.last_time_called_ms) / 1000
-    total_left_ticks += left_speed * time_delta_s
-    total_right_ticks += right_speed * time_delta_s
-    encoder_callback.last_time_called = current_time_ms
-    # print("Left {}      Right: {}")
 
 def loop():
     """Function that gets called again as soon as it finishes (forever)."""
+    global total_left_ticks, total_right_ticks
     input("Press any key to drive {} revolutions".format(NUM_REVOLUTIONS))
-
+    total_left_ticks = 0
+    total_right_ticks = 0
     print("Straight")
     board.digital_write(pins["LEFT_MOTOR_CONTROL_1"], 1)
     board.digital_write(pins["LEFT_MOTOR_CONTROL_2"], 0)
     board.analog_write(pins["LEFT_MOTOR_SPEED"], 180)
     board.digital_write(pins["RIGHT_MOTOR_CONTROL_1"], 1)
     board.digital_write(pins["RIGHT_MOTOR_CONTROL_2"], 0)
-    board.analog_write(pins["RIGHT_MOTOR_SPEED"], 0)
+    board.analog_write(pins["RIGHT_MOTOR_SPEED"], 180)
 
     while total_right_ticks <= NUM_REVOLUTIONS * COUNTS_PER_REVOLUTION and total_left_ticks <= NUM_REVOLUTIONS * \
             COUNTS_PER_REVOLUTION:
-        print("{}       {}".format(total_left_ticks, total_right_ticks))
         board.sleep(0.1)
 
 
+    print("{}       {}".format(total_left_ticks, total_right_ticks))
 
 
     print("Stop")
     board.digital_write(pins["LEFT_MOTOR_CONTROL_1"], 1)
-    board.digital_write(pins["LEFT_MOTOR_CONTROL_2"], 0)
-    board.analog_write(pins["LEFT_MOTOR_SPEED"], 0)
+    board.digital_write(pins["LEFT_MOTOR_CONTROL_2"], 1)
+    board.analog_write(pins["LEFT_MOTOR_SPEED"], 255)
     board.digital_write(pins["RIGHT_MOTOR_CONTROL_1"], 1)
-    board.digital_write(pins["RIGHT_MOTOR_CONTROL_2"], 0)
-    board.analog_write(pins["RIGHT_MOTOR_SPEED"], 0)
+    board.digital_write(pins["RIGHT_MOTOR_CONTROL_2"], 1)
+    board.analog_write(pins["RIGHT_MOTOR_SPEED"], 255)
 
 
 if __name__ == "__main__":
