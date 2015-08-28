@@ -46,18 +46,21 @@ def setup():
 def loop():
     # wait for a button press to start driving.
     if board.digital_read(BUTTON_PIN) == 0:
-        encoders.clearEnc()  # Reset the counters
-        motors.drive(150)  # Start driving forward
+        board.sleep(0.05)
+        if  board.digital_read(BUTTON_PIN) == 0:
+            encoders.clearEnc()  # Reset the counters
+            motors.drive(150)  # Start driving forward
 
     # TODO: Find the 'proper' way to access these variables
     global left_count
     global right_count
     left_count = encoders.getTicks(ENCODER_PIN_LEFT)
     right_count = encoders.getTicks(ENCODER_PIN_RIGHT)
-    # print("{}       {}".format(l_count, right_speed))  # stores the encoder count to a variable
+
+    print("{}       {}".format(left_count, right_count))  # stores the encoder count to a variable
 
     #  if either left or right motor are more than 5 revolutions, stop
-    if left_count >= 5 * COUNTS_PER_REV | right_count >= 5 * COUNTS_PER_REV:
+    if left_count >= 5 * COUNTS_PER_REV or right_count >= 5 * COUNTS_PER_REV:
         motors.brake()
 
 if __name__ == "__main__":

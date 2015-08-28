@@ -109,7 +109,7 @@ class PyMata3:
         loop = asyncio.get_event_loop()
         loop.run_until_complete(self.core.disable_digital_reporting(pin))
 
-    def encoder_config(self, pin_a, pin_b, cb=None, cb_type=None):
+    def encoder_config(self, pin_a, pin_b, cb=None, cb_type=None, hall_encoder=False):
         """
         This command enables the rotary encoder (2 pin + ground) and will
         enable encoder reporting.
@@ -125,7 +125,7 @@ class PyMata3:
         @return: No return value
         """
         loop = asyncio.get_event_loop()
-        loop.run_until_complete(self.core.encoder_config(pin_a, pin_b, cb, cb_type))
+        loop.run_until_complete(self.core.encoder_config(pin_a, pin_b, cb, cb_type, hall_encoder))
 
     def encoder_read(self, pin):
         """

@@ -6,7 +6,7 @@ Exp9_SerialDrive -- RedBot Experiment 9
 
   Hardware setup:
   After uploading this sketch, keep the RedBot tethered to your computer with
-  the USB cable. Open up the Seral Monitor to send commands to the RedBot to
+  the USB cable. Open up the Serial Monitor to send commands to the RedBot to
   drive.
 
   This sketch was written by SparkFun Electronics, with lots of help from
