@@ -19,10 +19,12 @@
 from pymata_aio.pymata3 import PyMata3
 from library.redbot import RedBotMotors, RedBotBumper
 from pymata_aio.constants import Constants
-# This line "includes" the RedBot library into your sketch.
-# Provides special objects, methods, and functions for the RedBot.
 
-board = PyMata3()
+COM_PORT = None # Use automatic com port detection (the default)
+#COM_PORT = "COM7" # Manually specify the com port (optional)
+
+
+board = PyMata3(com_port=COM_PORT)
 # Instantiate the motor control object. This only needs to be done once.
 motors = RedBotMotors(board)
 
@@ -51,6 +53,7 @@ def loop():
     if right_bumper_state == 0: # left bumper is bumped
         reverse()
         turnLeft()
+
 
 def reverse():
     """backs up at full power"""
@@ -82,7 +85,6 @@ if __name__ == "__main__":
     setup()
     while True:
         loop()
-# import the API class
 
 
 
