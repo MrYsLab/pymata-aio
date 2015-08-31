@@ -15,7 +15,7 @@
 
 from pymata_aio.pymata3 import PyMata3
 from pymata_aio.constants import Constants
-from examples.sparkfun_redbot.sparkfun_experiments.library.redbot import RedBotMotors, RedBotEncoder
+from library.redbot import RedBotMotors, RedBotEncoder
 
 # This line "includes" the RedBot library into your sketch.
 # Provides special objects, methods, and functions for the RedBot.
@@ -32,7 +32,6 @@ BUTTON_PIN = 12
 COUNTS_PER_REV = 192    # 4 pairs of N-S x 48:1 gearbox = 192 ticks per wheel rev
 
 
-
 def setup():
     board.set_pin_mode(BUTTON_PIN, Constants.INPUT)
     board.digital_write(BUTTON_PIN, 1)  # writing pin high sets the pull-up resistor
@@ -47,8 +46,6 @@ def loop():
         if  board.digital_read(BUTTON_PIN) == 0:
             encoders.clearEnc()  # Reset the counters
             motors.drive(150)  # Start driving forward
-
-    # TODO: Find the 'proper' way to access these variables
 
     left_count = encoders.getTicks(ENCODER_PIN_LEFT)
     right_count = encoders.getTicks(ENCODER_PIN_RIGHT)
