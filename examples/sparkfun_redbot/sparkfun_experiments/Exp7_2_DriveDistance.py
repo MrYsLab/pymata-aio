@@ -27,7 +27,7 @@ motors = RedBotMotors(board)
 encoder_pin_left = 16
 encoder_pin_right = 10
 
-button_pin = 12
+BUTTON_PIN = 12
 
 counts_per_rev = 192    # 4 pairs of N-S x 48:1 gearbox = 192 ticks per wheel rev
 
@@ -40,16 +40,16 @@ right_count = 0
 
 
 def setup():
-    board.set_pin_mode(button_pin, Constants.INPUT)
-    board.digital_write(button_pin, 1)  # writing pin high sets the pull-up resistor
+    board.set_pin_mode(BUTTON_PIN, Constants.INPUT)
+    board.digital_write(BUTTON_PIN, 1)  # writing pin high sets the pull-up resistor
 
 
 
 def loop():
     # wait for a button press to start driving.
-    if board.digital_read(button_pin) == 0:
+    if board.digital_read(BUTTON_PIN) == 0:
         board.sleep(0.05)
-        if board.digital_read(button_pin) == 0:
+        if board.digital_read(BUTTON_PIN) == 0:
             driveDistance(12, 150)  # drive 12 inches at motor_power = 150
 
 
