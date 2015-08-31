@@ -15,7 +15,10 @@
 
 from pymata_aio.pymata3 import PyMata3
 from pymata_aio.constants import Constants
-from examples.sparkfun_redbot.sparkfun_experiments.library.redbot import RedBotSensor
+from library.redbot import RedBotSensor
+
+COM_PORT = None # If the auto detection method fails uncomment the line below and modify to your Redbot's COM
+# COM_PORT = "COM6"
 
 # This line "includes" the RedBot library into your sketch.
 # Provides special objects, methods, and functions for the RedBot.
@@ -23,25 +26,23 @@ LEFT_LINE_FOLLOWER = 3  # pin number assignments for each IR sensor
 CENTRE_LINE_FOLLOWER = 6
 RIGHT_LINE_FOLLOWER = 7
 
-board = PyMata3()
+board = PyMata3(com_port=COM_PORT)
 IR_sensor_1 = RedBotSensor(board, LEFT_LINE_FOLLOWER)
 IR_sensor_2 = RedBotSensor(board, CENTRE_LINE_FOLLOWER)
 IR_sensor_3 = RedBotSensor(board, RIGHT_LINE_FOLLOWER)
-
-
-
 
 
 def setup():
     print("Welcome to Experiment 6!")
     print("------------------------")
 
+
 def loop():
+    board.sleep(0.1)
     print("IR Sensor Readings: {},   {},    {}".format(IR_sensor_1.read(), IR_sensor_2.read(), IR_sensor_3.read()))
 
 
 if __name__ == "__main__":
     setup()
     while True:
-        board.sleep(0.1)
         loop()
