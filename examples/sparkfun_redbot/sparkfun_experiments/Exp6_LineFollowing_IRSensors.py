@@ -17,8 +17,8 @@ from pymata_aio.pymata3 import PyMata3
 from pymata_aio.constants import Constants
 from library.redbot import RedBotSensor
 
-COM_PORT = None # If the auto detection method fails uncomment the line below and modify to your Redbot's COM
-# COM_PORT = "COM6"
+COM_PORT = None # Use automatic com port detection (the default)
+#COM_PORT = "COM7" # Manually specify the com port (optional)
 
 # This line "includes" the RedBot library into your sketch.
 # Provides special objects, methods, and functions for the RedBot.
