@@ -41,8 +41,7 @@ class RedBotEncoder:
         self.left_encoder_count += data[0]
         self.right_encoder_count += data[1]
 
-    def clearEnc(self, flag=None):
-
+    def clear_enc(self, flag=None):
         if flag == None:
             self.left_encoder_count = 0
             self.right_encoder_count = 0

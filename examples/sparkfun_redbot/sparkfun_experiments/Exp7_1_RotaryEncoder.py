@@ -17,10 +17,11 @@ from pymata_aio.pymata3 import PyMata3
 from pymata_aio.constants import Constants
 from library.redbot import RedBotMotors, RedBotEncoder
 
-# This line "includes" the RedBot library into your sketch.
-# Provides special objects, methods, and functions for the RedBot.
+COM_PORT = None # Use automatic com port detection (the default)
+#COM_PORT = "COM5" # Manually specify the com port (optional)
 
-board = PyMata3()
+
+board = PyMata3(com_port=COM_PORT)
 motors = RedBotMotors(board)
 encoders = RedBotEncoder(board)
 
@@ -40,24 +41,25 @@ def setup():
 
 
 def loop():
+    board.sleep(0.1) # Add a delay
     # wait for a button press to start driving.
     if board.digital_read(BUTTON_PIN) == 0:
-        board.sleep(0.2)
-        if  board.digital_read(BUTTON_PIN) == 0:
-            encoders.clearEnc()  # Reset the counters
-            motors.drive(150)  # Start driving forward
+        print("press")
+        encoders.clear_enc()  # Reset the counters
+        motors.drive(150)  # Start driving forward
 
     left_count = encoders.getTicks(ENCODER_PIN_LEFT)
     right_count = encoders.getTicks(ENCODER_PIN_RIGHT)
 
     print("{}       {}".format(left_count, right_count))  # stores the encoder count to a variable
+    
 
     #  if either left or right motor are more than 5 revolutions, stop
     if left_count >= 5 * COUNTS_PER_REV or right_count >= 5 * COUNTS_PER_REV:
         motors.brake()
 
+
 if __name__ == "__main__":
     setup()
     while True:
         loop()
-        #  print("Encoder Read: {}".format(board.encoder_read(encoder_pin_right)))
