@@ -34,14 +34,14 @@ class RedBotEncoder:
             # board.sleep(0.1)
             # board.set_pin_mode(ENCODER_PIN_RIGHT, Constants.INPUT)
             # board.sleep(0.1)
-            board.encoder_config(ENCODER_PIN_LEFT, ENCODER_PIN_RIGHT, self.encoderCallback,
+            board.encoder_config(ENCODER_PIN_LEFT, ENCODER_PIN_RIGHT, self.encoder_callback,
                                  Constants.CB_TYPE_DIRECT, True)
 
-    def encoderCallback(self, data):
+    def encoder_callback(self, data):
         self.left_encoder_count += data[0]
         self.right_encoder_count += data[1]
 
-    def clearEnc(self, flag=None):
+    def clear_enc(self, flag=None):
 
         if flag == None:
             self.left_encoder_count = 0
@@ -51,7 +51,7 @@ class RedBotEncoder:
         elif flag == ENCODER_PIN_LEFT:
             self.left_encoder_count = 0
 
-    def getTicks(self, encoder):
+    def get_ticks(self, encoder):
         if encoder == ENCODER_PIN_LEFT:
             return self.left_encoder_count
         elif encoder == ENCODER_PIN_RIGHT:
@@ -82,8 +82,8 @@ class RedBotMotors:
 
     def brake(self):
         """effectively shorts the two leads of the motor together, which causes the motor to resist being turned. It stops quite quickly."""
-        self.leftBrake()
-        self.rightBrake()
+        self.left_brake()
+        self.right_brake()
 
     def drive(self, speed, durationS=-1.0):
         """
@@ -94,35 +94,35 @@ class RedBotMotors:
             are only 8-bit, since we only have 8-bit PWM.
         """
         if speed > 0:
-            self.leftFwd(min(abs(speed), 255))
-            self.rightFwd(min(abs(speed), 255))
+            self.left_fwd(min(abs(speed), 255))
+            self.right_fwd(min(abs(speed), 255))
         else:
-            self.leftRev(min(abs(speed), 255))
-            self.rightRev(min(abs(speed), 255))
+            self.left_rev(min(abs(speed), 255))
+            self.right_rev(min(abs(speed), 255))
         if durationS > 0:
             self.board.sleep(durationS)
-            self.leftStop()
-            self.rightStop()
+            self.left_stop()
+            self.right_stop()
 
-    def leftMotor(self, speed, durationS=-1.0):
+    def left_motor(self, speed, durationS=-1.0):
         """Basically the same as drive(), but omitting the right motor."""
         if speed > 0:
-            self.leftRev(min(abs(speed), 255))
+            self.left_rev(min(abs(speed), 255))
         else:
-            self.leftFwd(min(abs(speed), 255))
+            self.left_fwd(min(abs(speed), 255))
         if durationS > 0:
             self.board.sleep(durationS)
-            self.leftStop()
+            self.left_stop()
 
-    def rightMotor(self, speed, durationS=-1.0):
+    def right_motor(self, speed, durationS=-1.0):
         """Basically the same as drive(), but omitting the left motor."""
         if speed > 0:
-            self.rightFwd(min(abs(speed), 255))
+            self.right_fwd(min(abs(speed), 255))
         else:
-            self.rightRev(min(abs(speed), 255))
+            self.right_rev(min(abs(speed), 255))
         if durationS > 0:
             self.board.sleep(durationS)
-            self.leftStop()
+            self.left_stop()
 
     def stop(self):
         """
@@ -130,28 +130,28 @@ class RedBotMotors:
             quickly. As will be the case with functions affecting both motors, the
             global stop just calls the individual stop functions for each wheel.
         """
-        self.leftStop()
-        self.rightStop()
+        self.left_stop()
+        self.right_stop()
 
-    def leftBrake(self):
+    def left_brake(self):
         """allows left motor to coast to a stop"""
         self.board.digital_write(L_CTRL_1, 1)
         self.board.digital_write(L_CTRL_2, 1)
         self.board.analog_write(PWM_L, 0)
 
-    def rightBrake(self):
+    def right_brake(self):
         """allows left motor to coast to a stop"""
         self.board.digital_write(R_CTRL_1, 1)
         self.board.digital_write(R_CTRL_2, 1)
         self.board.analog_write(PWM_R, 0)
 
-    def leftStop(self):
+    def left_stop(self):
         """allows left motor to coast to a stop"""
         self.board.digital_write(L_CTRL_1, 0)
         self.board.digital_write(L_CTRL_2, 0)
         self.board.analog_write(PWM_L, 0)
 
-    def rightStop(self):
+    def right_stop(self):
         """allows left motor to coast to a stop"""
         self.board.digital_write(R_CTRL_1, 0)
         self.board.digital_write(R_CTRL_2, 0)
@@ -164,15 +164,15 @@ class RedBotMotors:
             255 indicates a full speed clockwise rotation
         """
         if speed < 0:
-            self.leftFwd(min(abs(speed), 255))
-            self.rightRev(min(abs(speed), 255))
+            self.left_fwd(min(abs(speed), 255))
+            self.right_rev(min(abs(speed), 255))
         else:
-            self.leftRev(min(abs(speed), 255))
-            self.rightFwd(min(abs(speed), 255))
+            self.left_rev(min(abs(speed), 255))
+            self.right_fwd(min(abs(speed), 255))
         if durationS > 0:
             self.board.sleep(durationS)
-            self.leftStop()
-            self.rightStop()
+            self.left_stop()
+            self.right_stop()
 
     # ******************************************************************************
     #  Private functions for RedBotMotor
@@ -181,7 +181,7 @@ class RedBotMotors:
     #  right direction. Users never see them, and *should* never see them, so we
     #  make them private.
 
-    def leftFwd(self, spd):
+    def left_fwd(self, spd):
         self.board.digital_write(L_CTRL_1, 1)
         self.board.digital_write(L_CTRL_2, 0)
         self.board.analog_write(PWM_L, spd)
@@ -190,7 +190,7 @@ class RedBotMotors:
         if encoderObject:
             encoderObject.lDir = 1
 
-    def leftRev(self, spd):
+    def left_rev(self, spd):
         self.board.digital_write(L_CTRL_1, 0)
         self.board.digital_write(L_CTRL_2, 1)
         self.board.analog_write(PWM_L, spd)
@@ -199,7 +199,7 @@ class RedBotMotors:
         if encoderObject:
             encoderObject.lDir = -1
 
-    def rightFwd(self, spd):
+    def right_fwd(self, spd):
         self.board.digital_write(R_CTRL_1, 1)
         self.board.digital_write(R_CTRL_2, 0)
         self.board.analog_write(PWM_R, spd)
@@ -208,7 +208,7 @@ class RedBotMotors:
         if encoderObject:
             encoderObject.rDir = 1
 
-    def rightRev(self, spd):
+    def right_rev(self, spd):
         self.board.digital_write(R_CTRL_1, 0)
         self.board.digital_write(R_CTRL_2, 1)
         self.board.analog_write(PWM_R, spd)

@@ -73,8 +73,8 @@ def loop():
     if (left_ir_reading > LINE_THRESHOLD) & (centre_ir_reading > LINE_THRESHOLD) & (right_ir_reading > LINE_THRESHOLD):
         motors.brake()
     else:
-        motors.leftMotor(left_speed)
-        motors.rightMotor(right_speed)
+        motors.left_motor(left_speed)
+        motors.right_motor(right_speed)
     board.sleep(0.1)  # add a delay to decrease sensitivity
 
 

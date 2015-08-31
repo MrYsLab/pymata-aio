@@ -65,14 +65,14 @@ def driveDistance(distance, motor_power):
 
 
     print(numRev)
-    encoders.clearEnc()  # clear the encoder count
+    encoders.clear_enc()  # clear the encoder count
     motors.drive(motor_power)
     # TODO: Find the 'proper' way to access these variables
     iteration = 0
     while right_count< numRev*counts_per_rev:
 
-        left_count = encoders.getTicks(encoder_pin_left)
-        right_count = encoders.getTicks(encoder_pin_right)
+        left_count = encoders.get_ticks(encoder_pin_left)
+        right_count = encoders.get_ticks(encoder_pin_right)
         print("{}       {}".format(left_count,right_count))  # stores the encoder count to a variable
         # print(numRev*counts_per_rev)
         board.sleep(0.01)

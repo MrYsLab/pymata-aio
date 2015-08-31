@@ -48,11 +48,11 @@ def loop():
     # board.sleep(0.1)  # When using XBee a small sleep is necessary
     if left_bumper_state == 0: # left bumper is bumped
         reverse()
-        turnRight()
+        turn_right()
 
     if right_bumper_state == 0: # left bumper is bumped
         reverse()
-        turnLeft()
+        turn_left()
 
 
 def reverse():
@@ -63,19 +63,19 @@ def reverse():
     board.sleep(0.1)
 
 
-def turnRight():
+def turn_right():
     """turns RedBot to the Right"""
-    motors.leftMotor(-150)  # spin CCW
-    motors.rightMotor(-150)  # spin CCW
+    motors.left_motor(-150)  # spin CCW
+    motors.right_motor(-150)  # spin CCW
     board.sleep(0.5)
     motors.brake();
     board.sleep(0.1)  # short delay to let robot fully stop
 
 
-def turnLeft():
+def turn_left():
     """turns RedBot to the Left"""
-    motors.leftMotor(150)  # spin CCW
-    motors.rightMotor(150)  # spin CCW
+    motors.left_motor(150)  # spin CCW
+    motors.right_motor(150)  # spin CCW
     board.sleep(0.5)
     motors.brake();
     board.sleep(0.1)  # short delay to let robot fully stop

@@ -44,11 +44,11 @@ def loop():
     if board.digital_read(BUTTON_PIN) == 0:
         board.sleep(0.2)
         if  board.digital_read(BUTTON_PIN) == 0:
-            encoders.clearEnc()  # Reset the counters
+            encoders.clear_enc()  # Reset the counters
             motors.drive(150)  # Start driving forward
 
-    left_count = encoders.getTicks(ENCODER_PIN_LEFT)
-    right_count = encoders.getTicks(ENCODER_PIN_RIGHT)
+    left_count = encoders.get_ticks(ENCODER_PIN_LEFT)
+    right_count = encoders.get_ticks(ENCODER_PIN_RIGHT)
 
     print("{}       {}".format(left_count, right_count))  # stores the encoder count to a variable
 
