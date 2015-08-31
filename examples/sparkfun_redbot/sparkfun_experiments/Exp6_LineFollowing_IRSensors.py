@@ -15,31 +15,33 @@
 
 from pymata_aio.pymata3 import PyMata3
 from pymata_aio.constants import Constants
-from examples.sparkfun_redbot.sparkfun_experiments.library.redbot import RedBotMotors
+from examples.sparkfun_redbot.sparkfun_experiments.library.redbot import RedBotSensor
 
 # This line "includes" the RedBot library into your sketch.
 # Provides special objects, methods, and functions for the RedBot.
-
-board = PyMata3()
-motors = RedBotMotors(board)
 LEFT_LINE_FOLLOWER = 3  # pin number assignments for each IR sensor
 CENTRE_LINE_FOLLOWER = 6
 RIGHT_LINE_FOLLOWER = 7
 
+board = PyMata3()
+IR_sensor_1 = RedBotSensor(board, LEFT_LINE_FOLLOWER)
+IR_sensor_2 = RedBotSensor(board, CENTRE_LINE_FOLLOWER)
+IR_sensor_3 = RedBotSensor(board, RIGHT_LINE_FOLLOWER)
+
+
+
+
 
 def setup():
-    board.set_pin_mode(LEFT_LINE_FOLLOWER, Constants.ANALOG)  # initialize a sensor object on A3
-    board.set_pin_mode(CENTRE_LINE_FOLLOWER, Constants.ANALOG)  # initialize a sensor object on A6
-    board.set_pin_mode(RIGHT_LINE_FOLLOWER, Constants.ANALOG)  # initialize a sensor object on A7
-
+    print("Welcome to Experiment 6!")
+    print("------------------------")
 
 def loop():
-    print("IR Sensor Readings: {},   {},    {}".format(board.analog_read(LEFT_LINE_FOLLOWER), board.analog_read(
-        CENTRE_LINE_FOLLOWER), board.analog_read(RIGHT_LINE_FOLLOWER)))
+    print("IR Sensor Readings: {},   {},    {}".format(IR_sensor_1.read(), IR_sensor_2.read(), IR_sensor_3.read()))
 
 
 if __name__ == "__main__":
     setup()
     while True:
-        board.sleep(1)
+        board.sleep(0.1)
         loop()

@@ -15,12 +15,14 @@
 
 from pymata_aio.pymata3 import PyMata3
 from pymata_aio.constants import Constants
-from examples.sparkfun_redbot.sparkfun_experiments.library.redbot import RedBotMotors
+from examples.sparkfun_redbot.sparkfun_experiments.library.redbot import RedBotMotors,RedBotEncoder
 import math
 # This line "includes" the RedBot library into your sketch.
 # Provides special objects, methods, and functions for the RedBot.
 
+
 board = PyMata3()
+encoders = RedBotEncoder(board)
 motors = RedBotMotors(board)
 encoder_pin_left = 16
 encoder_pin_right = 10
@@ -46,7 +48,9 @@ def setup():
 def loop():
     # wait for a button press to start driving.
     if board.digital_read(button_pin) == 0:
-        driveDistance(12, 150)  # drive 12 inches at motor_power = 150
+        board.sleep(0.05)
+        if board.digital_read(button_pin) == 0:
+            driveDistance(12, 150)  # drive 12 inches at motor_power = 150
 
 
 def driveDistance(distance, motor_power):
@@ -61,17 +65,16 @@ def driveDistance(distance, motor_power):
 
 
     print(numRev)
-    motors.clearEnc()  # clear the encoder count
+    encoders.clearEnc()  # clear the encoder count
     motors.drive(motor_power)
     # TODO: Find the 'proper' way to access these variables
     iteration = 0
     while right_count< numRev*counts_per_rev:
 
-        left_count = motors.getTicks(encoder_pin_left)
-        right_count = motors.getTicks(encoder_pin_right)
-
+        left_count = encoders.getTicks(encoder_pin_left)
+        right_count = encoders.getTicks(encoder_pin_right)
         print("{}       {}".format(left_count,right_count))  # stores the encoder count to a variable
-        print(numRev*counts_per_rev)
+        # print(numRev*counts_per_rev)
         board.sleep(0.01)
     #  if either left or right motor are more than 5 revolutions, stop
     motors.brake()

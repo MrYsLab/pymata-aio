@@ -397,6 +397,7 @@ class PyMata3:
         """
         loop = asyncio.get_event_loop()
 
+
         result = loop.run_until_complete(self.core.set_digital_latch(pin, threshold_value, cb, cb_type))
         return result
 

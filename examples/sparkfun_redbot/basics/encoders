@@ -53,12 +53,13 @@ def loop():
     board.digital_write(pins["RIGHT_MOTOR_CONTROL_2"], 0)
     board.analog_write(pins["RIGHT_MOTOR_SPEED"], 180)
 
-    while total_right_ticks <= NUM_REVOLUTIONS * COUNTS_PER_REVOLUTION and total_left_ticks <= NUM_REVOLUTIONS * \
-            COUNTS_PER_REVOLUTION:
+    while total_right_ticks <= NUM_REVOLUTIONS * COUNTS_PER_REVOLUTION and \
+                    total_left_ticks <= NUM_REVOLUTIONS * COUNTS_PER_REVOLUTION:
+        print("{}       {}".format(total_left_ticks, total_right_ticks))
         board.sleep(0.1)
 
 
-    print("{}       {}".format(total_left_ticks, total_right_ticks))
+
 
 
     print("Stop")

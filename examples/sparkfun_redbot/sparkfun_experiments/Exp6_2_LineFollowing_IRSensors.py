@@ -19,36 +19,41 @@
 
 from pymata_aio.pymata3 import PyMata3
 from pymata_aio.constants import Constants
-from examples.sparkfun_redbot.sparkfun_experiments.library.redbot import RedBotMotors
+from examples.sparkfun_redbot.sparkfun_experiments.library.redbot import RedBotMotors, RedBotSensor
 
 # This line "includes" the RedBot library into your sketch.
 # Provides special objects, methods, and functions for the RedBot.
 
 board = PyMata3()
-motors = RedBotMotors(board)
 
-LEFT_LINE_FOLLOWER = 3  # pin number assignments for each IR sensor
-CENTRE_LINE_FOLLOWER = 6
-RIGHT_LINE_FOLLOWER = 7
+left = RedBotSensor(board, 3)  # pin number assignments for each IR sensor
+centre = RedBotSensor(board, 4)
+right = RedBotSensor(board, 7)
+
+# constants that are used in the code. LINETHRESHOLD is the level to detect
+# if the sensor is on the line or not. If the sensor value is greater than this
+# the sensor is above a DARK line.
+#
+# SPEED sets the nominal speed
 
 LINE_THRESHOLD = 800
 SPEED = 60  # sets the nominal speed. Set to any number 0-255
 
+motors = RedBotMotors(board)
 
 
 def setup():
-    board.set_pin_mode(LEFT_LINE_FOLLOWER, Constants.ANALOG)  # initialize a sensor object on A3
-    board.set_pin_mode(CENTRE_LINE_FOLLOWER, Constants.ANALOG)  # initialize a sensor object on A6
-    board.set_pin_mode(RIGHT_LINE_FOLLOWER, Constants.ANALOG)  # initialize a sensor object on A7
     print("Welcome to Experiment 6.2 - Line Following")
     print("------------------------------------------")
-    left_speed = 0
-    right_speed = 0
+    board.sleep(2)
+    print("IR Sensor Readings:")
+    board.sleep(0.5)
+
 
 def loop():
-    left_ir_reading = board.analog_read(LEFT_LINE_FOLLOWER)
-    centre_ir_reading = board.analog_read(CENTRE_LINE_FOLLOWER)
-    right_ir_reading = board.analog_read(RIGHT_LINE_FOLLOWER)
+    left_ir_reading = left.read()
+    centre_ir_reading = centre.read()
+    right_ir_reading = right.read()
 
     print("IR Sensor Readings: {},   {},    {}".format(left_ir_reading, centre_ir_reading, right_ir_reading))
 

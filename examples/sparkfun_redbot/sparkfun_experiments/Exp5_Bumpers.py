@@ -31,20 +31,19 @@ right_bumper = RedBotBumper(board, 11)  # initializes bumper object on pin 11
 
 BUTTON_PIN = 12
 
-left_bumper_state = 0
-right_bumper_state = 0
 
 def setup():
     # nothing here
     pass
 
+
 def loop():
     motors.drive(255)
 
     left_bumper_state = left_bumper.read()
-    board.sleep(0.1)
+    # board.sleep(0.1)  # When using XBee a small sleep is necessary
     right_bumper_state = right_bumper.read()
-    board.sleep(0.1)
+    # board.sleep(0.1)  # When using XBee a small sleep is necessary
     if left_bumper_state == 0: # left bumper is bumped
         reverse()
         turnRight()
@@ -53,25 +52,25 @@ def loop():
         reverse()
         turnLeft()
 
-# reverse() function -- backs up at full power
 def reverse():
+    """backs up at full power"""
     motors.drive(-255)
     board.sleep(0.5)
     motors.brake()
     board.sleep(0.1)
 
-# turnRight() function -- turns RedBot to the Right
-def turnRight():
 
+def turnRight():
+    """turns RedBot to the Right"""
     motors.leftMotor(-150)  # spin CCW
     motors.rightMotor(-150)  # spin CCW
     board.sleep(0.5)
     motors.brake();
     board.sleep(0.1)  # short delay to let robot fully stop
 
-# turnLeft() function -- turns RedBot to the Left
-def turnLeft():
 
+def turnLeft():
+    """turns RedBot to the Left"""
     motors.leftMotor(150)  # spin CCW
     motors.rightMotor(150)  # spin CCW
     board.sleep(0.5)
