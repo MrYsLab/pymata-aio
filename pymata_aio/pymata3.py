@@ -122,6 +122,7 @@ class PyMata3:
         @param pin_b: Encoder pin 2.
         @param cb: callback function to report encoder changes
         @param cb_type: Constants.CB_TYPE_DIRECT = direct call or Constants.CB_TYPE_ASYNCIO = asyncio coroutine
+        @param hall_encoder: wheel hall_encoder - set to True to select hall encoder support support.
         @return: No return value
         """
         loop = asyncio.get_event_loop()
