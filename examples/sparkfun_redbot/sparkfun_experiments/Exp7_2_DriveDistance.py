@@ -17,26 +17,22 @@ from pymata_aio.pymata3 import PyMata3
 from pymata_aio.constants import Constants
 from library.redbot import RedBotMotors,RedBotEncoder
 import math
-# This line "includes" the RedBot library into your sketch.
-# Provides special objects, methods, and functions for the RedBot.
+
+COM_PORT = None # Use automatic com port detection (the default)
+#COM_PORT = "COM10" # Manually specify the com port (optional)
 
 
-board = PyMata3()
-encoders = RedBotEncoder(board)
+board = PyMata3(com_port=COM_PORT)
 motors = RedBotMotors(board)
-encoder_pin_left = 16
-encoder_pin_right = 10
-
+encoders = RedBotEncoder(board)
 BUTTON_PIN = 12
+COUNT_PER_REV = 192    # 4 pairs of N-S x 48:1 gearbox = 192 ticks per wheel rev
+WHEEL_DIAM = 2.56 # diam = 65mm / 25.4 mm/in
+WHEEL_CIRC = math.pi * WHEEL_DIAM
+print(WHEEL_CIRC)
 
-counts_per_rev = 192    # 4 pairs of N-S x 48:1 gearbox = 192 ticks per wheel rev
-
-wheel_diam = 2.56 # diam = 65mm / 25.4 mm/in
-wheel_circ = math.pi * wheel_diam
-
-# variables used to store the left and right encoder counts.
-left_count = 0
-right_count = 0
+ENCODER_PIN_LEFT = 16
+ENCODER_PIN_RIGHT = 10
 
 
 def setup():
@@ -44,40 +40,31 @@ def setup():
     board.digital_write(BUTTON_PIN, 1)  # writing pin high sets the pull-up resistor
 
 
-
 def loop():
     # wait for a button press to start driving.
     if board.digital_read(BUTTON_PIN) == 0:
-        board.sleep(0.05)
-        if board.digital_read(BUTTON_PIN) == 0:
-            driveDistance(12, 150)  # drive 12 inches at motor_power = 150
+        driveDistance(12, 150)  # drive 12 inches at motor_power = 150
 
 
 def driveDistance(distance, motor_power):
-    global left_count
-    global right_count
     left_count= 0
     right_count = 0
-    numRev = float(distance/wheel_circ)
+    num_rev = distance / WHEEL_CIRC
 
     # debug
-    print("drive_distance() {} inches at {} power".format(distance,motor_power))
+    print("drive_distance() {} inches at {} power for {:.2f} revolutions".format(distance, motor_power, num_rev))
 
-
-    print(numRev)
     encoders.clear_enc()  # clear the encoder count
     motors.drive(motor_power)
-    # TODO: Find the 'proper' way to access these variables
-    iteration = 0
-    while right_count< numRev*counts_per_rev:
 
-        left_count = encoders.get_ticks(encoder_pin_left)
-        right_count = encoders.get_ticks(encoder_pin_right)
-        print("{}       {}".format(left_count,right_count))  # stores the encoder count to a variable
-        # print(numRev*counts_per_rev)
-        board.sleep(0.01)
-    #  if either left or right motor are more than 5 revolutions, stop
+    while right_count < num_rev * COUNT_PER_REV:
+        left_count = encoders.get_ticks(ENCODER_PIN_LEFT)
+        right_count = encoders.get_ticks(ENCODER_PIN_RIGHT)
+        print("{}       {}       stop once over {:.0f} ticks".format(left_count, right_count, num_rev * COUNT_PER_REV))
+        board.sleep(0.1)
+
     motors.brake()
+
 
 if __name__ == "__main__":
     setup()
