@@ -425,9 +425,38 @@ if __name__ == "__main__":
     while True:
         if accel.available():
             values = accel.read()
-            print(
-                '{0:4d}, {1:4d}, {2:4d}, {3:.3f}, {4:.3f}, {5:.3f}, {6:}'.format(values[0], values[1], values[2], values[3],
-                                                                                 values[4], values[5], values[6]))
+#             print(
+#                 '{0:4d}, {1:4d}, {2:4d}, {3:.3f}, {4:.3f}, {5:.3f}, {6:}'.format(values[0], values[1], values[2], values[3],
+#                                                                                  values[4], values[5], values[6]))
+            
+            axis = values
+            x = axis[3]
+            y = axis[4]
+            z = axis[5]
+
+            tap = accel.read_tap()
+            if tap:
+                tap = 'TAPPED'
+            else:
+                tap = 'NO TAP'
+            port_land = accel.read_portrait_landscape()
+            if port_land == accel.LOCKOUT:
+                port_land = 'Flat   '
+            elif port_land == 0:
+                port_land = 'Tilt Lf'
+            elif port_land == 1:
+                port_land = 'Tilt Rt'
+            elif port_land == 2:
+                port_land = 'Tilt Up'
+            else:
+                port_land = 'Tilt Dn'
+
+            print('{0:.2f}   {1:.2f}   {2:.2f}   {3}   {4}'.format(x, y, z, port_land, tap))
         else:
             print("Where's the device?")
             accel.board.sleep(.001)
+            
+            
+
+            
+            

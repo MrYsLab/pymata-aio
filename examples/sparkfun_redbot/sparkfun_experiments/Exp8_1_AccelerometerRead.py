@@ -27,29 +27,13 @@ from pymata_aio.constants import Constants
 from library.redbot import RedBotMotors
 from library.accelerometer import RedBotAccel
 
-COM_PORT = None # Use automatic com port detection (the default)
-#COM_PORT = "COM10" # Manually specify the com port (optional)
+#COM_PORT = None # Use automatic com port detection (the default)
+COM_PORT = "COM10" # Manually specify the com port (optional)
 
 
 board = PyMata3(com_port=COM_PORT)
-
-
-# TODO: NOT YET FUNCTIONAL!!!! Still needs a lot of work
-
-
-board = PyMata3()
 motors = RedBotMotors(board)
 accelerometer = RedBotAccel(board)
-
-
-
-BUTTON_PIN = 12
-
-COUNTS_PER_REV = 192    # 4 pairs of N-S x 48:1 gearbox = 192 ticks per wheel rev
-
-# variables used to store the left and right encoder counts.
-left_count = 0
-right_count = 0
 
 
 def setup():
@@ -58,8 +42,7 @@ def setup():
 
 def loop():
     if accelerometer.available():
-
-        data= accelerometer.read()
+        data = accelerometer.read()
         data = list(data)
         print(data) # wait for a button press to start driving.
         board.sleep(0.1)
@@ -68,4 +51,3 @@ if __name__ == "__main__":
     setup()
     while True:
         loop()
-        #  print("Encoder Read: {}".format(board.encoder_read(encoder_pin_right)))
