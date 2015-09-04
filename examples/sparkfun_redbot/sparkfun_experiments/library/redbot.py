@@ -20,26 +20,31 @@ PWM_R = 6
 ENCODER_PIN_LEFT = 16
 ENCODER_PIN_RIGHT = 10
 
+DIRECTION_FORWARD = 1
+DIRECTION_REVERSE = -1
+encoder_object = None
 
 class RedBotEncoder:
-    def __init__(self, board=None):
-
+    def __init__(self, board):
+        global encoder_object
+        encoder_object = self # Save a global reference to the one and only encoder_object so that the motors can set the direciton.
         self.board = board
-
         self.left_encoder_count = 0
         self.right_encoder_count = 0
-
-        if self.board != None:
-            # board.set_pin_mode(ENCODER_PIN_LEFT, Constants.INPUT)
-            # board.sleep(0.1)
-            # board.set_pin_mode(ENCODER_PIN_RIGHT, Constants.INPUT)
-            # board.sleep(0.1)
-            board.encoder_config(ENCODER_PIN_LEFT, ENCODER_PIN_RIGHT, self.encoder_callback,
-                                 Constants.CB_TYPE_DIRECT, True)
+        self.left_direction = DIRECTION_FORWARD # default to forward if not set
+        self.right_direction = DIRECTION_FORWARD # default to forward if not set
+        board.encoder_config(ENCODER_PIN_LEFT, ENCODER_PIN_RIGHT, self.encoder_callback,
+                             Constants.CB_TYPE_DIRECT, True)
 
     def encoder_callback(self, data):
-        self.left_encoder_count += data[0]
-        self.right_encoder_count += data[1]
+        if self.left_direction == DIRECTION_FORWARD:
+            self.left_encoder_count += data[0]
+        else:
+            self.left_encoder_count -= data[0]
+        if self.right_direction == DIRECTION_FORWARD:
+            self.right_encoder_count += data[1]
+        else:
+            self.right_encoder_count -= data[1]
 
     def clear_enc(self, flag=None):
         if flag == None:
@@ -55,9 +60,6 @@ class RedBotEncoder:
             return self.left_encoder_count
         elif encoder == ENCODER_PIN_RIGHT:
             return self.right_encoder_count
-
-
-encoderObject = RedBotEncoder()
 
 
 class RedBotMotors:
@@ -186,8 +188,8 @@ class RedBotMotors:
         self.board.analog_write(PWM_L, spd)
         # If we have an encoder in the system, we want to make sure that it counts
         # in the right direction when ticks occur.
-        if encoderObject:
-            encoderObject.lDir = 1
+        if encoder_object:
+            encoder_object.left_direction = DIRECTION_FORWARD
 
     def left_rev(self, spd):
         self.board.digital_write(L_CTRL_1, 0)
@@ -195,8 +197,8 @@ class RedBotMotors:
         self.board.analog_write(PWM_L, spd)
         # If we have an encoder in the system, we want to make sure that it counts
         # in the right direction when ticks occur.
-        if encoderObject:
-            encoderObject.lDir = -1
+        if encoder_object:
+            encoder_object.left_direction = DIRECTION_REVERSE
 
     def right_fwd(self, spd):
         self.board.digital_write(R_CTRL_1, 1)
@@ -204,8 +206,8 @@ class RedBotMotors:
         self.board.analog_write(PWM_R, spd)
         # If we have an encoder in the system, we want to make sure that it counts
         # in the right direction when ticks occur.
-        if encoderObject:
-            encoderObject.rDir = 1
+        if encoder_object:
+            encoder_object.right_direction = DIRECTION_FORWARD
 
     def right_rev(self, spd):
         self.board.digital_write(R_CTRL_1, 0)
@@ -213,8 +215,9 @@ class RedBotMotors:
         self.board.analog_write(PWM_R, spd)
         # If we have an encoder in the system, we want to make sure that it counts
         # in the right direction when ticks occur.
-        if encoderObject:
-            encoderObject.rDir = -1
+        if encoder_object:
+            print("Right is in reverse")
+            encoder_object.right_direction = DIRECTION_REVERSE
 
 
 class RedBotSensor:
