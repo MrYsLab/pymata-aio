@@ -24,10 +24,14 @@
 
 from pymata_aio.pymata3 import PyMata3
 from pymata_aio.constants import Constants
-from library.redbot import RedBotMotors, RedBotAccel
+from library.redbot import RedBotMotors
+from library.accelerometer import RedBotAccel
 
-# This line "includes" the RedBot library into your sketch.
-# Provides special objects, methods, and functions for the RedBot.
+COM_PORT = None # Use automatic com port detection (the default)
+#COM_PORT = "COM10" # Manually specify the com port (optional)
+
+
+board = PyMata3(com_port=COM_PORT)
 
 
 # TODO: NOT YET FUNCTIONAL!!!! Still needs a lot of work
