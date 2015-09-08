@@ -26,11 +26,11 @@ from pymata_aio.constants import Constants
 
 
 # create a PyMata instance
-board = PyMata3(2)
+board = PyMata3()
 
 # configure 4 pins for 4 SONAR modules
-board.play_tone(3, Constants.TONE_TONE, 1000, 500)
-board.sleep(1)
-board.play_tone(3, Constants.TONE_NO_TONE, 1000, 500)
+board.play_tone(9, Constants.TONE_TONE, 2000, 1500)
+board.sleep(3)
+board.play_tone(9, Constants.TONE_NO_TONE, 2000, 500)
 
 board.shutdown()
