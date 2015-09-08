@@ -27,8 +27,8 @@ from pymata_aio.constants import Constants
 from library.redbot import RedBotMotors
 from library.accelerometer import RedBotAccel
 
-#COM_PORT = None # Use automatic com port detection (the default)
-COM_PORT = "COM10" # Manually specify the com port (optional)
+COM_PORT = None  # Use automatic com port detection (the default)
+# COM_PORT = "COM10" # Manually specify the com port (optional)
 
 
 board = PyMata3(com_port=COM_PORT)
@@ -42,10 +42,16 @@ def setup():
 
 def loop():
     if accelerometer.available():
-        data = accelerometer.read()
-        data = list(data)
-        print(data) # wait for a button press to start driving.
-        board.sleep(0.1)
+        accelerometer.read()
+        """Display out the X, Y, and Z - axis "acceleration" measurements and also
+        the relative angle between the X-Z, Y-Z, and X-Y vectors. (These give us
+        the orientation of the RedBot in 3D space."""
+        print("({}, {}, {}) -- [{:4.2f}, {:4.2f}, {:4.2f}]".format(accelerometer.x, accelerometer.y, accelerometer.z,
+                                                               accelerometer.angleXZ, accelerometer.angleYZ,
+                                                               accelerometer.angleXY))
+
+        board.sleep(0.1)  # short delay in between readings
+
 
 if __name__ == "__main__":
     setup()

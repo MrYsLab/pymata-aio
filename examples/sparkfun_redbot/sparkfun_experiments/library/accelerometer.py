@@ -26,7 +26,7 @@ class RedBotAccel:
     is required for this chip.
     """
 
-    def __init__(self, board, address, scale, output_data_rate):
+    def __init__(self, board, address = 0x1d, scale = 2, output_data_rate = 0):
         """
         @param address: Address of the device
         @param scale: scale factor
@@ -109,6 +109,12 @@ class RedBotAccel:
 
         # configure firmata for i2c
         self.board.i2c_config()
+        self.x = 0
+        self.y = 0
+        self.z = 0
+        self.angleXZ = 0
+        self.angleYZ = 0
+        self.angleXY = 0
 
         # verify the device by sending a WHO AM I command and checking the results
         if not self.check_who_am_i():
@@ -401,6 +407,12 @@ class RedBotAccel:
             tap = "No Tap"
         else:
             tap = "TAPPED"
+        self.x = x
+        self.y = y
+        self.z = z
+        self.angleXZ = cx
+        self.angleYZ = cy
+        self.angleXY = cz
 
         return [x, y, z, cx, cy, cz, port_land, tap]
 
@@ -417,8 +429,8 @@ class RedBotAccel:
 
 
 if __name__ == "__main__":
-    #COM_PORT = None # Use automatic com port detection (the default)
-    COM_PORT = "COM10" # Manually specify the com port (optional)
+    COM_PORT = None # Use automatic com port detection (the default)
+    # COM_PORT = "COM10" # Manually specify the com port (optional)
     board = PyMata3(com_port=COM_PORT)
     
     accel = RedBotAccel(board, 0x1d, 2, 0)
