@@ -24,24 +24,23 @@ from pymata_aio.pymata_core import PymataCore
 from pymata_aio.constants import Constants
 
 
-@asyncio.coroutine
-def pin_6_pwm_128(my_board):
+async def pin_6_pwm_128(my_board):
     """
     Set digital pin 6 as a PWM output and set its output value to 128
     @param my_board: A PymataCore instance
     @return: No Return Value
     """
     # set the pin mode
-    yield from my_board.set_pin_mode(6, Constants.PWM)
+    await my_board.set_pin_mode(6, Constants.PWM)
 
     # set the pin to 128
-    yield from my_board.analog_write(6, 128)
+    await my_board.analog_write(6, 128)
 
     # let the led stay lit for 3 seconds
-    yield from asyncio.sleep(3)
+    await asyncio.sleep(3)
 
     # shutdown
-    yield from my_board.shutdown()
+    await my_board.shutdown()
 
 
 # create a PyMataCore instance and complete the initialization with a call to start()
