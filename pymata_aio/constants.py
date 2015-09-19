@@ -19,7 +19,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 class Constants:
     """
-    This class contains a set of constants that may be used by the applications writer.
+    This class contains a set of constants that may be used by
+    the applications writer.
     """
     # pin modes
     INPUT = 0x00  # pin set as input
@@ -56,16 +57,20 @@ class Constants:
 
     # latch states
     LATCH_IGNORE = 0  # this item currently not participating in latching
-    LATCH_ARMED = 1  # When the next pin value change is received for this pin, if it matches the latch criteria
-    # the data will be latched
-    LATCH_LATCHED = 2  # data has been latched. Read the data to re-arm the latch
+
+    # When the next pin value change is received for this pin,
+    # if it matches the latch criteria the data will be latched
+    LATCH_ARMED = 1
+
+    # data has been latched. Read the data to re-arm the latch
+    LATCH_LATCHED = 2
 
     # latch threshold types
     LATCH_EQ = 0  # data value is equal to the latch threshold value
     LATCH_GT = 1  # data value is greater than the latch threshold value
     LATCH_LT = 2  # data value is less than the latch threshold value
-    LATCH_GTE = 3  # data value is greater than or equal to the latch threshold value
-    LATCH_LTE = 4  # data value is less than or equal to the latch threshold value
+    LATCH_GTE = 3  # data value is >= to the latch threshold value
+    LATCH_LTE = 4  # data value is <= to the latch threshold value
 
     # indices into latch table entry for manual read of latch data
     LATCH_STATE = 0
