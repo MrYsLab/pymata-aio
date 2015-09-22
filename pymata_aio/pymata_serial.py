@@ -23,15 +23,19 @@ import logging
 import serial
 
 
+# noinspection PyStatementEffect,PyUnresolvedReferences,PyUnresolvedReferences
 class PymataSerial:
     """
-    This class encapsulates management of the serial port that communicates with the Arduino Firmata
+    This class encapsulates management of the serial port that communicates
+    with the Arduino Firmata
     It provides a 'futures' interface to make Pyserial compatible with asyncio
     """
 
-    def __init__(self, com_port='/dev/ttyACM0', speed=57600, sleep_tune=.001, log_output=False):
+    def __init__(self, com_port='/dev/ttyACM0', speed=57600, sleep_tune=.001,
+                 log_output=False):
         """
         This is the constructor for the aio serial handler
+
         :param com_port: Com port designator
         :param speed: baud rate
         :return: None
@@ -42,22 +46,26 @@ class PymataSerial:
         else:
             print('Initializing Arduino - Please wait...', end=" ")
         sys.stdout.flush()
-        self.my_serial = serial.Serial(com_port, speed, timeout=1, writeTimeout=1)
+        self.my_serial = serial.Serial(com_port, speed, timeout=1,
+                                       writeTimeout=1)
         self.com_port = com_port
         self.sleep_tune = sleep_tune
 
     def get_serial(self):
         """
-        This method returns a reference to the serial port in case the user wants to call pyserial methods directly
+        This method returns a reference to the serial port in case the
+        user wants to call pyserial methods directly
+
         :return: pyserial instance
         """
         return self.my_serial
 
-    @asyncio.coroutine
-    def write(self, data):
+    async def write(self, data):
         """
-        This is an asyncio adapted version of pyserial write. It provides a non-blocking write and returns the
-        number of bytes written upon completion
+        This is an asyncio adapted version of pyserial write. It provides a
+        non-blocking  write and returns the number of bytes written upon
+        completion
+
         :param data: Data to be written
         :return: Number of bytes written
         """
@@ -88,11 +96,11 @@ class PymataSerial:
             else:
                 return future.result()
 
-    @asyncio.coroutine
-    def readline(self):
+    async def readline(self):
         """
-        This is an asyncio adapted version of pyserial read. It provides a non-blocking read and returns a line of
-        data read.
+        This is an asyncio adapted version of pyserial read.
+        It provides a non-blocking read and returns a line of data read.
+
         :return: A line of data
         """
         future = asyncio.Future()
@@ -107,14 +115,15 @@ class PymataSerial:
                     future.set_result(data)
             else:
                 if not future.done():
-                    yield from asyncio.sleep(self.sleep_tune)
+                    await asyncio.sleep(self.sleep_tune)
                 else:
                     return future.result()
 
-    @asyncio.coroutine
-    def read(self):
+    async def read(self):
         """
-        This is an asyncio adapted version of pyserial read that provides non-blocking read.
+        This is an asyncio adapted version of pyserial read
+        that provides non-blocking read.
+
         :return: One character
         """
 
@@ -124,13 +133,15 @@ class PymataSerial:
         # create a flag to indicate when data becomes available
         data_available = False
 
-        # wait for a character to become available and read from the serial port
+        # wait for a character to become available and read from
+        # the serial port
         while True:
             if not data_available:
                 # test to see if a character is waiting to be read.
-                # if not, relinquish control back to the event loop through the short sleep
+                # if not, relinquish control back to the event loop through the
+                # short sleep
                 if not self.my_serial.inWaiting():
-                    yield from asyncio.sleep(self.sleep_tune)
+                    await asyncio.sleep(self.sleep_tune)
                 # data is available.
                 # set the flag to true so that the future can "wait" until the
                 # read is completed.
@@ -142,29 +153,26 @@ class PymataSerial:
             else:
                 # wait for the future to complete
                 if not future.done():
-                    yield from asyncio.sleep(self.sleep_tune)
+                    await asyncio.sleep(self.sleep_tune)
                 else:
                     # future is done, so return the character
                     return future.result()
 
-    @asyncio.coroutine
-    def close(self):
+    async def close(self):
         """
         Close the serial port
         """
         # future = asyncio.Future()
         self.my_serial.close()
 
-    @asyncio.coroutine
-    def open(self):
+    async def open(self):
         """
         Open the serial port
         """
         # future = asyncio.Future()
         self.my_serial.open()
 
-    @asyncio.coroutine
-    def set_dtr(self, state):
+    async def set_dtr(self, state):
         """
         Set DTR state
         """

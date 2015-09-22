@@ -41,7 +41,7 @@ class PrivateConstants:
     TONE_DATA = 0x5F  # play a tone at a specified frequency and duration
     ENCODER_CONFIG = 0x60  # create and enable encoder object
     ENCODER_DATA = 0x61  # current encoder position data
-    SONAR_CONFIG = 0x62  # configure pins to control a Ping type sonar distance device
+    SONAR_CONFIG = 0x62  # configure pins to control a sonar distance device
     SONAR_DATA = 0x63  # distance data returned
     # end of FirmataPlus defined SYSEX commands
 
@@ -57,7 +57,7 @@ class PrivateConstants:
     EXTENDED_ANALOG = 0x6F  # analog write (PWM, Servo, etc) to any pin
     PIN_STATE_QUERY = 0x6D  # ask for a pin's current mode and value
     PIN_STATE_RESPONSE = 0x6E  # reply with pin's current mode and value
-    CAPABILITY_QUERY = 0x6B  # ask for supported modes and resolution of all pins
+    CAPABILITY_QUERY = 0x6B  # ask for supported modes of all pins
     CAPABILITY_RESPONSE = 0x6C  # reply with supported modes and resolution
     ANALOG_MAPPING_QUERY = 0x69  # ask for mapping of analog to pin numbers
     ANALOG_MAPPING_RESPONSE = 0x6A  # reply with analog mapping data
@@ -67,18 +67,24 @@ class PrivateConstants:
     SYSEX_REALTIME = 0x7F  # MIDI Reserved for realtime messages
 
     # reserved for PyMata
-    PYMATA_VERSION = "1.9"
+    PYMATA_VERSION = "2.1"
 
-    # each byte represents a digital port and its value contains the current port settings
+    # each byte represents a digital port
+    #  and its value contains the current port settings
     DIGITAL_OUTPUT_PORT_PINS = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
                                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
 
-    # These values are the index into the data passed by _arduino and used to reassemble integer values
+    # These values are the index into the data passed by _arduino and
+    # used to reassemble integer values
     MSB = 2
     LSB = 1
 
-    REPORTING_ENABLE = 1  # enable reporting for REPORT_ANALOG or REPORT_DIGITAL message sent to firmata
-    REPORTING_DISABLE = 0  # disable reporting for REPORT_ANALOG or REPORT_DIGITAL message sent to firmata
+    # enable reporting for REPORT_ANALOG or REPORT_DIGITAL message
+    # sent to firmata
+    REPORTING_ENABLE = 1
+    # disable reporting for REPORT_ANALOG or REPORT_DIGITAL message
+    # sent to firmata
+    REPORTING_DISABLE = 0
 
     # Stepper Motor Sub-commands
     STEPPER_CONFIGURE = 0  # configure a stepper motor for operation

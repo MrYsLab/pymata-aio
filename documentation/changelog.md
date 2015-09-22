@@ -1,4 +1,18 @@
 #Change Log
+###Release 2.1
+
+## This is a major release migration from Python 3.4.3 to Python 3.5
+
+28 Aug 2015
+
+* Converted all code to be Python 3.5 compliant.
+    * Removed all @asyncio.coroutine decorators and replaced with "async"
+    * Replaced all "yield from" to "await"
+* Modified FirmataPlusRB.ino systemResetCallback() to set encoder present to false
+* API documentation is now Sphinx generated
+
+
+#Change Log
 ###Release 1.9
 28 Aug 2015
 
