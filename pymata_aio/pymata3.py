@@ -30,7 +30,8 @@ class PyMata3:
     the API that you should use..
     """
 
-    def __init__(self, arduino_wait=2, log_output=False, com_port=None):
+    def __init__(self, arduino_wait=2, log_output=False, com_port=None,
+                 ip_address=None, ip_port=2000):
         """
         Constructor for the PyMata3 API
         If log_output is set to True, a log file called 'pymata_log'
@@ -48,7 +49,7 @@ class PyMata3:
         self.log_out = log_output
         self.sleep_tune = .001
         self.core = PymataCore(arduino_wait, self.sleep_tune, log_output,
-                               com_port)
+                               com_port, ip_address, ip_port)
         self.core.start()
         self.sleep(1)
 

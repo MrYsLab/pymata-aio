@@ -60,6 +60,9 @@ class PymataIOT(WebSocketServerProtocol):
     parser.add_argument("-comport", dest="com", default="None", help="Arduino COM port")
     parser.add_argument("-sleep", dest="sleep", default=".001", help="sleep tune in ms.")
     parser.add_argument("-log", dest="log", default="False", help="redirect console output to log file")
+    parser.add_argument("-ardIPAddr", dest="aIPaddr", default="None", help="Arduino IP Address (WiFly")
+    parser.add_argument("-ardPort", dest="aIPport", default="2000", help="Arduino IP port (WiFly")
+
     args = parser.parse_args()
 
     ip_addr = args.hostname
@@ -75,7 +78,11 @@ class PymataIOT(WebSocketServerProtocol):
     else:
         log = False
 
-    core = PymataCore(int(args.wait), float(args.sleep), log, comport)
+    ard_ip_addr = args.aIPaddr
+    ard_ip_port = args.aIPport
+
+    core = PymataCore(int(args.wait), float(args.sleep), log, comport,
+                      ard_ip_addr, ard_ip_port)
     core.start()
 
     # noinspection PyMissingConstructor
