@@ -252,6 +252,9 @@ class PymataCore:
             try:
                 self.serial_port = PymataSerial(self.com_port, 57600,
                                                 self.sleep_tune, self.log_output)
+                # set the read and write handles
+                self.read = self.serial_port.read
+                self.write = self.serial_port.write
             except serial.SerialException:
                 if self.log_output:
                     log_string = 'Cannot instantiate serial interface: ' \
