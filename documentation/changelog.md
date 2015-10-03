@@ -4,7 +4,7 @@
 3 October 2015
 
 * Added IP support for WiFly module allowing wireless SparkFun RedBot operations
-* FirmataPlus resets Arduino code and variables module when send_reset is called
+* FirmataPlus and FirmataPlusRB resets Arduino code and variables module when send_reset is called
 * Cleanup of Control-C handling
 
 
