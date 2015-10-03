@@ -981,27 +981,27 @@ class PymataCore:
     async def shutdown(self):
         """
         This method attempts an orderly shutdown
+        If any exceptions are thrown, just ignore them.
 
         :returns: No return value
         """
-        try:
-            if self.log_output:
-                logging.info('Shutting down ...')
-            else:
-                print('Shutting down ...')
+        #try:
+        if self.log_output:
+            logging.info('Shutting down ...')
+        else:
+            print('Shutting down ...')
 
-            await self.send_reset()
-            for t in asyncio.Task.all_tasks(self.loop):
-                t.cancel()
-                self.loop.run_until_complete(asyncio.sleep(.01))
+        await self.send_reset()
+
+        try:
             self.loop.stop()
+        except:
+            pass
+        try:
             self.loop.close()
-            # sys.exit(0)
-        except RuntimeError:
-            try:
-                sys.exit(0)
-            except:
-                pass
+        except:
+            pass
+        sys.exit(0)
 
     async def sleep(self, sleep_time):
         """

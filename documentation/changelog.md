@@ -1,4 +1,12 @@
 #Change Log
+
+##Release 2.3
+
+3 October 2015
+
+* Repaired bug in control C handling
+
+
 ##Release 2.2
 
 3 October 2015
