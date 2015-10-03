@@ -155,7 +155,8 @@
 <span class="sd">    the API that you should use..</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arduino_wait</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">log_output</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">com_port</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arduino_wait</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">log_output</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">com_port</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">ip_address</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">ip_port</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">ip_handshake</span><span class="o">=</span><span class="s">&#39;*HELLO*&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for the PyMata3 API</span>
 <span class="sd">        If log_output is set to True, a log file called &#39;pymata_log&#39;</span>
@@ -168,12 +169,16 @@
 <span class="sd">                            console output is redirected to this file.</span>
 <span class="sd">        :param com_port: If specified, auto port detection will not be</span>
 <span class="sd">                         performed and this com port will be used.</span>
+<span class="sd">        :param ip_address: If using a WiFly module, set its address here</span>
+<span class="sd">        :param ip_port: Port to used with ip_address</span>
+<span class="sd">        :param ip_handshake: Connectivity handshake string sent by IP device</span>
+
 <span class="sd">        :returns: None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log_out</span> <span class="o">=</span> <span class="n">log_output</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span> <span class="o">=</span> <span class="o">.</span><span class="mo">001</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">core</span> <span class="o">=</span> <span class="n">PymataCore</span><span class="p">(</span><span class="n">arduino_wait</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span><span class="p">,</span> <span class="n">log_output</span><span class="p">,</span>
-                               <span class="n">com_port</span><span class="p">)</span>
+                               <span class="n">com_port</span><span class="p">,</span> <span class="n">ip_address</span><span class="p">,</span> <span class="n">ip_port</span><span class="p">,</span> <span class="n">ip_handshake</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 

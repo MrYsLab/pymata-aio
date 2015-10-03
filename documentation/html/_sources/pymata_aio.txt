@@ -60,6 +60,14 @@ pymata_aio.pymata_serial module
     :undoc-members:
     :show-inheritance:
 
+pymata_aio.pymata_socket module
+-------------------------------
+
+.. automodule:: pymata_aio.pymata_socket
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------

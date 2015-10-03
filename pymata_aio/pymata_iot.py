@@ -52,6 +52,9 @@ class PymataIOT(WebSocketServerProtocol):
           -comport COM    Arduino COM port
           -sleep SLEEP    sleep tune in ms.
           -log LOG        True = send output to file, False = send output to console
+          -ardIPAddr ADDR Wireless module ip address (WiFly)
+          -ardPort PORT   Wireless module ip port (Wifly)
+          -handshake STR  Wireless device handshake string (WiFly)
     """
     parser = argparse.ArgumentParser()
     parser.add_argument("-host", dest="hostname", default="localhost", help="Server name or IP address")
@@ -60,6 +63,11 @@ class PymataIOT(WebSocketServerProtocol):
     parser.add_argument("-comport", dest="com", default="None", help="Arduino COM port")
     parser.add_argument("-sleep", dest="sleep", default=".001", help="sleep tune in ms.")
     parser.add_argument("-log", dest="log", default="False", help="redirect console output to log file")
+    parser.add_argument("-ardIPAddr", dest="aIPaddr", default="None", help="Arduino IP Address (WiFly")
+    parser.add_argument("-ardPort", dest="aIPport", default="2000", help="Arduino IP port (WiFly")
+    parser.add_argument("-handshake", dest="handshake", default="*HELLO*", help="IP Device Handshake String")
+
+
     args = parser.parse_args()
 
     ip_addr = args.hostname
@@ -75,7 +83,12 @@ class PymataIOT(WebSocketServerProtocol):
     else:
         log = False
 
-    core = PymataCore(int(args.wait), float(args.sleep), log, comport)
+    ard_ip_addr = args.aIPaddr
+    ard_ip_port = args.aIPport
+    ard_handshake = args.handshake
+
+    core = PymataCore(int(args.wait), float(args.sleep), log, comport,
+                      ard_ip_addr, ard_ip_port, ard_handshake)
     core.start()
 
     # noinspection PyMissingConstructor
@@ -433,7 +446,7 @@ class PymataIOT(WebSocketServerProtocol):
 
         await self.core.i2c_read_request(device_address, register, number_of_bytes, read_type,
                                               self.i2c_read_request_callback)
-        await asyncio.sleep(1)
+        await asyncio.sleep(.1)
 
     async def i2c_write_request(self, command):
         """
