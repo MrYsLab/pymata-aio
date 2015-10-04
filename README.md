@@ -2,6 +2,8 @@
 ======
 ##pymata_aio is a high performance, non-blocking, Python asyncio client for the Firmata Protocol that supports the complete StandardFirmata protocol.
 
+[![Join the chat at https://gitter.im/MrYsLab/pymata-aio](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/MrYsLab/pymata-aio?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 
 
 ##Major features
