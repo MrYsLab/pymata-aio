@@ -1,5 +1,13 @@
 #Change Log
 
+##Release 2.4
+
+4 October 2015
+
+* Control C handling removed from pymata_aio internals.
+    * Control C handling must be done by appliction
+    * Control C handler examples my be viewed [here](https://github.com/MrYsLab/pymata-aio/tree/master/examples/control_C_handlers)
+
 ##Release 2.3
 
 3 October 2015
