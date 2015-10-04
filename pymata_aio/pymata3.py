@@ -532,28 +532,8 @@ class PyMata3:
 
         :returns: No return value
         """
-        if not self.log_out:
-            print('Shutting down ...')
-        try:
-            loop = asyncio.get_event_loop()
-            self.send_reset()
-            for t in asyncio.Task.all_tasks(loop):
-                t.cancel()
-            loop.run_until_complete(asyncio.sleep(0.1))
-            loop.close()
-            # keeps pytest happy
-            sys.exit(1)
-        except TypeError:
-            # ignore the error
-            pass
-        except RuntimeError:
-            # ignore
-            pass
-        except Exception as ex:
-            if self.log_out:
-                logging.exception(ex)
-            else:
-                print(ex)
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(self.core.shutdown())
 
     def sonar_data_retrieve(self, trigger_pin):
         """

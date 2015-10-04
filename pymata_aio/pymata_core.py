@@ -19,7 +19,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 import asyncio
 import sys
 import time
-import signal
 import logging
 import glob
 import serial
@@ -28,7 +27,6 @@ from .private_constants import PrivateConstants
 from .pin_data import PinData
 from .pymata_serial import PymataSerial
 from .pymata_socket import PymataSocket
-
 
 # noinspection PyCallingNonCallable,PyCallingNonCallable
 class PymataCore:
@@ -232,9 +230,6 @@ class PymataCore:
 
         # set up signal handler for controlC
         self.loop = asyncio.get_event_loop()
-        for signame in ('SIGINT', 'SIGTERM'):
-            self.loop.add_signal_handler(getattr(signal, signame),
-                                         self._signal_handler)
 
     def start(self):
         """
@@ -1688,15 +1683,3 @@ class PymataCore:
             number_of_bytes -= 1
             await asyncio.sleep(self.sleep_tune)
         return current_command
-
-    def _signal_handler(self):
-        """
-        The 'Control-C' handler
-
-        :returns: never returns.
-        """
-        print('You pressed Ctrl+C!')
-        try:
-            self.loop.run_until_complete(self.shutdown())
-        except RuntimeError:
-            pass
