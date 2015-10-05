@@ -18,7 +18,6 @@
  ***********************************************************************/"""
 
 from pymata_aio.pymata3 import PyMata3
-from pymata_aio.constants import Constants
 from library.redbot import RedBotMotors, RedBotSensor
 
 COM_PORT = None # Use automatic com port detection (the default)

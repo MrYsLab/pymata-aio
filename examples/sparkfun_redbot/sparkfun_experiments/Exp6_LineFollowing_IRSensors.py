@@ -14,8 +14,10 @@
  * Revices, 2 Oct 2015 L Mathews
  ***********************************************************************/"""
 
+import sys
+import signal
+
 from pymata_aio.pymata3 import PyMata3
-from pymata_aio.constants import Constants
 from library.redbot import RedBotSensor
 
 WIFLY_IP_ADDRESS = None            # Leave set as None if not using WiFly
@@ -27,19 +29,26 @@ else:
   COM_PORT = None # Use None for automatic com port detection, or set if needed i.e. "COM7"
   board = PyMata3(com_port=COM_PORT)
 
-# This line "includes" the RedBot library into your sketch.
-# Provides special objects, methods, and functions for the RedBot.
 LEFT_LINE_FOLLOWER = 3  # pin number assignments for each IR sensor
 CENTRE_LINE_FOLLOWER = 6
 RIGHT_LINE_FOLLOWER = 7
-
 
 IR_sensor_1 = RedBotSensor(board, LEFT_LINE_FOLLOWER)
 IR_sensor_2 = RedBotSensor(board, CENTRE_LINE_FOLLOWER)
 IR_sensor_3 = RedBotSensor(board, RIGHT_LINE_FOLLOWER)
 
 
+def signal_handler(sig, frame):
+    """Helper method to shutdown the RedBot if Ctrl-c is pressed"""
+    print('\nYou pressed Ctrl+C')
+    if board is not None:
+        board.send_reset()
+        board.shutdown()
+    sys.exit(0)
+
+
 def setup():
+    signal.signal(signal.SIGINT, signal_handler)
     print("Welcome to Experiment 6!")
     print("------------------------")
 
