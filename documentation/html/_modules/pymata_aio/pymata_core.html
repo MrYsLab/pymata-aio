@@ -152,8 +152,10 @@
 <span class="kn">from</span> <span class="nn">.private_constants</span> <span class="kn">import</span> <span class="n">PrivateConstants</span>
 <span class="kn">from</span> <span class="nn">.pin_data</span> <span class="kn">import</span> <span class="n">PinData</span>
 <span class="kn">from</span> <span class="nn">.pymata_serial</span> <span class="kn">import</span> <span class="n">PymataSerial</span>
+<span class="kn">from</span> <span class="nn">.pymata_socket</span> <span class="kn">import</span> <span class="n">PymataSocket</span>
 
 
+<span class="c"># noinspection PyCallingNonCallable,PyCallingNonCallable</span>
 <div class="viewcode-block" id="PymataCore"><a class="viewcode-back" href="../../pymata_aio.html#pymata_aio.pymata_core.PymataCore">[docs]</a><span class="k">class</span> <span class="nc">PymataCore</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This class exposes and implements the pymata_core asyncio API,</span>
@@ -166,7 +168,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arduino_wait</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sleep_tune</span><span class="o">=.</span><span class="mo">001</span><span class="p">,</span> <span class="n">log_output</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-                 <span class="n">com_port</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+                 <span class="n">com_port</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">ip_address</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">ip_port</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span>
+                 <span class="n">ip_handshake</span><span class="o">=</span><span class="s">&#39;*HELLO*&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This is the &quot;constructor&quot; method for the PymataCore class.</span>
 
@@ -184,6 +187,10 @@
 <span class="sd">                           redirected to log file.</span>
 <span class="sd">        :param com_port: Manually selected com port - normally it is</span>
 <span class="sd">                         auto-detected</span>
+<span class="sd">        :param ip_address: If using a WiFly module, set its address here</span>
+<span class="sd">        :param ip_port: Port to used with ip_address</span>
+<span class="sd">        :param ip_handshake: Connectivity handshake string sent by IP device</span>
+
 <span class="sd">        :returns: This method never returns</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c"># check to make sure that Python interpreter is version 3.5 or greater</span>
@@ -203,6 +210,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span> <span class="o">=</span> <span class="n">sleep_tune</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">arduino_wait</span> <span class="o">=</span> <span class="n">arduino_wait</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">com_port</span> <span class="o">=</span> <span class="n">com_port</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ip_address</span> <span class="o">=</span> <span class="n">ip_address</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ip_port</span> <span class="o">=</span> <span class="n">ip_port</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ip_handshake</span> <span class="o">=</span> <span class="n">ip_handshake</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">hall_encoder</span> <span class="o">=</span> <span class="bp">False</span>
 
@@ -316,8 +326,16 @@
                                   <span class="s">&#39;rights reserved.</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">))</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="n">com_port</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">com_port</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">ip_address</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">com_port</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_discover_port</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_output</span><span class="p">:</span>
+                <span class="n">log_string</span> <span class="o">=</span> <span class="s">&#39;Using Ip Address/Port: &#39;</span> <span class="o">+</span> <span class="n">ip_address</span> <span class="o">+</span>\
+                    <span class="s">&#39;:&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ip_port</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">log_string</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&#39;Using Ip Address/Port: &#39;</span> <span class="o">+</span>
+                      <span class="bp">self</span><span class="o">.</span><span class="n">ip_address</span> <span class="o">+</span> <span class="s">&#39;:&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ip_port</span><span class="p">))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span> <span class="o">=</span> <span class="n">sleep_tune</span>
 
@@ -327,6 +345,18 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">loop</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">the_task</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">serial_port</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">socket</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="c"># The correct reader and writer methods will be set after</span>
+        <span class="c"># the system detects if a serial or socket connection was chosen</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">read</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="c"># set up signal handler for controlC</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">signame</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;SIGINT&#39;</span><span class="p">,</span> <span class="s">&#39;SIGTERM&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">loop</span><span class="o">.</span><span class="n">add_signal_handler</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">signame</span><span class="p">),</span>
+                                         <span class="bp">self</span><span class="o">.</span><span class="n">_signal_handler</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PymataCore.start"><a class="viewcode-back" href="../../pymata_aio.html#pymata_aio.pymata_core.PymataCore.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -338,19 +368,31 @@
 
 <span class="sd">        :returns: No return value.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
 
-        <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">serial_port</span> <span class="o">=</span> <span class="n">PymataSerial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">com_port</span><span class="p">,</span> <span class="mi">57600</span><span class="p">,</span>
-                                            <span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_output</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">serial</span><span class="o">.</span><span class="n">SerialException</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_output</span><span class="p">:</span>
-                <span class="n">log_string</span> <span class="o">=</span> <span class="s">&#39;Cannot instantiate serial interface: &#39;</span> \
-                             <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">com_port</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">log_string</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">print</span><span class="p">(</span><span class="s">&#39;Cannot instantiate serial interface: &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">com_port</span><span class="p">)</span>
-            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c"># check if user specified a socket transport</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ip_address</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">socket</span> <span class="o">=</span> <span class="n">PymataSocket</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ip_address</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ip_port</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">loop</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">start</span><span class="p">()))</span>
+            <span class="c"># set the read and write handles</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">read</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">read</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">write</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">write</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ip_handshake</span><span class="p">)):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">()))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">serial_port</span> <span class="o">=</span> <span class="n">PymataSerial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">com_port</span><span class="p">,</span> <span class="mi">57600</span><span class="p">,</span>
+                                                <span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_output</span><span class="p">)</span>
+                <span class="c"># set the read and write handles</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">read</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serial_port</span><span class="o">.</span><span class="n">read</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">write</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serial_port</span><span class="o">.</span><span class="n">write</span>
+            <span class="k">except</span> <span class="n">serial</span><span class="o">.</span><span class="n">SerialException</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_output</span><span class="p">:</span>
+                    <span class="n">log_string</span> <span class="o">=</span> <span class="s">&#39;Cannot instantiate serial interface: &#39;</span> \
+                                 <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">com_port</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">log_string</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Cannot instantiate serial interface: &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">com_port</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
         <span class="c"># wait for arduino to go through a reset cycle if need be</span>
         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arduino_wait</span><span class="p">)</span>
@@ -366,12 +408,17 @@
         <span class="n">report</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_analog_map</span><span class="p">())</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">report</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_output</span><span class="p">:</span>
-                <span class="n">log_string</span> <span class="o">=</span> <span class="s">&#39;*** Analog map query timed out waiting for port:&#39;</span> \
-                             <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">serial_port</span><span class="o">.</span><span class="n">com_port</span>
+                <span class="n">log_string</span> <span class="o">=</span> <span class="s">&#39;*** Analog map retrieval timed out. ***&#39;</span>
+
                 <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">log_string</span><span class="p">)</span>
+                <span class="n">log_string</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">Do you have Arduino connectivity and do you &#39;</span> \
+                             <span class="s">&#39;have a Firmata sketch uploaded to the board?&#39;</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">log_string</span><span class="p">)</span>
+
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">Is your Arduino plugged in and do you have a Firmata s&#39;</span>
-                      <span class="s">&#39;ketch uploaded to the board?&#39;</span><span class="p">)</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&#39;*** Analog map retrieval timed out. ***&#39;</span><span class="p">)</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">Do you have Arduino connectivity and do you have a &#39;</span>
+                      <span class="s">&#39;Firmata sketch uploaded to the board?&#39;</span><span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
                 <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Task</span><span class="o">.</span><span class="n">all_tasks</span><span class="p">(</span><span class="n">loop</span><span class="p">):</span>
@@ -416,19 +463,38 @@
 
 <span class="sd">        :returns: No return value.</span>
 <span class="sd">         &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
 
-        <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">serial_port</span> <span class="o">=</span> <span class="n">PymataSerial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">com_port</span><span class="p">,</span> <span class="mi">57600</span><span class="p">,</span>
-                                            <span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_output</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">serial</span><span class="o">.</span><span class="n">SerialException</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_output</span><span class="p">:</span>
-                <span class="n">log_string</span> <span class="o">=</span> <span class="s">&#39;Cannot instantiate serial interface: &#39;</span> <span class="o">+</span> \
-                             <span class="bp">self</span><span class="o">.</span><span class="n">com_port</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">log_string</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">print</span><span class="p">(</span><span class="s">&#39;Cannot instantiate serial interface: &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">com_port</span><span class="p">)</span>
-            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c"># pick the desired transport and then setup read and write to</span>
+        <span class="c"># point to the correct method for the transport</span>
+
+        <span class="c"># check if user specified a socket transport</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ip_address</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">socket</span> <span class="o">=</span> <span class="n">PymataSocket</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ip_address</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ip_port</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">loop</span><span class="p">)</span>
+            <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+            <span class="c"># set the read and write handles</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">read</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">read</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">write</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">write</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ip_handshake</span><span class="p">)):</span>
+                <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">serial_port</span> <span class="o">=</span> <span class="n">PymataSerial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">com_port</span><span class="p">,</span> <span class="mi">57600</span><span class="p">,</span>
+                                                <span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span><span class="p">,</span>
+                                                <span class="bp">self</span><span class="o">.</span><span class="n">log_output</span><span class="p">)</span>
+
+                <span class="c"># set the read and write handles</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">read</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serial_port</span><span class="o">.</span><span class="n">read</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">write</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serial_port</span><span class="o">.</span><span class="n">write</span>
+
+            <span class="k">except</span> <span class="n">serial</span><span class="o">.</span><span class="n">SerialException</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_output</span><span class="p">:</span>
+                    <span class="n">log_string</span> <span class="o">=</span> <span class="s">&#39;Cannot instantiate serial interface: &#39;</span> <span class="o">+</span> \
+                                 <span class="bp">self</span><span class="o">.</span><span class="n">com_port</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">log_string</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Cannot instantiate serial interface: &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">com_port</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
         <span class="c"># wait for arduino to go through a reset cycle if need be</span>
         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arduino_wait</span><span class="p">)</span>
@@ -445,13 +511,17 @@
         <span class="n">report</span> <span class="o">=</span> <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_analog_map</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">report</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_output</span><span class="p">:</span>
-                <span class="n">log_string</span> <span class="o">=</span> <span class="s">&#39;*** Analog map query timed out waiting for &#39;</span> \
-                             <span class="s">&#39;port:&#39;</span> <span class="o">+</span> \
-                             <span class="bp">self</span><span class="o">.</span><span class="n">serial_port</span><span class="o">.</span><span class="n">com_port</span>
+                <span class="n">log_string</span> <span class="o">=</span> <span class="s">&#39;*** Analog map retrieval timed out. ***&#39;</span>
+
                 <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">log_string</span><span class="p">)</span>
+                <span class="n">log_string</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">Do you have Arduino connectivity and do you &#39;</span> \
+                             <span class="s">&#39;have a Firmata sketch uploaded to the board?&#39;</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">log_string</span><span class="p">)</span>
+
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">Is your Arduino plugged in and do you have a Firmata &#39;</span>
-                      <span class="s">&#39;sketch uploaded to the board?&#39;</span><span class="p">)</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&#39;*** Analog map retrieval timed out. ***&#39;</span><span class="p">)</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">Do you have Arduino connectivity and do you have a &#39;</span>
+                      <span class="s">&#39;Firmata sketch uploaded to the board?&#39;</span><span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
                 <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Task</span><span class="o">.</span><span class="n">all_tasks</span><span class="p">(</span><span class="n">loop</span><span class="p">):</span>
@@ -1036,14 +1106,21 @@
 
 <span class="sd">        :returns: No return value</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_output</span><span class="p">:</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Shutting down ...&#39;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">print</span><span class="p">(</span><span class="s">&#39;Shutting down ...&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_output</span><span class="p">:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Shutting down ...&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&#39;Shutting down ...&#39;</span><span class="p">)</span>
 
-        <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_reset</span><span class="p">()</span>
-        <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">signal</span><span class="o">.</span><span class="n">alarm</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_reset</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Task</span><span class="o">.</span><span class="n">all_tasks</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loop</span><span class="p">):</span>
+                <span class="n">t</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="o">.</span><span class="mo">01</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">loop</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">loop</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="c"># sys.exit(0)</span>
+        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="PymataCore.sleep"><a class="viewcode-back" href="../../pymata_aio.html#pymata_aio.pymata_core.PymataCore.sleep">[docs]</a>    <span class="n">async</span> <span class="k">def</span> <span class="nf">sleep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sleep_time</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1172,13 +1249,13 @@
 
         <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">next_command_byte</span> <span class="o">=</span> <span class="n">await</span>  <span class="bp">self</span><span class="o">.</span><span class="n">serial_port</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                <span class="n">next_command_byte</span> <span class="o">=</span> <span class="n">await</span>  <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
                 <span class="c"># if this is a SYSEX command, then assemble the entire</span>
                 <span class="c"># command process it</span>
                 <span class="k">if</span> <span class="n">next_command_byte</span> <span class="o">==</span> <span class="n">PrivateConstants</span><span class="o">.</span><span class="n">START_SYSEX</span><span class="p">:</span>
                     <span class="k">while</span> <span class="n">next_command_byte</span> <span class="o">!=</span> <span class="n">PrivateConstants</span><span class="o">.</span><span class="n">END_SYSEX</span><span class="p">:</span>
                         <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span><span class="p">)</span>
-                        <span class="n">next_command_byte</span> <span class="o">=</span> <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">serial_port</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                        <span class="n">next_command_byte</span> <span class="o">=</span> <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
                         <span class="n">sysex</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">next_command_byte</span><span class="p">)</span>
                     <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">command_dictionary</span><span class="p">[</span><span class="n">sysex</span><span class="p">[</span><span class="mi">0</span><span class="p">]](</span><span class="n">sysex</span><span class="p">)</span>
                     <span class="n">sysex</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1444,9 +1521,9 @@
 <span class="sd">        :returns: None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c"># get next two bytes</span>
-        <span class="n">major</span> <span class="o">=</span> <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">serial_port</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">major</span> <span class="o">=</span> <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
         <span class="n">version_string</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">major</span><span class="p">)</span>
-        <span class="n">minor</span> <span class="o">=</span> <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">serial_port</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">minor</span> <span class="o">=</span> <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
         <span class="n">version_string</span> <span class="o">+=</span> <span class="s">&#39;.&#39;</span>
         <span class="n">version_string</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">minor</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">query_reply_data</span><span class="p">[</span><span class="n">PrivateConstants</span><span class="o">.</span><span class="n">REPORT_VERSION</span><span class="p">]</span> <span class="o">=</span> <span class="n">version_string</span>
@@ -1683,7 +1760,7 @@
         <span class="n">result</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">send_message</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">result</span> <span class="o">=</span> <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">serial_port</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
             <span class="k">except</span><span class="p">():</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_output</span><span class="p">:</span>
                     <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;cannot send command&#39;</span><span class="p">)</span>
@@ -1712,7 +1789,7 @@
         <span class="n">sysex_message</span> <span class="o">+=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">PrivateConstants</span><span class="o">.</span><span class="n">END_SYSEX</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">sysex_message</span><span class="p">:</span>
-            <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">serial_port</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
     <span class="n">async</span> <span class="k">def</span> <span class="nf">_wait_for_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_command</span><span class="p">,</span> <span class="n">number_of_bytes</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1725,50 +1802,23 @@
 <span class="sd">        :returns: command</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">while</span> <span class="n">number_of_bytes</span><span class="p">:</span>
-            <span class="n">next_command_byte</span> <span class="o">=</span> <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">serial_port</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="n">next_command_byte</span> <span class="o">=</span> <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
             <span class="n">current_command</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">next_command_byte</span><span class="p">)</span>
             <span class="n">number_of_bytes</span> <span class="o">-=</span> <span class="mi">1</span>
             <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">current_command</span>
 
+    <span class="k">def</span> <span class="nf">_signal_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The &#39;Control-C&#39; handler</span>
 
-<span class="c"># noinspection PyUnusedLocal</span></div>
-<span class="k">def</span> <span class="nf">_signal_handler</span><span class="p">(</span><span class="n">the_signal</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The &#39;Control-C&#39; handler</span>
-
-<span class="sd">    :param the_signal: signal</span>
-<span class="sd">    :param frame: not used</span>
-<span class="sd">    :returns: never returns.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">print</span><span class="p">(</span><span class="s">&#39;You pressed Ctrl+C!&#39;</span><span class="p">)</span>
-    <span class="c"># To get coverage data or profiling data the code using pymata_iot,</span>
-    <span class="c"># uncomment out the following line</span>
-    <span class="c"># exit()</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="c">#</span>
-        <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Task</span><span class="o">.</span><span class="n">all_tasks</span><span class="p">(</span><span class="n">loop</span><span class="p">):</span>
-            <span class="k">print</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-            <span class="n">t</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
-        <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="o">.</span><span class="mo">01</span><span class="p">))</span>
-        <span class="n">loop</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
-        <span class="n">loop</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
-        <span class="c"># this suppresses the Event Loop Is Running message,</span>
-        <span class="c"># Which may be a bug in python 3</span>
-        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-
-
-<span class="c">#</span>
-<span class="c">#</span>
-<span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="n">_signal_handler</span><span class="p">)</span>
-<span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGTERM</span><span class="p">,</span> <span class="n">_signal_handler</span><span class="p">)</span>
-
-<span class="c"># add SIGALRM if not platform is not windows</span>
-<span class="k">if</span> <span class="ow">not</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;win32&#39;</span><span class="p">):</span>
-    <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGALRM</span><span class="p">,</span> <span class="n">_signal_handler</span><span class="p">)</span>
+<span class="sd">        :returns: never returns.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;You pressed Ctrl+C!&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shutdown</span><span class="p">())</span>
+        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+            <span class="k">pass</span></div>
 </pre></div>
 
            </div>

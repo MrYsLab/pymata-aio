@@ -84,8 +84,9 @@
 <li class="toctree-l2"><a class="reference internal" href="#module-pymata_aio.private_constants">pymata_aio.private_constants module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-pymata_aio.pymata3">pymata_aio.pymata3 module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-pymata_aio.pymata_core">pymata_aio.pymata_core module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="https://github.com/MrYsLab/pymata-aio/wiki/JSON-API-for-pymata_iot">pymata_aio.pymata_iot module</a></li>
+ <li class="toctree-l2"><a class="reference internal" href="https://github.com/MrYsLab/pymata-aio/wiki/JSON-API-for-pymata_iot">pymata_aio.pymata_iot module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-pymata_aio.pymata_serial">pymata_aio.pymata_serial module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pymata_aio.pymata_socket">pymata_aio.pymata_socket module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-pymata_aio">Module contents</a></li>
 </ul>
 </li>
@@ -528,7 +529,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA</p>
 
 <dl class="attribute">
 <dt id="pymata_aio.private_constants.PrivateConstants.PYMATA_VERSION">
-<code class="descname">PYMATA_VERSION</code><em class="property"> = '2.1'</em><a class="headerlink" href="#pymata_aio.private_constants.PrivateConstants.PYMATA_VERSION" title="Permalink to this definition">¶</a></dt>
+<code class="descname">PYMATA_VERSION</code><em class="property"> = '2.2'</em><a class="headerlink" href="#pymata_aio.private_constants.PrivateConstants.PYMATA_VERSION" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -655,7 +656,7 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA</p>
 <dl class="class">
 <dt id="pymata_aio.pymata3.PyMata3">
-<em class="property">class </em><code class="descclassname">pymata_aio.pymata3.</code><code class="descname">PyMata3</code><span class="sig-paren">(</span><em>arduino_wait=2</em>, <em>log_output=False</em>, <em>com_port=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymata_aio/pymata3.html#PyMata3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymata_aio.pymata3.PyMata3" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pymata_aio.pymata3.</code><code class="descname">PyMata3</code><span class="sig-paren">(</span><em>arduino_wait=2</em>, <em>log_output=False</em>, <em>com_port=None</em>, <em>ip_address=None</em>, <em>ip_port=2000</em>, <em>ip_handshake='*HELLO*'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymata_aio/pymata3.html#PyMata3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymata_aio.pymata3.PyMata3" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>This class exposes and implements a proxy API for the pymata_core asyncio
 API,  If your application does not use asyncio directly, this is
@@ -1435,7 +1436,7 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA</p>
 <dl class="class">
 <dt id="pymata_aio.pymata_core.PymataCore">
-<em class="property">class </em><code class="descclassname">pymata_aio.pymata_core.</code><code class="descname">PymataCore</code><span class="sig-paren">(</span><em>arduino_wait=2</em>, <em>sleep_tune=0.001</em>, <em>log_output=False</em>, <em>com_port=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymata_aio/pymata_core.html#PymataCore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymata_aio.pymata_core.PymataCore" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pymata_aio.pymata_core.</code><code class="descname">PymataCore</code><span class="sig-paren">(</span><em>arduino_wait=2</em>, <em>sleep_tune=0.001</em>, <em>log_output=False</em>, <em>com_port=None</em>, <em>ip_address=None</em>, <em>ip_port=2000</em>, <em>ip_handshake='*HELLO*'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymata_aio/pymata_core.html#PymataCore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymata_aio.pymata_core.PymataCore" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>This class exposes and implements the pymata_core asyncio API,
 It includes the public API methods as well as
@@ -2219,7 +2220,7 @@ positive is forward, negative is reverse</li>
 
 </div>
 <div class="section" id="pymata-aio-pymata-iot-module">
-<h2>>Click for <a href="https://github.com/MrYsLab/pymata-aio/wiki/JSON-API-for-pymata_iot" >pymata_aio.pymata_iot module</a></h2>
+<h2>><a href="https://github.com/MrYsLab/pymata-aio/wiki/JSON-API-for-pymata_iot" >pymata_aio.pymata_iot module</a></h2>
 </div>
 <div class="section" id="module-pymata_aio.pymata_serial">
 <span id="pymata-aio-pymata-serial-module"></span><h2>pymata_aio.pymata_serial module<a class="headerlink" href="#module-pymata_aio.pymata_serial" title="Permalink to this headline">¶</a></h2>
@@ -2318,6 +2319,70 @@ completion</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> &#8211; Data to be written</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Number of bytes written</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymata_aio.pymata_socket">
+<span id="pymata-aio-pymata-socket-module"></span><h2>pymata_aio.pymata_socket module<a class="headerlink" href="#module-pymata_aio.pymata_socket" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (c) 2015 Alan Yorinks All rights reserved.</p>
+<p>This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public
+License as published by the Free Software Foundation; either
+version 3 of the License, or (at your option) any later version.</p>
+<p>This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.</p>
+<p>You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA</p>
+<dl class="class">
+<dt id="pymata_aio.pymata_socket.PymataSocket">
+<em class="property">class </em><code class="descclassname">pymata_aio.pymata_socket.</code><code class="descname">PymataSocket</code><span class="sig-paren">(</span><em>ip_address</em>, <em>port</em>, <em>loop</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymata_aio/pymata_socket.html#PymataSocket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymata_aio.pymata_socket.PymataSocket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="pymata_aio.pymata_socket.PymataSocket.read">
+<code class="descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymata_aio/pymata_socket.html#PymataSocket.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymata_aio.pymata_socket.PymataSocket.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method reads one byte of data from IP device</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Next byte</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymata_aio.pymata_socket.PymataSocket.start">
+<code class="descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymata_aio/pymata_socket.html#PymataSocket.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymata_aio.pymata_socket.PymataSocket.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method opens an IP connection on the IP device</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymata_aio.pymata_socket.PymataSocket.write">
+<code class="descname">write</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymata_aio/pymata_socket.html#PymataSocket.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymata_aio.pymata_socket.PymataSocket.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method writes sends data to the IP device
+:param data:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
 </tr>
 </tbody>
 </table>

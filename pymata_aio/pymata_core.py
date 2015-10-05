@@ -19,7 +19,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 import asyncio
 import sys
 import time
-import signal
 import logging
 import glob
 import serial
@@ -27,8 +26,9 @@ from .constants import Constants
 from .private_constants import PrivateConstants
 from .pin_data import PinData
 from .pymata_serial import PymataSerial
+from .pymata_socket import PymataSocket
 
-
+# noinspection PyCallingNonCallable,PyCallingNonCallable
 class PymataCore:
     """
     This class exposes and implements the pymata_core asyncio API,
@@ -41,7 +41,8 @@ class PymataCore:
     """
 
     def __init__(self, arduino_wait=2, sleep_tune=.001, log_output=False,
-                 com_port=None):
+                 com_port=None, ip_address=None, ip_port=2000,
+                 ip_handshake='*HELLO*'):
         """
         This is the "constructor" method for the PymataCore class.
 
@@ -59,6 +60,10 @@ class PymataCore:
                            redirected to log file.
         :param com_port: Manually selected com port - normally it is
                          auto-detected
+        :param ip_address: If using a WiFly module, set its address here
+        :param ip_port: Port to used with ip_address
+        :param ip_handshake: Connectivity handshake string sent by IP device
+
         :returns: This method never returns
         """
         # check to make sure that Python interpreter is version 3.5 or greater
@@ -78,6 +83,12 @@ class PymataCore:
         self.sleep_tune = sleep_tune
         self.arduino_wait = arduino_wait
         self.com_port = com_port
+        if ip_address == 'None':
+            self.ip_address = None
+        else:
+            self.ip_address = ip_address
+        self.ip_port = int(ip_port)
+        self.ip_handshake = ip_handshake
 
         self.hall_encoder = False
 
@@ -191,8 +202,16 @@ class PymataCore:
                                   'rights reserved.\n'))
             sys.stdout.flush()
 
-        if com_port is None:
+        if self.com_port is None and self.ip_address is None:
             self.com_port = self._discover_port()
+        else:
+            if self.log_output:
+                log_string = 'Using Ip Address/Port: ' + self.ip_address +\
+                    ':' + str(ip_port)
+                logging.info(log_string)
+            else:
+                print('Using Ip Address/Port: ' +
+                      self.ip_address + ':' + str(self.ip_port))
 
         self.sleep_tune = sleep_tune
 
@@ -202,6 +221,15 @@ class PymataCore:
         self.loop = None
         self.the_task = None
         self.serial_port = None
+        self.socket = None
+
+        # The correct reader and writer methods will be set after
+        # the system detects if a serial or socket connection was chosen
+        self.read = None
+        self.write = None
+
+        # set up signal handler for controlC
+        self.loop = asyncio.get_event_loop()
 
     def start(self):
         """
@@ -213,19 +241,31 @@ class PymataCore:
 
         :returns: No return value.
         """
-        self.loop = asyncio.get_event_loop()
 
-        try:
-            self.serial_port = PymataSerial(self.com_port, 57600,
-                                            self.sleep_tune, self.log_output)
-        except serial.SerialException:
-            if self.log_output:
-                log_string = 'Cannot instantiate serial interface: ' \
-                             + self.com_port
-                logging.exception(log_string)
-            else:
-                print('Cannot instantiate serial interface: ' + self.com_port)
-            sys.exit(0)
+        # check if user specified a socket transport
+        if self.ip_address:
+            self.socket = PymataSocket(self.ip_address, self.ip_port, self.loop)
+            self.loop.run_until_complete((self.socket.start()))
+            # set the read and write handles
+            self.read = self.socket.read
+            self.write = self.socket.write
+            for i in range(0, len(self.ip_handshake)):
+                self.loop.run_until_complete((self.read()))
+        else:
+            try:
+                self.serial_port = PymataSerial(self.com_port, 57600,
+                                                self.sleep_tune, self.log_output)
+                # set the read and write handles
+                self.read = self.serial_port.read
+                self.write = self.serial_port.write
+            except serial.SerialException:
+                if self.log_output:
+                    log_string = 'Cannot instantiate serial interface: ' \
+                                 + self.com_port
+                    logging.exception(log_string)
+                else:
+                    print('Cannot instantiate serial interface: ' + self.com_port)
+                sys.exit(0)
 
         # wait for arduino to go through a reset cycle if need be
         time.sleep(self.arduino_wait)
@@ -241,12 +281,17 @@ class PymataCore:
         report = self.loop.run_until_complete(self.get_analog_map())
         if not report:
             if self.log_output:
-                log_string = '*** Analog map query timed out waiting for port:' \
-                             + self.serial_port.com_port
+                log_string = '*** Analog map retrieval timed out. ***'
+
                 logging.exception(log_string)
+                log_string = '\nDo you have Arduino connectivity and do you ' \
+                             'have a Firmata sketch uploaded to the board?'
+                logging.exception(log_string)
+
             else:
-                print('\nIs your Arduino plugged in and do you have a Firmata s'
-                      'ketch uploaded to the board?')
+                print('*** Analog map retrieval timed out. ***')
+                print('\nDo you have Arduino connectivity and do you have a '
+                      'Firmata sketch uploaded to the board?')
             try:
                 loop = asyncio.get_event_loop()
                 for t in asyncio.Task.all_tasks(loop):
@@ -291,19 +336,38 @@ class PymataCore:
 
         :returns: No return value.
          """
-        self.loop = asyncio.get_event_loop()
 
-        try:
-            self.serial_port = PymataSerial(self.com_port, 57600,
-                                            self.sleep_tune, self.log_output)
-        except serial.SerialException:
-            if self.log_output:
-                log_string = 'Cannot instantiate serial interface: ' + \
-                             self.com_port
-                logging.exception(log_string)
-            else:
-                print('Cannot instantiate serial interface: ' + self.com_port)
-            sys.exit(0)
+        # pick the desired transport and then setup read and write to
+        # point to the correct method for the transport
+
+        # check if user specified a socket transport
+        if self.ip_address:
+            self.socket = PymataSocket(self.ip_address, self.ip_port, self.loop)
+            await self.socket.start()
+            # set the read and write handles
+            self.read = self.socket.read
+            self.write = self.socket.write
+            for i in range(0, len(self.ip_handshake)):
+                await self.read()
+
+        else:
+            try:
+                self.serial_port = PymataSerial(self.com_port, 57600,
+                                                self.sleep_tune,
+                                                self.log_output)
+
+                # set the read and write handles
+                self.read = self.serial_port.read
+                self.write = self.serial_port.write
+
+            except serial.SerialException:
+                if self.log_output:
+                    log_string = 'Cannot instantiate serial interface: ' + \
+                                 self.com_port
+                    logging.exception(log_string)
+                else:
+                    print('Cannot instantiate serial interface: ' + self.com_port)
+                sys.exit(0)
 
         # wait for arduino to go through a reset cycle if need be
         time.sleep(self.arduino_wait)
@@ -320,13 +384,17 @@ class PymataCore:
         report = await self.get_analog_map()
         if not report:
             if self.log_output:
-                log_string = '*** Analog map query timed out waiting for ' \
-                             'port:' + \
-                             self.serial_port.com_port
+                log_string = '*** Analog map retrieval timed out. ***'
+
                 logging.exception(log_string)
+                log_string = '\nDo you have Arduino connectivity and do you ' \
+                             'have a Firmata sketch uploaded to the board?'
+                logging.exception(log_string)
+
             else:
-                print('\nIs your Arduino plugged in and do you have a Firmata '
-                      'sketch uploaded to the board?')
+                print('*** Analog map retrieval timed out. ***')
+                print('\nDo you have Arduino connectivity and do you have a '
+                      'Firmata sketch uploaded to the board?')
             try:
                 loop = asyncio.get_event_loop()
                 for t in asyncio.Task.all_tasks(loop):
@@ -908,17 +976,27 @@ class PymataCore:
     async def shutdown(self):
         """
         This method attempts an orderly shutdown
+        If any exceptions are thrown, just ignore them.
 
         :returns: No return value
         """
+        #try:
         if self.log_output:
             logging.info('Shutting down ...')
         else:
             print('Shutting down ...')
 
         await self.send_reset()
-        await asyncio.sleep(1)
-        signal.alarm(1)
+
+        try:
+            self.loop.stop()
+        except:
+            pass
+        try:
+            self.loop.close()
+        except:
+            pass
+        sys.exit(0)
 
     async def sleep(self, sleep_time):
         """
@@ -1047,13 +1125,13 @@ class PymataCore:
 
         while True:
             try:
-                next_command_byte = await  self.serial_port.read()
+                next_command_byte = await  self.read()
                 # if this is a SYSEX command, then assemble the entire
                 # command process it
                 if next_command_byte == PrivateConstants.START_SYSEX:
                     while next_command_byte != PrivateConstants.END_SYSEX:
                         await asyncio.sleep(self.sleep_tune)
-                        next_command_byte = await self.serial_port.read()
+                        next_command_byte = await self.read()
                         sysex.append(next_command_byte)
                     await self.command_dictionary[sysex[0]](sysex)
                     sysex = []
@@ -1319,9 +1397,9 @@ class PymataCore:
         :returns: None
         """
         # get next two bytes
-        major = await self.serial_port.read()
+        major = await self.read()
         version_string = str(major)
-        minor = await self.serial_port.read()
+        minor = await self.read()
         version_string += '.'
         version_string += str(minor)
         self.query_reply_data[PrivateConstants.REPORT_VERSION] = version_string
@@ -1558,7 +1636,7 @@ class PymataCore:
         result = None
         for data in send_message:
             try:
-                result = await self.serial_port.write(data)
+                result = await self.write(data)
             except():
                 if self.log_output:
                     logging.exception('cannot send command')
@@ -1587,7 +1665,7 @@ class PymataCore:
         sysex_message += chr(PrivateConstants.END_SYSEX)
 
         for data in sysex_message:
-            await self.serial_port.write(data)
+            await self.write(data)
 
     async def _wait_for_data(self, current_command, number_of_bytes):
         """
@@ -1600,47 +1678,8 @@ class PymataCore:
         :returns: command
         """
         while number_of_bytes:
-            next_command_byte = await self.serial_port.read()
+            next_command_byte = await self.read()
             current_command.append(next_command_byte)
             number_of_bytes -= 1
             await asyncio.sleep(self.sleep_tune)
         return current_command
-
-
-# noinspection PyUnusedLocal
-def _signal_handler(the_signal, frame):
-    """
-    The 'Control-C' handler
-
-    :param the_signal: signal
-    :param frame: not used
-    :returns: never returns.
-    """
-    print('You pressed Ctrl+C!')
-    # To get coverage data or profiling data the code using pymata_iot,
-    # uncomment out the following line
-    # exit()
-    try:
-        #
-        loop = asyncio.get_event_loop()
-        for t in asyncio.Task.all_tasks(loop):
-            print(t)
-            t.cancel()
-        loop.run_until_complete(asyncio.sleep(.01))
-        loop.stop()
-        loop.close()
-        sys.exit(0)
-    except RuntimeError:
-        # this suppresses the Event Loop Is Running message,
-        # Which may be a bug in python 3
-        sys.exit(1)
-
-
-#
-#
-signal.signal(signal.SIGINT, _signal_handler)
-signal.signal(signal.SIGTERM, _signal_handler)
-
-# add SIGALRM if not platform is not windows
-if not sys.platform.startswith('win32'):
-    signal.signal(signal.SIGALRM, _signal_handler)
