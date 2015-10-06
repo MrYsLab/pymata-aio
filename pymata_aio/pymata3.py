@@ -30,7 +30,8 @@ class PyMata3:
     the API that you should use..
     """
 
-    def __init__(self, arduino_wait=2, log_output=False, com_port=None):
+    def __init__(self, arduino_wait=2, log_output=False, com_port=None,
+                 ip_address=None, ip_port=2000, ip_handshake='*HELLO*'):
         """
         Constructor for the PyMata3 API
         If log_output is set to True, a log file called 'pymata_log'
@@ -43,12 +44,16 @@ class PyMata3:
                             console output is redirected to this file.
         :param com_port: If specified, auto port detection will not be
                          performed and this com port will be used.
+        :param ip_address: If using a WiFly module, set its address here
+        :param ip_port: Port to used with ip_address
+        :param ip_handshake: Connectivity handshake string sent by IP device
+
         :returns: None
         """
         self.log_out = log_output
         self.sleep_tune = .001
         self.core = PymataCore(arduino_wait, self.sleep_tune, log_output,
-                               com_port)
+                               com_port, ip_address, ip_port, ip_handshake)
         self.core.start()
         self.sleep(1)
 
@@ -527,28 +532,8 @@ class PyMata3:
 
         :returns: No return value
         """
-        if not self.log_out:
-            print('Shutting down ...')
-        try:
-            loop = asyncio.get_event_loop()
-            self.send_reset()
-            for t in asyncio.Task.all_tasks(loop):
-                t.cancel()
-            loop.run_until_complete(asyncio.sleep(0.1))
-            loop.close()
-            # keeps pytest happy
-            sys.exit(1)
-        except TypeError:
-            # ignore the error
-            pass
-        except RuntimeError:
-            # ignore
-            pass
-        except Exception as ex:
-            if self.log_out:
-                logging.exception(ex)
-            else:
-                print(ex)
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(self.core.shutdown())
 
     def sonar_data_retrieve(self, trigger_pin):
         """

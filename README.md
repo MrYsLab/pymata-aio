@@ -2,6 +2,8 @@
 ======
 ##pymata_aio is a high performance, non-blocking, Python asyncio client for the Firmata Protocol that supports the complete StandardFirmata protocol.
 
+[![Join the chat at https://gitter.im/MrYsLab/pymata-aio](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/MrYsLab/pymata-aio?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 
 
 ##Major features
@@ -16,7 +18,6 @@
           * After downloading and invoking **pymata_iot**, [**control your Arduino from a webpage!**](http://mryslab.github.io/pymata-aio/examples/uno_iot_tester.html)
 * **Implements 100% of the StandardFirmata Protocol (StandardFirmata 2.43).**
 * **Auto-detects Arduino COM ports.**
-* **Provides an Integrated Control-C Handler**
 * **FirmataPlus (enhanced StandaradFirmata sketch) included with distribution. It adds support for:**
      * **HC-SRO4 Ultrasonic Distance Sensors using a single pin.**
      * **Stepper Motors.**
