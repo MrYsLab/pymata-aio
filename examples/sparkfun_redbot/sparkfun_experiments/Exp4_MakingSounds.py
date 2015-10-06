@@ -17,7 +17,7 @@ from pymata_aio.constants import Constants
 # This line "includes" the RedBot library into your sketch.
 # Provides special objects, methods, and functions for the RedBot.
 
-board = PyMata3()
+board = PyMata3(ip_address="r05.wlan.rose-hulman.edu")
 # Instantiate the motor control object. This only needs to be done once.
 motors = RedBotMotors(board)
 

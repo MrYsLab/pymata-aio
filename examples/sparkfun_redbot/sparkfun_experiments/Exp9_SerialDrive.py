@@ -25,7 +25,7 @@ from pymata_aio.constants import Constants
 from library.redbot import RedBotMotors
 
 
-board = PyMata3()
+board = PyMata3(ip_address="r05.wlan.rose-hulman.edu")
 motors = RedBotMotors(board)
 
 

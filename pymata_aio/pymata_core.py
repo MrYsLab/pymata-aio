@@ -202,6 +202,21 @@ class PymataCore:
         self.loop = None
         self.the_task = None
         self.serial_port = None
+<<<<<<< HEAD
+=======
+        self.socket = None
+
+        # The correct reader and writer methods will be set after
+        # the system detects if a serial or socket connection was chosen
+        self.read = None
+        self.write = None
+
+        # set up signal handler for controlC
+        self.loop = asyncio.get_event_loop()
+        # for signame in ('SIGINT', 'SIGTERM'):
+        #     self.loop.add_signal_handler(getattr(signal, signame),
+        #                                  self._signal_handler)
+>>>>>>> parent of 9dd86d9... Revert "Adding ip_address=hostname argument for Pymata3() constructor"
 
     def start(self):
         """

@@ -18,7 +18,7 @@ from pymata_aio.constants import Constants
 from library.redbot import RedBotSensor
 
 COM_PORT = None # Use automatic com port detection (the default)
-#COM_PORT = "COM7" # Manually specify the com port (optional)
+# COM_PORT = "COM22" # Manually specify the com port (optional)
 
 # This line "includes" the RedBot library into your sketch.
 # Provides special objects, methods, and functions for the RedBot.
@@ -26,7 +26,7 @@ LEFT_LINE_FOLLOWER = 3  # pin number assignments for each IR sensor
 CENTRE_LINE_FOLLOWER = 6
 RIGHT_LINE_FOLLOWER = 7
 
-board = PyMata3(com_port=COM_PORT)
+board = PyMata3(ip_address= "r05.wlan.rose-hulman.edu")
 IR_sensor_1 = RedBotSensor(board, LEFT_LINE_FOLLOWER)
 IR_sensor_2 = RedBotSensor(board, CENTRE_LINE_FOLLOWER)
 IR_sensor_3 = RedBotSensor(board, RIGHT_LINE_FOLLOWER)

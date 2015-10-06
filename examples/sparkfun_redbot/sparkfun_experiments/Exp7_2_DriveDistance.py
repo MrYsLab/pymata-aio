@@ -19,10 +19,10 @@ from library.redbot import RedBotMotors,RedBotEncoder
 import math
 
 COM_PORT = None # Use automatic com port detection (the default)
-#COM_PORT = "COM10" # Manually specify the com port (optional)
+# COM_PORT = "COM10" # Manually specify the com port (optional)
+# board = Pymata3(com_port=COM_PORT)
 
-
-board = PyMata3(com_port=COM_PORT)
+board = PyMata3(ip_address="r04.wlan.rose-hulman.edu")
 motors = RedBotMotors(board)
 encoders = RedBotEncoder(board)
 BUTTON_PIN = 12
@@ -43,10 +43,10 @@ def setup():
 def loop():
     # wait for a button press to start driving.
     if board.digital_read(BUTTON_PIN) == 0:
-        driveDistance(12, 150)  # drive 12 inches at motor_power = 150
+        drive_distance(12, 150)  # drive 12 inches at motor_power = 150
 
 
-def driveDistance(distance, motor_power):
+def drive_distance(distance, motor_power):
     left_count= 0
     right_count = 0
     num_rev = distance / WHEEL_CIRC

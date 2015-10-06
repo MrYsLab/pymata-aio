@@ -14,7 +14,13 @@ from library.redbot import RedBotMotors
 # This line "includes" the RedBot library into your sketch.
 # Provides special objects, methods, and functions for the RedBot.
 
+<<<<<<< HEAD
 board = PyMata3()
+=======
+
+
+board = PyMata3(ip_address="r05.wlan.rose-hulman.edu")
+>>>>>>> parent of 9dd86d9... Revert "Adding ip_address=hostname argument for Pymata3() constructor"
 
 motors = RedBotMotors(board)
 # Instantiate the motor control object. This only needs to be done once.

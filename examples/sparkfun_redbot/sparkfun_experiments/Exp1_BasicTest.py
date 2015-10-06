@@ -9,7 +9,7 @@
 from pymata_aio.pymata3 import PyMata3
 from pymata_aio.constants import Constants
 
-board = PyMata3()
+board = PyMata3(ip_address="r05.wlan.rose-hulman.edu")
 
 
 def setup():

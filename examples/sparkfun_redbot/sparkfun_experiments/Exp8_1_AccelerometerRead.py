@@ -31,7 +31,7 @@ COM_PORT = None  # Use automatic com port detection (the default)
 # COM_PORT = "COM10" # Manually specify the com port (optional)
 
 
-board = PyMata3(com_port=COM_PORT)
+board = PyMata3(ip_address="r05.wlan.rose-hulman.edu")
 motors = RedBotMotors(board)
 accelerometer = RedBotAccel(board)
 

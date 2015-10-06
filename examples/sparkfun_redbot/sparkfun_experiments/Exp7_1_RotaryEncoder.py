@@ -16,12 +16,16 @@
 from pymata_aio.pymata3 import PyMata3
 from pymata_aio.constants import Constants
 from library.redbot import RedBotMotors, RedBotEncoder
+import sys
+import signal
+
 
 COM_PORT = None # Use automatic com port detection (the default)
 #COM_PORT = "COM5" # Manually specify the com port (optional)
 
 
-board = PyMata3(com_port=COM_PORT)
+board = PyMata3(ip_address="r05.wlan.rose-hulman.edu")
+
 motors = RedBotMotors(board)
 encoders = RedBotEncoder(board)
 
@@ -31,6 +35,13 @@ ENCODER_PIN_RIGHT = 10
 BUTTON_PIN = 12
 
 COUNTS_PER_REV = 192    # 4 pairs of N-S x 48:1 gearbox = 192 ticks per wheel rev
+def signal_handler(sig, frame):
+    print('\nYou pressed Ctrl+C')
+    if board is not None:
+       board.send_reset()
+       board.shutdown()
+
+    sys.exit(0)
 
 
 def setup():
