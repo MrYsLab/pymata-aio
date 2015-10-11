@@ -22,6 +22,7 @@ import json
 import asyncio
 import datetime
 import argparse
+import sys
 
 from autobahn.asyncio.websocket import WebSocketServerProtocol, \
     WebSocketServerFactory
@@ -599,7 +600,8 @@ class PymataIOT(WebSocketServerProtocol):
         :returns:Console message is generated.
         """
         print("WebSocket connection closed: {0}".format(reason))
-        await self.core.shutdown()
+        #await self.core.shutdown()
+        sys.exit(0)
 
     def onConnect(self, request):
         """
@@ -740,5 +742,8 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         pass
     finally:
+        loop.run_until_complete(factory.protocol.core.shutdown())
         server.close()
+        loop.stop()
         loop.close()
+        sys.exit(0)

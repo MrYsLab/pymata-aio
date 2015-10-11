@@ -1,5 +1,13 @@
 #Change Log
 
+##Release 2.5
+
+11 October 2015
+
+* Merged latest changes for SparkFun RedBot experiments
+* Fixed bug in accepting com_port parameter
+* pymata_iot sends reset to Arduino upon exit
+
 ##Release 2.4
 
 4 October 2015

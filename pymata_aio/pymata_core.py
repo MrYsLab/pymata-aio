@@ -204,7 +204,7 @@ class PymataCore:
 
         if self.com_port is None and self.ip_address is None:
             self.com_port = self._discover_port()
-        else:
+        elif self.ip_address is not None:
             if self.log_output:
                 log_string = 'Using Ip Address/Port: ' + self.ip_address +\
                     ':' + str(ip_port)
