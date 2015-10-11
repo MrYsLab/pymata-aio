@@ -15,19 +15,25 @@
  * the Arduino community. This code is completely free for any use.
  *
  * 18 Feb 2015 B. Huang
+ *  2 Oct 2015 L. Mathews
  ***********************************************************************/"""
 
+import sys
+import signal
+
 from pymata_aio.pymata3 import PyMata3
-from pymata_aio.constants import Constants
 from library.redbot import RedBotMotors, RedBotSensor
-
-COM_PORT = None # Use automatic com port detection (the default)
-#COM_PORT = "COM5" # Manually specify the com port (optional)
-
 # This line "includes" the RedBot library into your sketch.
 # Provides special objects, methods, and functions for the RedBot.
 
-board = PyMata3(com_port=COM_PORT)
+WIFLY_IP_ADDRESS = None            # Leave set as None if not using WiFly
+WIFLY_IP_ADDRESS = "10.0.1.18"  # If using a WiFly on the RedBot, set the ip address here.
+if WIFLY_IP_ADDRESS:
+  board = PyMata3(ip_address=WIFLY_IP_ADDRESS)
+else:
+  # Use a USB cable to RedBot or an XBee connection instead of WiFly.
+  COM_PORT = None # Use None for automatic com port detection, or set if needed i.e. "COM7"
+  board = PyMata3(com_port=COM_PORT)
 
 left = RedBotSensor(board, 3)  # pin number assignments for each IR sensor
 center = RedBotSensor(board, 6)
@@ -45,10 +51,19 @@ SPEED = 150  # sets the nominal speed. Set to any number 0-255
 motors = RedBotMotors(board)
 
 
+def signal_handler(sig, frame):
+    """Helper method to shutdown the RedBot if Ctrl-c is pressed"""
+    print('\nYou pressed Ctrl+C')
+    if board is not None:
+        board.send_reset()
+        board.shutdown()
+    sys.exit(0)
+
+
 def setup():
+    signal.signal(signal.SIGINT, signal_handler)
     print("Welcome to Experiment 6.2 - Line Following")
     print("------------------------------------------")
-    #board.sleep(2)
     print("IR Sensor Readings:")
     board.sleep(0.5)
 
@@ -79,7 +94,7 @@ def loop():
     else:
         motors.left_motor(left_speed)
         motors.right_motor(right_speed)
-    board.sleep(0.1)  # add a delay to decrease sensitivity
+    board.sleep(0.2)  # add a delay make sure printing has time to complete
 
 
 if __name__ == "__main__":
