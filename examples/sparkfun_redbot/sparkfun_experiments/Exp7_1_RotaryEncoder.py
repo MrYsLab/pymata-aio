@@ -11,17 +11,22 @@
 
   8 Oct 2013 M. Hord
   Revised, 31 Oct 2014 B. Huang+
+  Revised, 2 Oct 2015 L. Mathews
  """
 
 from pymata_aio.pymata3 import PyMata3
 from pymata_aio.constants import Constants
 from library.redbot import RedBotMotors, RedBotEncoder
 
-COM_PORT = None # Use automatic com port detection (the default)
-#COM_PORT = "COM5" # Manually specify the com port (optional)
+WIFLY_IP_ADDRESS = None            # Leave set as None if not using WiFly
+WIFLY_IP_ADDRESS = "10.0.1.18"  # If using a WiFly on the RedBot, set the ip address here.
+if WIFLY_IP_ADDRESS:
+  board = PyMata3(ip_address=WIFLY_IP_ADDRESS)
+else:
+  # Use a USB cable to RedBot or an XBee connection instead of WiFly.
+  COM_PORT = None # Use None for automatic com port detection, or set if needed i.e. "COM7"
+  board = PyMata3(com_port=COM_PORT)
 
-
-board = PyMata3(com_port=COM_PORT)
 motors = RedBotMotors(board)
 encoders = RedBotEncoder(board)
 
@@ -41,7 +46,7 @@ def setup():
 
 
 def loop():
-    board.sleep(0.1) # Add a delay
+    board.sleep(0.1) # Add a delay to allow other processes to finish (like printing)
     # wait for a button press to start driving.
     if board.digital_read(BUTTON_PIN) == 0:
         encoders.clear_enc()  # Reset the counters
@@ -51,7 +56,6 @@ def loop():
     right_count = encoders.get_ticks(ENCODER_PIN_RIGHT)
 
     print("{}       {}".format(left_count, right_count))  # stores the encoder count to a variable
-    
 
     #  if either left or right motor are more than 5 revolutions, stop
     if left_count >= 5 * COUNTS_PER_REV or right_count >= 5 * COUNTS_PER_REV:

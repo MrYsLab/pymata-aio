@@ -11,6 +11,7 @@
 
   8 Oct 2013 M. Hord
   Revised, 31 Oct 2014 B. Huang
+  Revised, 2 Oct 2015 L. Mathews
 """
 
 from pymata_aio.pymata3 import PyMata3
@@ -18,11 +19,15 @@ from pymata_aio.constants import Constants
 from library.redbot import RedBotMotors,RedBotEncoder
 import math
 
-COM_PORT = None # Use automatic com port detection (the default)
-#COM_PORT = "COM10" # Manually specify the com port (optional)
+WIFLY_IP_ADDRESS = None            # Leave set as None if not using WiFly
+WIFLY_IP_ADDRESS = "10.0.1.18"  # If using a WiFly on the RedBot, set the ip address here.
+if WIFLY_IP_ADDRESS:
+  board = PyMata3(ip_address=WIFLY_IP_ADDRESS)
+else:
+  # Use a USB cable to RedBot or an XBee connection instead of WiFly.
+  COM_PORT = None # Use None for automatic com port detection, or set if needed i.e. "COM7"
+  board = PyMata3(com_port=COM_PORT)
 
-
-board = PyMata3(com_port=COM_PORT)
 motors = RedBotMotors(board)
 encoders = RedBotEncoder(board)
 BUTTON_PIN = 12
@@ -44,6 +49,7 @@ def loop():
     # wait for a button press to start driving.
     if board.digital_read(BUTTON_PIN) == 0:
         driveDistance(12, 150)  # drive 12 inches at motor_power = 150
+    board.sleep(0.1)
 
 
 def driveDistance(distance, motor_power):
@@ -70,5 +76,3 @@ if __name__ == "__main__":
     setup()
     while True:
         loop()
-        board.sleep(.01)
-        #  print("Encoder Read: {}".format(board.encoder_read(encoder_pin_right)))
