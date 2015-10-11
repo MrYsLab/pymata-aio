@@ -229,6 +229,7 @@ class PymataCore:
         self.write = None
 
         self.keep_alive_interval = 0
+        self.period = 0
 
         # set up signal handler for controlC
         self.loop = asyncio.get_event_loop()
@@ -811,11 +812,12 @@ class PymataCore:
         :param period: Time period between keep alives
         :return: No return value
         """
+        self.period = period
         self.keep_alive_interval = [period & 0x7f, period >> 7]
         await self._send_sysex(PrivateConstants.SAMPLING_INTERVAL,
                          self.keep_alive_interval)
         while True:
-            if self.keep_alive_interval:
+            if self.period:
                 await asyncio.sleep(period - .3)
                 await self._send_sysex(PrivateConstants.KEEP_ALIVE,
                          self.keep_alive_interval)
