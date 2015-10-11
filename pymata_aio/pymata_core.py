@@ -228,6 +228,8 @@ class PymataCore:
         self.read = None
         self.write = None
 
+        self.keep_alive_interval = 0
+
         # set up signal handler for controlC
         self.loop = asyncio.get_event_loop()
 
@@ -802,6 +804,24 @@ class PymataCore:
             item_msb = item >> 7
             data.append(item_msb)
         await self._send_sysex(PrivateConstants.I2C_REQUEST, data)
+
+    async def keep_alive(self, period=1):
+        """
+        Perodically send a keep alive message to the Arduino
+        :param period: Time period between keep alives
+        :return: No return value
+        """
+        self.keep_alive_interval = [period & 0x7f, period >> 7]
+        await self._send_sysex(PrivateConstants.SAMPLING_INTERVAL,
+                         self.keep_alive_interval)
+        while True:
+            if self.keep_alive_interval:
+                await asyncio.sleep(period - .3)
+                await self._send_sysex(PrivateConstants.KEEP_ALIVE,
+                         self.keep_alive_interval)
+                print('keep alive')
+            else:
+                break
 
     async def play_tone(self, pin, tone_command, frequency, duration):
         """

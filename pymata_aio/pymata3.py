@@ -395,6 +395,15 @@ class PyMata3:
 
         loop.run_until_complete(self.core.i2c_write_request(address, args))
 
+    def keep_alive(self, period=1):
+        """
+        Perodically send a keep alive message to the Arduino
+        :param period: Time period between keep alives
+        :return: No return value
+        """
+        asyncio.ensure_future(self.core.keep_alive(period))
+
+
     def play_tone(self, pin, tone_command, frequency, duration=None):
         """
         This method will call the Tone library for the selected pin.
