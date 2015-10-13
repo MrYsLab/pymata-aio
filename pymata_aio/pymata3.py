@@ -398,7 +398,8 @@ class PyMata3:
     def keep_alive(self, period=1):
         """
         Perodically send a keep alive message to the Arduino
-        :param period: Time period between keep alives
+
+        :param period: Time period between keepalives. Range is 0-10 seconds. 0 disables the keepalive mechanism.
         :return: No return value
         """
         asyncio.ensure_future(self.core.keep_alive(period))
@@ -408,11 +409,11 @@ class PyMata3:
         """
         This method will call the Tone library for the selected pin.
         It requires FirmataPlus to be loaded onto the arduino
-        If the tone command is set to TONE_TONE, then the specified tone
-           will be played.
-        Else, if the tone command is TONE_NO_TONE, then any currently
-           playing tone will be disabled.
-        It is intended for a future release of Arduino Firmata
+
+        If the tone command is set to TONE_TONE, then the specified tone will be played.
+
+        Else, if the tone command is TONE_NO_TONE, then any currently playing tone will be disabled.
+
 
         :param pin: Pin number
         :param tone_command: Either TONE_TONE, or TONE_NO_TONE
