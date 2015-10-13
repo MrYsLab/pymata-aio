@@ -18,6 +18,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 import asyncio
+import sys
 
 
 # noinspection PyStatementEffect,PyUnresolvedReferences,PyUnresolvedReferences
@@ -35,8 +36,12 @@ class PymataSocket:
 
         :return: None
         """
-        self.reader, self.writer = await asyncio.open_connection(
-            self.ip_address, self.port, loop=self.loop)
+        try:
+            self.reader, self.writer = await asyncio.open_connection(
+                self.ip_address, self.port, loop=self.loop)
+        except OSError:
+            print("Can't open connection to " + self.ip_address)
+            sys.exit(0)
 
     async def write(self, data):
         """

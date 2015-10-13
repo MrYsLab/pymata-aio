@@ -144,7 +144,6 @@
 <span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">signal</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">glob</span>
 <span class="kn">import</span> <span class="nn">serial</span>
@@ -155,7 +154,7 @@
 <span class="kn">from</span> <span class="nn">.pymata_socket</span> <span class="kn">import</span> <span class="n">PymataSocket</span>
 
 
-<span class="c"># noinspection PyCallingNonCallable,PyCallingNonCallable</span>
+<span class="c"># noinspection PyCallingNonCallable,PyCallingNonCallable,PyPep8,PyBroadException,PyBroadException</span>
 <div class="viewcode-block" id="PymataCore"><a class="viewcode-back" href="../../pymata_aio.html#pymata_aio.pymata_core.PymataCore">[docs]</a><span class="k">class</span> <span class="nc">PymataCore</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This class exposes and implements the pymata_core asyncio API,</span>
@@ -210,8 +209,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span> <span class="o">=</span> <span class="n">sleep_tune</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">arduino_wait</span> <span class="o">=</span> <span class="n">arduino_wait</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">com_port</span> <span class="o">=</span> <span class="n">com_port</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ip_address</span> <span class="o">=</span> <span class="n">ip_address</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ip_port</span> <span class="o">=</span> <span class="n">ip_port</span>
+        <span class="k">if</span> <span class="n">ip_address</span> <span class="o">==</span> <span class="s">&#39;None&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ip_address</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ip_address</span> <span class="o">=</span> <span class="n">ip_address</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ip_port</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ip_port</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ip_handshake</span> <span class="o">=</span> <span class="n">ip_handshake</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">hall_encoder</span> <span class="o">=</span> <span class="bp">False</span>
@@ -219,27 +221,27 @@
         <span class="c"># this dictionary for mapping incoming Firmata message types to</span>
         <span class="c"># handlers for the messages</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">command_dictionary</span> <span class="o">=</span> <span class="p">{</span><span class="n">PrivateConstants</span><span class="o">.</span><span class="n">REPORT_VERSION</span><span class="p">:</span>
-                                   <span class="bp">self</span><span class="o">.</span><span class="n">_report_version</span><span class="p">,</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">_report_version</span><span class="p">,</span>
                                    <span class="n">PrivateConstants</span><span class="o">.</span><span class="n">REPORT_FIRMWARE</span><span class="p">:</span>
-                                   <span class="bp">self</span><span class="o">.</span><span class="n">_report_firmware</span><span class="p">,</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">_report_firmware</span><span class="p">,</span>
                                    <span class="n">PrivateConstants</span><span class="o">.</span><span class="n">CAPABILITY_RESPONSE</span><span class="p">:</span>
-                                   <span class="bp">self</span><span class="o">.</span><span class="n">_capability_response</span><span class="p">,</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">_capability_response</span><span class="p">,</span>
                                    <span class="n">PrivateConstants</span><span class="o">.</span><span class="n">ANALOG_MAPPING_RESPONSE</span><span class="p">:</span>
-                                   <span class="bp">self</span><span class="o">.</span><span class="n">_analog_mapping_response</span><span class="p">,</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">_analog_mapping_response</span><span class="p">,</span>
                                    <span class="n">PrivateConstants</span><span class="o">.</span><span class="n">PIN_STATE_RESPONSE</span><span class="p">:</span>
-                                   <span class="bp">self</span><span class="o">.</span><span class="n">_pin_state_response</span><span class="p">,</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">_pin_state_response</span><span class="p">,</span>
                                    <span class="n">PrivateConstants</span><span class="o">.</span><span class="n">STRING_DATA</span><span class="p">:</span>
-                                   <span class="bp">self</span><span class="o">.</span><span class="n">_string_data</span><span class="p">,</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">_string_data</span><span class="p">,</span>
                                    <span class="n">PrivateConstants</span><span class="o">.</span><span class="n">ANALOG_MESSAGE</span><span class="p">:</span>
-                                   <span class="bp">self</span><span class="o">.</span><span class="n">_analog_message</span><span class="p">,</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">_analog_message</span><span class="p">,</span>
                                    <span class="n">PrivateConstants</span><span class="o">.</span><span class="n">DIGITAL_MESSAGE</span><span class="p">:</span>
-                                   <span class="bp">self</span><span class="o">.</span><span class="n">_digital_message</span><span class="p">,</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">_digital_message</span><span class="p">,</span>
                                    <span class="n">PrivateConstants</span><span class="o">.</span><span class="n">I2C_REPLY</span><span class="p">:</span>
-                                   <span class="bp">self</span><span class="o">.</span><span class="n">_i2c_reply</span><span class="p">,</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">_i2c_reply</span><span class="p">,</span>
                                    <span class="n">PrivateConstants</span><span class="o">.</span><span class="n">SONAR_DATA</span><span class="p">:</span>
-                                   <span class="bp">self</span><span class="o">.</span><span class="n">_sonar_data</span><span class="p">,</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">_sonar_data</span><span class="p">,</span>
                                    <span class="n">PrivateConstants</span><span class="o">.</span><span class="n">ENCODER_DATA</span><span class="p">:</span>
-                                   <span class="bp">self</span><span class="o">.</span><span class="n">_encoder_data</span><span class="p">}</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">_encoder_data</span><span class="p">}</span>
 
         <span class="c"># report query results are stored in this dictionary</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">query_reply_data</span> <span class="o">=</span> <span class="p">{</span><span class="n">PrivateConstants</span><span class="o">.</span><span class="n">REPORT_VERSION</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
@@ -326,12 +328,12 @@
                                   <span class="s">&#39;rights reserved.</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">))</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="n">com_port</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">ip_address</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">com_port</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">ip_address</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">com_port</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_discover_port</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">ip_address</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_output</span><span class="p">:</span>
-                <span class="n">log_string</span> <span class="o">=</span> <span class="s">&#39;Using Ip Address/Port: &#39;</span> <span class="o">+</span> <span class="n">ip_address</span> <span class="o">+</span>\
-                    <span class="s">&#39;:&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ip_port</span><span class="p">)</span>
+                <span class="n">log_string</span> <span class="o">=</span> <span class="s">&#39;Using Ip Address/Port: &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ip_address</span> <span class="o">+</span> \
+                             <span class="s">&#39;:&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ip_port</span><span class="p">)</span>
                 <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">log_string</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">print</span><span class="p">(</span><span class="s">&#39;Using Ip Address/Port: &#39;</span> <span class="o">+</span>
@@ -352,11 +354,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">read</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">write</span> <span class="o">=</span> <span class="bp">None</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">keep_alive_interval</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">margin</span> <span class="o">=</span> <span class="mi">0</span>
+
         <span class="c"># set up signal handler for controlC</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">signame</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;SIGINT&#39;</span><span class="p">,</span> <span class="s">&#39;SIGTERM&#39;</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">loop</span><span class="o">.</span><span class="n">add_signal_handler</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">signame</span><span class="p">),</span>
-                                         <span class="bp">self</span><span class="o">.</span><span class="n">_signal_handler</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PymataCore.start"><a class="viewcode-back" href="../../pymata_aio.html#pymata_aio.pymata_core.PymataCore.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -381,7 +384,8 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">serial_port</span> <span class="o">=</span> <span class="n">PymataSerial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">com_port</span><span class="p">,</span> <span class="mi">57600</span><span class="p">,</span>
-                                                <span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_output</span><span class="p">)</span>
+                                                <span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span><span class="p">,</span>
+                                                <span class="bp">self</span><span class="o">.</span><span class="n">log_output</span><span class="p">)</span>
                 <span class="c"># set the read and write handles</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">read</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serial_port</span><span class="o">.</span><span class="n">read</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">write</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serial_port</span><span class="o">.</span><span class="n">write</span>
@@ -391,7 +395,8 @@
                                  <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">com_port</span>
                     <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">log_string</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Cannot instantiate serial interface: &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">com_port</span><span class="p">)</span>
+                    <span class="k">print</span><span class="p">(</span>
+                        <span class="s">&#39;Cannot instantiate serial interface: &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">com_port</span><span class="p">)</span>
                 <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
         <span class="c"># wait for arduino to go through a reset cycle if need be</span>
@@ -493,7 +498,8 @@
                                  <span class="bp">self</span><span class="o">.</span><span class="n">com_port</span>
                     <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">log_string</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Cannot instantiate serial interface: &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">com_port</span><span class="p">)</span>
+                    <span class="k">print</span><span class="p">(</span>
+                        <span class="s">&#39;Cannot instantiate serial interface: &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">com_port</span><span class="p">)</span>
                 <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
         <span class="c"># wait for arduino to go through a reset cycle if need be</span>
@@ -930,14 +936,46 @@
             <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item_msb</span><span class="p">)</span>
         <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_sysex</span><span class="p">(</span><span class="n">PrivateConstants</span><span class="o">.</span><span class="n">I2C_REQUEST</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 </div>
+<div class="viewcode-block" id="PymataCore.keep_alive"><a class="viewcode-back" href="../../pymata_aio.html#pymata_aio.pymata_core.PymataCore.keep_alive">[docs]</a>    <span class="n">async</span> <span class="k">def</span> <span class="nf">keep_alive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">margin</span><span class="o">=.</span><span class="mi">3</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Periodically send a keep alive message to the Arduino.</span>
+<span class="sd">        Frequency of keep alive transmission is calculated as follows:</span>
+<span class="sd">        keep_alive_sent = period - (period * margin)</span>
+
+
+<span class="sd">        :param period: Time period between keepalives. Range is 0-10 seconds. 0 disables the keepalive mechanism.</span>
+<span class="sd">        :param margin: Safety margin to assure keepalives are sent before period expires. Range is 0.1 to 0.9</span>
+<span class="sd">        :returns: No return value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">period</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">period</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">period</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
+            <span class="n">period</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="n">period</span>
+        <span class="k">if</span> <span class="n">margin</span> <span class="o">&lt;</span> <span class="o">.</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">margin</span> <span class="o">=</span> <span class="o">.</span><span class="mi">1</span>
+        <span class="k">if</span> <span class="n">margin</span> <span class="o">&gt;</span> <span class="o">.</span><span class="mi">9</span><span class="p">:</span>
+            <span class="n">margin</span> <span class="o">=</span> <span class="o">.</span><span class="mi">9</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">margin</span> <span class="o">=</span> <span class="n">margin</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keep_alive_interval</span> <span class="o">=</span> <span class="p">[</span><span class="n">period</span> <span class="o">&amp;</span> <span class="mh">0x7f</span><span class="p">,</span> <span class="n">period</span> <span class="o">&gt;&gt;</span> <span class="mi">7</span><span class="p">]</span>
+        <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_sysex</span><span class="p">(</span><span class="n">PrivateConstants</span><span class="o">.</span><span class="n">SAMPLING_INTERVAL</span><span class="p">,</span>
+                               <span class="bp">self</span><span class="o">.</span><span class="n">keep_alive_interval</span><span class="p">)</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="p">:</span>
+                <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">period</span> <span class="o">-</span> <span class="p">(</span><span class="n">period</span> <span class="o">-</span> <span class="p">(</span><span class="n">period</span> <span class="o">*</span> <span class="n">margin</span><span class="p">)))</span>
+                <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_sysex</span><span class="p">(</span><span class="n">PrivateConstants</span><span class="o">.</span><span class="n">KEEP_ALIVE</span><span class="p">,</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">keep_alive_interval</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">break</span>
+</div>
 <div class="viewcode-block" id="PymataCore.play_tone"><a class="viewcode-back" href="../../pymata_aio.html#pymata_aio.pymata_core.PymataCore.play_tone">[docs]</a>    <span class="n">async</span> <span class="k">def</span> <span class="nf">play_tone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pin</span><span class="p">,</span> <span class="n">tone_command</span><span class="p">,</span> <span class="n">frequency</span><span class="p">,</span> <span class="n">duration</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This method will call the Tone library for the selected pin.</span>
 <span class="sd">        It requires FirmataPlus to be loaded onto the arduino</span>
-<span class="sd">        If the tone command is set to TONE_TONE, then the specified tone</span>
-<span class="sd">          will be played.</span>
-<span class="sd">        Else, if the tone command is TONE_NO_TONE, then any currently</span>
-<span class="sd">          playing tone will be disabled.</span>
+
+<span class="sd">        If the tone command is set to TONE_TONE, then the specified tone will be played.</span>
+
+<span class="sd">        Else, if the tone command is TONE_NO_TONE, then any currently playing tone will be disabled.</span>
 
 <span class="sd">        :param pin: Pin number</span>
 <span class="sd">        :param tone_command: Either TONE_TONE, or TONE_NO_TONE</span>
@@ -1103,24 +1141,27 @@
 <div class="viewcode-block" id="PymataCore.shutdown"><a class="viewcode-back" href="../../pymata_aio.html#pymata_aio.pymata_core.PymataCore.shutdown">[docs]</a>    <span class="n">async</span> <span class="k">def</span> <span class="nf">shutdown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This method attempts an orderly shutdown</span>
+<span class="sd">        If any exceptions are thrown, just ignore them.</span>
 
 <span class="sd">        :returns: No return value</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_output</span><span class="p">:</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Shutting down ...&#39;</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">print</span><span class="p">(</span><span class="s">&#39;Shutting down ...&#39;</span><span class="p">)</span>
 
-            <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_reset</span><span class="p">()</span>
-            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Task</span><span class="o">.</span><span class="n">all_tasks</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loop</span><span class="p">):</span>
-                <span class="n">t</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="o">.</span><span class="mo">01</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_output</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Shutting down ...&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;Shutting down ...&#39;</span><span class="p">)</span>
+
+        <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_reset</span><span class="p">()</span>
+
+        <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">loop</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">loop</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-            <span class="c"># sys.exit(0)</span>
-        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
-            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="PymataCore.sleep"><a class="viewcode-back" href="../../pymata_aio.html#pymata_aio.pymata_core.PymataCore.sleep">[docs]</a>    <span class="n">async</span> <span class="k">def</span> <span class="nf">sleep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sleep_time</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1359,7 +1400,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">port</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">port_data</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">PrivateConstants</span><span class="o">.</span><span class="n">MSB</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="mi">7</span><span class="p">)</span> <span class="o">+</span> \
-            <span class="n">data</span><span class="p">[</span><span class="n">PrivateConstants</span><span class="o">.</span><span class="n">LSB</span><span class="p">]</span>
+                    <span class="n">data</span><span class="p">[</span><span class="n">PrivateConstants</span><span class="o">.</span><span class="n">LSB</span><span class="p">]</span>
         <span class="n">pin</span> <span class="o">=</span> <span class="n">port</span> <span class="o">*</span> <span class="mi">8</span>
         <span class="k">for</span> <span class="n">pin</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">pin</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">pin</span> <span class="o">+</span> <span class="mi">8</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">digital_pins</span><span class="p">))):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">digital_pins</span><span class="p">[</span><span class="n">pin</span><span class="p">]</span><span class="o">.</span><span class="n">current_value</span> <span class="o">=</span> <span class="n">port_data</span> <span class="o">&amp;</span> <span class="mh">0x01</span>
@@ -1733,7 +1774,7 @@
             <span class="c"># auto clear entry and execute the callback</span>
 
             <span class="c"># noinspection PyPep8</span>
-            <span class="n">latching_entry</span><span class="p">[</span><span class="n">Constants</span><span class="o">.</span><span class="n">LATCH_CALLBACK</span><span class="p">]</span>\
+            <span class="n">latching_entry</span><span class="p">[</span><span class="n">Constants</span><span class="o">.</span><span class="n">LATCH_CALLBACK</span><span class="p">]</span> \
                 <span class="p">([</span><span class="n">key</span><span class="p">,</span> <span class="n">latching_entry</span><span class="p">[</span><span class="n">Constants</span><span class="o">.</span><span class="n">LATCHED_DATA</span><span class="p">],</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">latch_map</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">None</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1806,19 +1847,7 @@
             <span class="n">current_command</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">next_command_byte</span><span class="p">)</span>
             <span class="n">number_of_bytes</span> <span class="o">-=</span> <span class="mi">1</span>
             <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">current_command</span>
-
-    <span class="k">def</span> <span class="nf">_signal_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The &#39;Control-C&#39; handler</span>
-
-<span class="sd">        :returns: never returns.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&#39;You pressed Ctrl+C!&#39;</span><span class="p">)</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shutdown</span><span class="p">())</span>
-        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
-            <span class="k">pass</span></div>
+        <span class="k">return</span> <span class="n">current_command</span></div>
 </pre></div>
 
            </div>

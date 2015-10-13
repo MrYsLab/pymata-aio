@@ -520,15 +520,29 @@
 
         <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">i2c_write_request</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">args</span><span class="p">))</span>
 </div>
+<div class="viewcode-block" id="PyMata3.keep_alive"><a class="viewcode-back" href="../../pymata_aio.html#pymata_aio.pymata3.PyMata3.keep_alive">[docs]</a>    <span class="k">def</span> <span class="nf">keep_alive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">margin</span><span class="o">=.</span><span class="mi">3</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Periodically send a keep alive message to the Arduino.</span>
+<span class="sd">        Frequency of keep alive transmission is calculated as follows:</span>
+<span class="sd">        keep_alive_sent = period - (period * margin)</span>
+
+
+<span class="sd">        :param period: Time period between keepalives. Range is 0-10 seconds. 0 disables the keepalive mechanism.</span>
+<span class="sd">        :param margin: Safety margin to assure keepalives are sent before period expires. Range is 0.1 to 0.9</span>
+<span class="sd">        :returns: No return value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">asyncio</span><span class="o">.</span><span class="n">ensure_future</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">keep_alive</span><span class="p">(</span><span class="n">period</span><span class="p">,</span> <span class="n">margin</span><span class="p">))</span>
+
+</div>
 <div class="viewcode-block" id="PyMata3.play_tone"><a class="viewcode-back" href="../../pymata_aio.html#pymata_aio.pymata3.PyMata3.play_tone">[docs]</a>    <span class="k">def</span> <span class="nf">play_tone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pin</span><span class="p">,</span> <span class="n">tone_command</span><span class="p">,</span> <span class="n">frequency</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This method will call the Tone library for the selected pin.</span>
 <span class="sd">        It requires FirmataPlus to be loaded onto the arduino</span>
-<span class="sd">        If the tone command is set to TONE_TONE, then the specified tone</span>
-<span class="sd">           will be played.</span>
-<span class="sd">        Else, if the tone command is TONE_NO_TONE, then any currently</span>
-<span class="sd">           playing tone will be disabled.</span>
-<span class="sd">        It is intended for a future release of Arduino Firmata</span>
+
+<span class="sd">        If the tone command is set to TONE_TONE, then the specified tone will be played.</span>
+
+<span class="sd">        Else, if the tone command is TONE_NO_TONE, then any currently playing tone will be disabled.</span>
+
 
 <span class="sd">        :param pin: Pin number</span>
 <span class="sd">        :param tone_command: Either TONE_TONE, or TONE_NO_TONE</span>
@@ -657,28 +671,8 @@
 
 <span class="sd">        :returns: No return value</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_out</span><span class="p">:</span>
-            <span class="k">print</span><span class="p">(</span><span class="s">&#39;Shutting down ...&#39;</span><span class="p">)</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">send_reset</span><span class="p">()</span>
-            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Task</span><span class="o">.</span><span class="n">all_tasks</span><span class="p">(</span><span class="n">loop</span><span class="p">):</span>
-                <span class="n">t</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
-            <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">))</span>
-            <span class="n">loop</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-            <span class="c"># keeps pytest happy</span>
-            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
-            <span class="c"># ignore the error</span>
-            <span class="k">pass</span>
-        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
-            <span class="c"># ignore</span>
-            <span class="k">pass</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_out</span><span class="p">:</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">ex</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">print</span><span class="p">(</span><span class="n">ex</span><span class="p">)</span>
+        <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+        <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">shutdown</span><span class="p">())</span>
 </div>
 <div class="viewcode-block" id="PyMata3.sonar_data_retrieve"><a class="viewcode-back" href="../../pymata_aio.html#pymata_aio.pymata3.PyMata3.sonar_data_retrieve">[docs]</a>    <span class="k">def</span> <span class="nf">sonar_data_retrieve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trigger_pin</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>

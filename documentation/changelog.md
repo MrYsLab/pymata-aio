@@ -1,5 +1,16 @@
 #Change Log
 
+##Release 2.6
+
+14 October 2015
+
+### New Feature Added
+* Added new KeepAlive feature
+    * Requires Use of FirmataPlus, FimrataPlusRB or FirmataPlusLBT
+    * Enable with a call to keep_alive, passing in a keep alive period.
+        * Keep alives may be set between 1 and 10 seconds.
+        * Setting the period to 0 seconds disables the keep alive timer.
+
 ##Release 2.5
 
 11 October 2015
