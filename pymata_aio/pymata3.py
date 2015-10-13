@@ -395,14 +395,18 @@ class PyMata3:
 
         loop.run_until_complete(self.core.i2c_write_request(address, args))
 
-    def keep_alive(self, period=1):
+    def keep_alive(self, period=1, margin=.3):
         """
-        Perodically send a keep alive message to the Arduino
+        Periodically send a keep alive message to the Arduino.
+        Frequency of keep alive transmission is calculated as follows:
+        keep_alive_sent = period - (period * margin)
+
 
         :param period: Time period between keepalives. Range is 0-10 seconds. 0 disables the keepalive mechanism.
-        :return: No return value
+        :param margin: Safety margin to assure keepalives are sent before period expires. Range is 0.1 to 0.9
+        :returns: No return value
         """
-        asyncio.ensure_future(self.core.keep_alive(period))
+        asyncio.ensure_future(self.core.keep_alive(period, margin))
 
 
     def play_tone(self, pin, tone_command, frequency, duration=None):

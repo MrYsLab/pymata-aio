@@ -464,13 +464,17 @@ class PymataIOT(WebSocketServerProtocol):
     async def keep_alive(self, command):
         """
         Periodically send a keep alive message to the Arduino.
+        Frequency of keep alive transmission is calculated as follows:
+        keep_alive_sent = period - (period * margin)
 
 
-        :param period: Time period between keepalives. Range is 0-10 seconds. 0 disables the keep_alive mechanism.
+        :param period: Time period between keepalives. Range is 0-10 seconds. 0 disables the keepalive mechanism.
+        :param margin: Safety margin to assure keepalives are sent before period expires. Range is 0.1 to 0.9
         :returns: No return value
         """
         period = int(command[0])
-        await self.core.keep_alive(period)
+        margin = int(command[1])
+        await self.core.keep_alive(period, margin)
 
     async def play_tone(self, command):
         """

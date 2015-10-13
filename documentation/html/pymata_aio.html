@@ -1130,15 +1130,22 @@ passed in as a list.</li>
 
 <dl class="method">
 <dt id="pymata_aio.pymata3.PyMata3.keep_alive">
-<code class="descname">keep_alive</code><span class="sig-paren">(</span><em>period=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymata_aio/pymata3.html#PyMata3.keep_alive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymata_aio.pymata3.PyMata3.keep_alive" title="Permalink to this definition">¶</a></dt>
-<dd><p>Perodically send a keep alive message to the Arduino</p>
+<code class="descname">keep_alive</code><span class="sig-paren">(</span><em>period=1</em>, <em>margin=0.3</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymata_aio/pymata3.html#PyMata3.keep_alive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymata_aio.pymata3.PyMata3.keep_alive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Periodically send a keep alive message to the Arduino.
+Frequency of keep alive transmission is calculated as follows:
+keep_alive_sent = period - (period * margin)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>period</strong> &#8211; Time period between keepalives. Range is 0-10 seconds. 0 disables the keepalive mechanism.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>period</strong> &#8211; Time period between keepalives. Range is 0-10 seconds. 0 disables the keepalive mechanism.</li>
+<li><strong>margin</strong> &#8211; Safety margin to assure keepalives are sent before period expires. Range is 0.1 to 0.9</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">No return value</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">No return value</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -1890,15 +1897,22 @@ passed in as a list</li>
 
 <dl class="method">
 <dt id="pymata_aio.pymata_core.PymataCore.keep_alive">
-<code class="descname">keep_alive</code><span class="sig-paren">(</span><em>period=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymata_aio/pymata_core.html#PymataCore.keep_alive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymata_aio.pymata_core.PymataCore.keep_alive" title="Permalink to this definition">¶</a></dt>
-<dd><p>Periodically send a keep alive message to the Arduino.</p>
+<code class="descname">keep_alive</code><span class="sig-paren">(</span><em>period=1</em>, <em>margin=0.3</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymata_aio/pymata_core.html#PymataCore.keep_alive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymata_aio.pymata_core.PymataCore.keep_alive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Periodically send a keep alive message to the Arduino.
+Frequency of keep alive transmission is calculated as follows:
+keep_alive_sent = period - (period * margin)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>period</strong> &#8211; Time period between keepalives. Range is 0-10 seconds. 0 disables the keepalive mechanism.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>period</strong> &#8211; Time period between keepalives. Range is 0-10 seconds. 0 disables the keepalive mechanism.</li>
+<li><strong>margin</strong> &#8211; Safety margin to assure keepalives are sent before period expires. Range is 0.1 to 0.9</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">No return value</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">No return value</p>
+</td>
 </tr>
 </tbody>
 </table>

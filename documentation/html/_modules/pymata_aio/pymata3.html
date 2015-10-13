@@ -520,14 +520,18 @@
 
         <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">i2c_write_request</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">args</span><span class="p">))</span>
 </div>
-<div class="viewcode-block" id="PyMata3.keep_alive"><a class="viewcode-back" href="../../pymata_aio.html#pymata_aio.pymata3.PyMata3.keep_alive">[docs]</a>    <span class="k">def</span> <span class="nf">keep_alive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="PyMata3.keep_alive"><a class="viewcode-back" href="../../pymata_aio.html#pymata_aio.pymata3.PyMata3.keep_alive">[docs]</a>    <span class="k">def</span> <span class="nf">keep_alive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">margin</span><span class="o">=.</span><span class="mi">3</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Perodically send a keep alive message to the Arduino</span>
+<span class="sd">        Periodically send a keep alive message to the Arduino.</span>
+<span class="sd">        Frequency of keep alive transmission is calculated as follows:</span>
+<span class="sd">        keep_alive_sent = period - (period * margin)</span>
+
 
 <span class="sd">        :param period: Time period between keepalives. Range is 0-10 seconds. 0 disables the keepalive mechanism.</span>
-<span class="sd">        :return: No return value</span>
+<span class="sd">        :param margin: Safety margin to assure keepalives are sent before period expires. Range is 0.1 to 0.9</span>
+<span class="sd">        :returns: No return value</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">asyncio</span><span class="o">.</span><span class="n">ensure_future</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">keep_alive</span><span class="p">(</span><span class="n">period</span><span class="p">))</span>
+        <span class="n">asyncio</span><span class="o">.</span><span class="n">ensure_future</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">keep_alive</span><span class="p">(</span><span class="n">period</span><span class="p">,</span> <span class="n">margin</span><span class="p">))</span>
 
 </div>
 <div class="viewcode-block" id="PyMata3.play_tone"><a class="viewcode-back" href="../../pymata_aio.html#pymata_aio.pymata3.PyMata3.play_tone">[docs]</a>    <span class="k">def</span> <span class="nf">play_tone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pin</span><span class="p">,</span> <span class="n">tone_command</span><span class="p">,</span> <span class="n">frequency</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>

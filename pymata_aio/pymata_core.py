@@ -231,6 +231,7 @@ class PymataCore:
 
         self.keep_alive_interval = 0
         self.period = 0
+        self.margin = 0
 
         # set up signal handler for controlC
         self.loop = asyncio.get_event_loop()
@@ -810,12 +811,15 @@ class PymataCore:
             data.append(item_msb)
         await self._send_sysex(PrivateConstants.I2C_REQUEST, data)
 
-    async def keep_alive(self, period=1):
+    async def keep_alive(self, period=1, margin=.3):
         """
         Periodically send a keep alive message to the Arduino.
+        Frequency of keep alive transmission is calculated as follows:
+        keep_alive_sent = period - (period * margin)
 
 
         :param period: Time period between keepalives. Range is 0-10 seconds. 0 disables the keepalive mechanism.
+        :param margin: Safety margin to assure keepalives are sent before period expires. Range is 0.1 to 0.9
         :returns: No return value
         """
         if period < 0:
@@ -823,12 +827,17 @@ class PymataCore:
         if period > 10:
             period = 10
         self.period = period
+        if margin < .1:
+            margin = .1
+        if margin > .9:
+            margin = .9
+        self.margin = margin
         self.keep_alive_interval = [period & 0x7f, period >> 7]
         await self._send_sysex(PrivateConstants.SAMPLING_INTERVAL,
                                self.keep_alive_interval)
         while True:
             if self.period:
-                await asyncio.sleep(period - .3)
+                await asyncio.sleep(period - (period - (period * margin)))
                 await self._send_sysex(PrivateConstants.KEEP_ALIVE,
                                        self.keep_alive_interval)
             else:

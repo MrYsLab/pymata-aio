@@ -356,6 +356,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">keep_alive_interval</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">margin</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="c"># set up signal handler for controlC</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
@@ -935,12 +936,15 @@
             <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item_msb</span><span class="p">)</span>
         <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_sysex</span><span class="p">(</span><span class="n">PrivateConstants</span><span class="o">.</span><span class="n">I2C_REQUEST</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="PymataCore.keep_alive"><a class="viewcode-back" href="../../pymata_aio.html#pymata_aio.pymata_core.PymataCore.keep_alive">[docs]</a>    <span class="n">async</span> <span class="k">def</span> <span class="nf">keep_alive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="PymataCore.keep_alive"><a class="viewcode-back" href="../../pymata_aio.html#pymata_aio.pymata_core.PymataCore.keep_alive">[docs]</a>    <span class="n">async</span> <span class="k">def</span> <span class="nf">keep_alive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">margin</span><span class="o">=.</span><span class="mi">3</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Periodically send a keep alive message to the Arduino.</span>
+<span class="sd">        Frequency of keep alive transmission is calculated as follows:</span>
+<span class="sd">        keep_alive_sent = period - (period * margin)</span>
 
 
 <span class="sd">        :param period: Time period between keepalives. Range is 0-10 seconds. 0 disables the keepalive mechanism.</span>
+<span class="sd">        :param margin: Safety margin to assure keepalives are sent before period expires. Range is 0.1 to 0.9</span>
 <span class="sd">        :returns: No return value</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">period</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -948,12 +952,17 @@
         <span class="k">if</span> <span class="n">period</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
             <span class="n">period</span> <span class="o">=</span> <span class="mi">10</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="n">period</span>
+        <span class="k">if</span> <span class="n">margin</span> <span class="o">&lt;</span> <span class="o">.</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">margin</span> <span class="o">=</span> <span class="o">.</span><span class="mi">1</span>
+        <span class="k">if</span> <span class="n">margin</span> <span class="o">&gt;</span> <span class="o">.</span><span class="mi">9</span><span class="p">:</span>
+            <span class="n">margin</span> <span class="o">=</span> <span class="o">.</span><span class="mi">9</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">margin</span> <span class="o">=</span> <span class="n">margin</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">keep_alive_interval</span> <span class="o">=</span> <span class="p">[</span><span class="n">period</span> <span class="o">&amp;</span> <span class="mh">0x7f</span><span class="p">,</span> <span class="n">period</span> <span class="o">&gt;&gt;</span> <span class="mi">7</span><span class="p">]</span>
         <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_sysex</span><span class="p">(</span><span class="n">PrivateConstants</span><span class="o">.</span><span class="n">SAMPLING_INTERVAL</span><span class="p">,</span>
                                <span class="bp">self</span><span class="o">.</span><span class="n">keep_alive_interval</span><span class="p">)</span>
         <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="p">:</span>
-                <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">period</span> <span class="o">-</span> <span class="o">.</span><span class="mi">3</span><span class="p">)</span>
+                <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">period</span> <span class="o">-</span> <span class="p">(</span><span class="n">period</span> <span class="o">-</span> <span class="p">(</span><span class="n">period</span> <span class="o">*</span> <span class="n">margin</span><span class="p">)))</span>
                 <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_sysex</span><span class="p">(</span><span class="n">PrivateConstants</span><span class="o">.</span><span class="n">KEEP_ALIVE</span><span class="p">,</span>
                                        <span class="bp">self</span><span class="o">.</span><span class="n">keep_alive_interval</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
