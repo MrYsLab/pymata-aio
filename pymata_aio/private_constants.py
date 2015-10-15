@@ -38,6 +38,7 @@ class PrivateConstants:
     REPORT_VERSION = 0xF9  # report protocol version
 
     # start of FirmataPlus defined SYSEX commands
+    KEEP_ALIVE = 0x50   # keep alive message
     TONE_DATA = 0x5F  # play a tone at a specified frequency and duration
     ENCODER_CONFIG = 0x60  # create and enable encoder object
     ENCODER_DATA = 0x61  # current encoder position data
@@ -67,7 +68,7 @@ class PrivateConstants:
     SYSEX_REALTIME = 0x7F  # MIDI Reserved for realtime messages
 
     # reserved for PyMata
-    PYMATA_VERSION = "2.4"
+    PYMATA_VERSION = "2.6"
 
     # each byte represents a digital port
     #  and its value contains the current port settings

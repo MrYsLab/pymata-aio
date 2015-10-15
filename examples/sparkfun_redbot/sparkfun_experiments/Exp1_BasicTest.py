@@ -9,8 +9,14 @@
 from pymata_aio.pymata3 import PyMata3
 from pymata_aio.constants import Constants
 
-board = PyMata3(ip_address="r05.wlan.rose-hulman.edu")
-
+WIFLY_IP_ADDRESS = None            # Leave set as None if not using WiFly
+WIFLY_IP_ADDRESS = "137.112.217.88"  # If using a WiFly on the RedBot, set the ip address here.
+if WIFLY_IP_ADDRESS:
+  board = PyMata3(ip_address=WIFLY_IP_ADDRESS)
+else:
+  # Use a USB cable to RedBot or an XBee connection instead of WiFly.
+  COM_PORT = None # Use None for automatic com port detection, or set if needed i.e. "COM7"
+  board = PyMata3(com_port=COM_PORT)
 
 def setup():
     """setup() function runs once at the very beginning."""

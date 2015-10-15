@@ -163,6 +163,7 @@
     <span class="n">REPORT_VERSION</span> <span class="o">=</span> <span class="mh">0xF9</span>  <span class="c"># report protocol version</span>
 
     <span class="c"># start of FirmataPlus defined SYSEX commands</span>
+    <span class="n">KEEP_ALIVE</span> <span class="o">=</span> <span class="mh">0x50</span>   <span class="c"># keep alive message</span>
     <span class="n">TONE_DATA</span> <span class="o">=</span> <span class="mh">0x5F</span>  <span class="c"># play a tone at a specified frequency and duration</span>
     <span class="n">ENCODER_CONFIG</span> <span class="o">=</span> <span class="mh">0x60</span>  <span class="c"># create and enable encoder object</span>
     <span class="n">ENCODER_DATA</span> <span class="o">=</span> <span class="mh">0x61</span>  <span class="c"># current encoder position data</span>
@@ -192,7 +193,7 @@
     <span class="n">SYSEX_REALTIME</span> <span class="o">=</span> <span class="mh">0x7F</span>  <span class="c"># MIDI Reserved for realtime messages</span>
 
     <span class="c"># reserved for PyMata</span>
-    <span class="n">PYMATA_VERSION</span> <span class="o">=</span> <span class="s">&quot;2.2&quot;</span>
+    <span class="n">PYMATA_VERSION</span> <span class="o">=</span> <span class="s">&quot;2.6&quot;</span>
 
     <span class="c"># each byte represents a digital port</span>
     <span class="c">#  and its value contains the current port settings</span>

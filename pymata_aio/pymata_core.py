@@ -28,7 +28,8 @@ from .pin_data import PinData
 from .pymata_serial import PymataSerial
 from .pymata_socket import PymataSocket
 
-# noinspection PyCallingNonCallable,PyCallingNonCallable
+
+# noinspection PyCallingNonCallable,PyCallingNonCallable,PyPep8,PyBroadException,PyBroadException
 class PymataCore:
     """
     This class exposes and implements the pymata_core asyncio API,
@@ -95,27 +96,27 @@ class PymataCore:
         # this dictionary for mapping incoming Firmata message types to
         # handlers for the messages
         self.command_dictionary = {PrivateConstants.REPORT_VERSION:
-                                   self._report_version,
+                                       self._report_version,
                                    PrivateConstants.REPORT_FIRMWARE:
-                                   self._report_firmware,
+                                       self._report_firmware,
                                    PrivateConstants.CAPABILITY_RESPONSE:
-                                   self._capability_response,
+                                       self._capability_response,
                                    PrivateConstants.ANALOG_MAPPING_RESPONSE:
-                                   self._analog_mapping_response,
+                                       self._analog_mapping_response,
                                    PrivateConstants.PIN_STATE_RESPONSE:
-                                   self._pin_state_response,
+                                       self._pin_state_response,
                                    PrivateConstants.STRING_DATA:
-                                   self._string_data,
+                                       self._string_data,
                                    PrivateConstants.ANALOG_MESSAGE:
-                                   self._analog_message,
+                                       self._analog_message,
                                    PrivateConstants.DIGITAL_MESSAGE:
-                                   self._digital_message,
+                                       self._digital_message,
                                    PrivateConstants.I2C_REPLY:
-                                   self._i2c_reply,
+                                       self._i2c_reply,
                                    PrivateConstants.SONAR_DATA:
-                                   self._sonar_data,
+                                       self._sonar_data,
                                    PrivateConstants.ENCODER_DATA:
-                                   self._encoder_data}
+                                       self._encoder_data}
 
         # report query results are stored in this dictionary
         self.query_reply_data = {PrivateConstants.REPORT_VERSION: '',
@@ -204,10 +205,10 @@ class PymataCore:
 
         if self.com_port is None and self.ip_address is None:
             self.com_port = self._discover_port()
-        else:
+        elif self.ip_address is not None:
             if self.log_output:
-                log_string = 'Using Ip Address/Port: ' + self.ip_address +\
-                    ':' + str(ip_port)
+                log_string = 'Using Ip Address/Port: ' + self.ip_address + \
+                             ':' + str(ip_port)
                 logging.info(log_string)
             else:
                 print('Using Ip Address/Port: ' +
@@ -232,6 +233,10 @@ class PymataCore:
         # the system detects if a serial or socket connection was chosen
         self.read = None
         self.write = None
+
+        self.keep_alive_interval = 0
+        self.period = 0
+        self.margin = 0
 
         # set up signal handler for controlC
         self.loop = asyncio.get_event_loop()
@@ -266,7 +271,8 @@ class PymataCore:
         else:
             try:
                 self.serial_port = PymataSerial(self.com_port, 57600,
-                                                self.sleep_tune, self.log_output)
+                                                self.sleep_tune,
+                                                self.log_output)
                 # set the read and write handles
                 self.read = self.serial_port.read
                 self.write = self.serial_port.write
@@ -276,7 +282,8 @@ class PymataCore:
                                  + self.com_port
                     logging.exception(log_string)
                 else:
-                    print('Cannot instantiate serial interface: ' + self.com_port)
+                    print(
+                        'Cannot instantiate serial interface: ' + self.com_port)
                 sys.exit(0)
 
         # wait for arduino to go through a reset cycle if need be
@@ -378,7 +385,8 @@ class PymataCore:
                                  self.com_port
                     logging.exception(log_string)
                 else:
-                    print('Cannot instantiate serial interface: ' + self.com_port)
+                    print(
+                        'Cannot instantiate serial interface: ' + self.com_port)
                 sys.exit(0)
 
         # wait for arduino to go through a reset cycle if need be
@@ -815,14 +823,46 @@ class PymataCore:
             data.append(item_msb)
         await self._send_sysex(PrivateConstants.I2C_REQUEST, data)
 
+    async def keep_alive(self, period=1, margin=.3):
+        """
+        Periodically send a keep alive message to the Arduino.
+        Frequency of keep alive transmission is calculated as follows:
+        keep_alive_sent = period - (period * margin)
+
+
+        :param period: Time period between keepalives. Range is 0-10 seconds. 0 disables the keepalive mechanism.
+        :param margin: Safety margin to assure keepalives are sent before period expires. Range is 0.1 to 0.9
+        :returns: No return value
+        """
+        if period < 0:
+            period = 0
+        if period > 10:
+            period = 10
+        self.period = period
+        if margin < .1:
+            margin = .1
+        if margin > .9:
+            margin = .9
+        self.margin = margin
+        self.keep_alive_interval = [period & 0x7f, period >> 7]
+        await self._send_sysex(PrivateConstants.SAMPLING_INTERVAL,
+                               self.keep_alive_interval)
+        while True:
+            if self.period:
+                await asyncio.sleep(period - (period - (period * margin)))
+                await self._send_sysex(PrivateConstants.KEEP_ALIVE,
+                                       self.keep_alive_interval)
+            else:
+                break
+
     async def play_tone(self, pin, tone_command, frequency, duration):
         """
         This method will call the Tone library for the selected pin.
         It requires FirmataPlus to be loaded onto the arduino
-        If the tone command is set to TONE_TONE, then the specified tone
-          will be played.
-        Else, if the tone command is TONE_NO_TONE, then any currently
-          playing tone will be disabled.
+
+        If the tone command is set to TONE_TONE, then the specified tone will be played.
+
+        Else, if the tone command is TONE_NO_TONE, then any currently playing tone will be disabled.
 
         :param pin: Pin number
         :param tone_command: Either TONE_TONE, or TONE_NO_TONE
@@ -992,7 +1032,7 @@ class PymataCore:
 
         :returns: No return value
         """
-        #try:
+
         if self.log_output:
             logging.info('Shutting down ...')
         else:
@@ -1247,7 +1287,7 @@ class PymataCore:
         """
         port = data[0]
         port_data = (data[PrivateConstants.MSB] << 7) + \
-            data[PrivateConstants.LSB]
+                    data[PrivateConstants.LSB]
         pin = port * 8
         for pin in range(pin, min(pin + 8, len(self.digital_pins))):
             self.digital_pins[pin].current_value = port_data & 0x01
@@ -1621,7 +1661,7 @@ class PymataCore:
             # auto clear entry and execute the callback
 
             # noinspection PyPep8
-            latching_entry[Constants.LATCH_CALLBACK]\
+            latching_entry[Constants.LATCH_CALLBACK] \
                 ([key, latching_entry[Constants.LATCHED_DATA], time.time()])
             self.latch_map[key] = [0, 0, 0, 0, 0, None]
         else:

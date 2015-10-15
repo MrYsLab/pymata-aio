@@ -11,37 +11,23 @@
 
 from pymata_aio.pymata3 import PyMata3
 from library.redbot import RedBotMotors
-import sys
-import signal
 # This line "includes" the RedBot library into your sketch.
 # Provides special objects, methods, and functions for the RedBot.
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-board = PyMata3()
-=======
-
-
-board = PyMata3(ip_address="r05.wlan.rose-hulman.edu")
->>>>>>> parent of 9dd86d9... Revert "Adding ip_address=hostname argument for Pymata3() constructor"
-=======
-def signal_handler(sig, frame):
-    print('\nYou pressed Ctrl+C')
-    if board is not None:
-       board.send_reset()
-       board.shutdown()
-
-    sys.exit(0)
-
-board = PyMata3(ip_address='192.168.2.180')
->>>>>>> 2ff25e8828e2296bfffc798b0b1be959e19cc9a5
+WIFLY_IP_ADDRESS = None            # Leave set as None if not using WiFly
+WIFLY_IP_ADDRESS = "137.112.217.88"  # If using a WiFly on the RedBot, set the ip address here.
+if WIFLY_IP_ADDRESS:
+  board = PyMata3(ip_address=WIFLY_IP_ADDRESS)
+else:
+  # Use a USB cable to RedBot or an XBee connection instead of WiFly.
+  COM_PORT = None # Use None for automatic com port detection, or set if needed i.e. "COM7"
+  board = PyMata3(com_port=COM_PORT)
 
 motors = RedBotMotors(board)
 # Instantiate the motor control object. This only needs to be done once.
 
 
 def setup():
-    signal.signal(signal.SIGINT, signal_handler)
     print("Left and right motors at full speed forward")
     motors.drive(255)   # Turn on Left and right motors at full speed forward.
     board.sleep(2.0)    # Waits for 2 seconds

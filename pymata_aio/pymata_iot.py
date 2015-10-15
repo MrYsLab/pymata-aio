@@ -22,6 +22,7 @@ import json
 import asyncio
 import datetime
 import argparse
+import sys
 
 from autobahn.asyncio.websocket import WebSocketServerProtocol, \
     WebSocketServerFactory
@@ -122,6 +123,7 @@ class PymataIOT(WebSocketServerProtocol):
             "i2c_read_data": self.i2c_read_data,
             "i2c_read_request": self.i2c_read_request,
             "i2c_write_request": self.i2c_write_request,
+            "keep_alive":self.keep_alive,
             "play_tone": self.play_tone,
             "set_analog_latch": self.set_analog_latch,
             "set_digital_latch": self.set_digital_latch,
@@ -459,6 +461,21 @@ class PymataIOT(WebSocketServerProtocol):
         params = [int(i) for i in params]
         await self.core.i2c_write_request(device_address, params)
 
+    async def keep_alive(self, command):
+        """
+        Periodically send a keep alive message to the Arduino.
+        Frequency of keep alive transmission is calculated as follows:
+        keep_alive_sent = period - (period * margin)
+
+
+        :param period: Time period between keepalives. Range is 0-10 seconds. 0 disables the keepalive mechanism.
+        :param margin: Safety margin to assure keepalives are sent before period expires. Range is 0.1 to 0.9
+        :returns: No return value
+        """
+        period = int(command[0])
+        margin = int(command[1])
+        await self.core.keep_alive(period, margin)
+
     async def play_tone(self, command):
         """
         This method controls a piezo device to play a tone. It is a FirmataPlus feature.
@@ -599,7 +616,8 @@ class PymataIOT(WebSocketServerProtocol):
         :returns:Console message is generated.
         """
         print("WebSocket connection closed: {0}".format(reason))
-        await self.core.shutdown()
+        #await self.core.shutdown()
+        sys.exit(0)
 
     def onConnect(self, request):
         """
@@ -740,5 +758,8 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         pass
     finally:
+        loop.run_until_complete(factory.protocol.core.shutdown())
         server.close()
+        loop.stop()
         loop.close()
+        sys.exit(0)

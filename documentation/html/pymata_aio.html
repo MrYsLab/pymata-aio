@@ -84,7 +84,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#module-pymata_aio.private_constants">pymata_aio.private_constants module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-pymata_aio.pymata3">pymata_aio.pymata3 module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-pymata_aio.pymata_core">pymata_aio.pymata_core module</a></li>
- <li class="toctree-l2"><a class="reference internal" href="https://github.com/MrYsLab/pymata-aio/wiki/JSON-API-for-pymata_iot">pymata_aio.pymata_iot module</a></li>
+    <li class="toctree-l2"><a class="reference internal" href="https://github.com/MrYsLab/pymata-aio/wiki/JSON-API-for-pymata_iot">pymata_aio.pymata_iot module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-pymata_aio.pymata_serial">pymata_aio.pymata_serial module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-pymata_aio.pymata_socket">pymata_aio.pymata_socket module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-pymata_aio">Module contents</a></li>
@@ -503,6 +503,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA</p>
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="pymata_aio.private_constants.PrivateConstants.KEEP_ALIVE">
+<code class="descname">KEEP_ALIVE</code><em class="property"> = 80</em><a class="headerlink" href="#pymata_aio.private_constants.PrivateConstants.KEEP_ALIVE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="pymata_aio.private_constants.PrivateConstants.LSB">
 <code class="descname">LSB</code><em class="property"> = 1</em><a class="headerlink" href="#pymata_aio.private_constants.PrivateConstants.LSB" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -529,7 +534,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA</p>
 
 <dl class="attribute">
 <dt id="pymata_aio.private_constants.PrivateConstants.PYMATA_VERSION">
-<code class="descname">PYMATA_VERSION</code><em class="property"> = '2.2'</em><a class="headerlink" href="#pymata_aio.private_constants.PrivateConstants.PYMATA_VERSION" title="Permalink to this definition">¶</a></dt>
+<code class="descname">PYMATA_VERSION</code><em class="property"> = '2.6'</em><a class="headerlink" href="#pymata_aio.private_constants.PrivateConstants.PYMATA_VERSION" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -1124,18 +1129,35 @@ passed in as a list.</li>
 </dd></dl>
 
 <dl class="method">
+<dt id="pymata_aio.pymata3.PyMata3.keep_alive">
+<code class="descname">keep_alive</code><span class="sig-paren">(</span><em>period=1</em>, <em>margin=0.3</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymata_aio/pymata3.html#PyMata3.keep_alive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymata_aio.pymata3.PyMata3.keep_alive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Periodically send a keep alive message to the Arduino.
+Frequency of keep alive transmission is calculated as follows:
+keep_alive_sent = period - (period * margin)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>period</strong> &#8211; Time period between keepalives. Range is 0-10 seconds. 0 disables the keepalive mechanism.</li>
+<li><strong>margin</strong> &#8211; Safety margin to assure keepalives are sent before period expires. Range is 0.1 to 0.9</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">No return value</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="pymata_aio.pymata3.PyMata3.play_tone">
 <code class="descname">play_tone</code><span class="sig-paren">(</span><em>pin</em>, <em>tone_command</em>, <em>frequency</em>, <em>duration=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymata_aio/pymata3.html#PyMata3.play_tone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymata_aio.pymata3.PyMata3.play_tone" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method will call the Tone library for the selected pin.
-It requires FirmataPlus to be loaded onto the arduino
-If the tone command is set to TONE_TONE, then the specified tone</p>
-<blockquote>
-<div>will be played.</div></blockquote>
-<dl class="docutils">
-<dt>Else, if the tone command is TONE_NO_TONE, then any currently</dt>
-<dd>playing tone will be disabled.</dd>
-</dl>
-<p>It is intended for a future release of Arduino Firmata</p>
+It requires FirmataPlus to be loaded onto the arduino</p>
+<p>If the tone command is set to TONE_TONE, then the specified tone will be played.</p>
+<p>Else, if the tone command is TONE_NO_TONE, then any currently playing tone will be disabled.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1874,17 +1896,35 @@ passed in as a list</li>
 </dd></dl>
 
 <dl class="method">
+<dt id="pymata_aio.pymata_core.PymataCore.keep_alive">
+<code class="descname">keep_alive</code><span class="sig-paren">(</span><em>period=1</em>, <em>margin=0.3</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymata_aio/pymata_core.html#PymataCore.keep_alive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymata_aio.pymata_core.PymataCore.keep_alive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Periodically send a keep alive message to the Arduino.
+Frequency of keep alive transmission is calculated as follows:
+keep_alive_sent = period - (period * margin)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>period</strong> &#8211; Time period between keepalives. Range is 0-10 seconds. 0 disables the keepalive mechanism.</li>
+<li><strong>margin</strong> &#8211; Safety margin to assure keepalives are sent before period expires. Range is 0.1 to 0.9</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">No return value</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="pymata_aio.pymata_core.PymataCore.play_tone">
 <code class="descname">play_tone</code><span class="sig-paren">(</span><em>pin</em>, <em>tone_command</em>, <em>frequency</em>, <em>duration</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymata_aio/pymata_core.html#PymataCore.play_tone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymata_aio.pymata_core.PymataCore.play_tone" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method will call the Tone library for the selected pin.
-It requires FirmataPlus to be loaded onto the arduino
-If the tone command is set to TONE_TONE, then the specified tone</p>
-<blockquote>
-<div>will be played.</div></blockquote>
-<dl class="docutils">
-<dt>Else, if the tone command is TONE_NO_TONE, then any currently</dt>
-<dd>playing tone will be disabled.</dd>
-</dl>
+It requires FirmataPlus to be loaded onto the arduino</p>
+<p>If the tone command is set to TONE_TONE, then the specified tone will be played.</p>
+<p>Else, if the tone command is TONE_NO_TONE, then any currently playing tone will be disabled.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2055,7 +2095,8 @@ in milliseconds</td>
 <dl class="method">
 <dt id="pymata_aio.pymata_core.PymataCore.shutdown">
 <code class="descname">shutdown</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymata_aio/pymata_core.html#PymataCore.shutdown"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymata_aio.pymata_core.PymataCore.shutdown" title="Permalink to this definition">¶</a></dt>
-<dd><p>This method attempts an orderly shutdown</p>
+<dd><p>This method attempts an orderly shutdown
+If any exceptions are thrown, just ignore them.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
