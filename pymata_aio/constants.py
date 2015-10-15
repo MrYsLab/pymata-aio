@@ -34,11 +34,18 @@ class Constants:
     TONE = 0x09  # Any pin in TONE mode
     ENCODER = 0x0a
     SONAR = 0x0b  # Any pin in SONAR mode
+    PIXY = 0x0c # Any pin used by Pixy camera
     IGNORE = 0x7f
 
     # Tone commands
     TONE_TONE = 0  # play a tone
     TONE_NO_TONE = 1  # turn off tone
+
+    # Pixy commands
+    PIXY_CONFIGURE = 0 # setup the Pixy to automatically report blocks
+    PIXY_SET_SERVOS = 1 # directly control the pan and tilt servo motors
+    PIXY_SET_BRIGHTNESS = 2 # adjust the brightness of the Pixy exposure
+    PIXY_SET_LED = 3 # control the color of the Pixy LED
 
     # I2C command operation modes
     I2C_WRITE = 0B00000000

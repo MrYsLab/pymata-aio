@@ -44,6 +44,8 @@ class PrivateConstants:
     ENCODER_DATA = 0x61  # current encoder position data
     SONAR_CONFIG = 0x62  # configure pins to control a sonar distance device
     SONAR_DATA = 0x63  # distance data returned
+    PIXY_CONFIG = 0x64 # control a Pixy camera
+    PIXY_DATA = 0x65 # blocks data returned
     # end of FirmataPlus defined SYSEX commands
 
     SERVO_CONFIG = 0x70  # set servo pin and max and min angles
