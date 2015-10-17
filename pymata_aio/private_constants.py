@@ -94,3 +94,9 @@ class PrivateConstants:
     STEPPER_CONFIGURE = 0  # configure a stepper motor for operation
     STEPPER_STEP = 1  # command a motor to move at the provided speed
     STEPPER_LIBRARY_VERSION = 2  # used to get stepper library version number
+
+    # Pixy sub commands
+    PIXY_SET_SERVOS = 0 # directly control the pan and tilt servo motors
+    PIXY_SET_BRIGHTNESS = 1 # adjust the brightness of the Pixy exposure
+    PIXY_SET_LED = 2 # control the color of the Pixy LED
+    PIN_PIXY_MOSI = 11

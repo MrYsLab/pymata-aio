@@ -41,11 +41,6 @@ class Constants:
     TONE_TONE = 0  # play a tone
     TONE_NO_TONE = 1  # turn off tone
 
-    # Pixy sub commands
-    PIXY_SET_SERVOS = 0 # directly control the pan and tilt servo motors
-    PIXY_SET_BRIGHTNESS = 1 # adjust the brightness of the Pixy exposure
-    PIXY_SET_LED = 2 # control the color of the Pixy LED
-
     # I2C command operation modes
     I2C_WRITE = 0B00000000
     I2C_READ = 0B00001000

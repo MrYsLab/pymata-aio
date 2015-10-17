@@ -606,7 +606,7 @@ class PyMata3:
 
         """
         loop = asyncio.get_event_loop()
-        loop.run_until_complete(self.core.sonar_config(steps_per_revolution,
+        loop.run_until_complete(self.core.stepper_config(steps_per_revolution,
                                                        stepper_pins))
 
     def stepper_step(self, motor_speed, number_of_steps):
@@ -621,3 +621,71 @@ class PyMata3:
         loop = asyncio.get_event_loop()
         loop.run_until_complete(self.core.stepper_step(motor_speed,
                                                        number_of_steps))
+
+
+
+    def pixy_init(self, cb=None, cb_type=None,):
+        """
+        Initialize Pixy and will enable Pixy block reporting.
+        This is a FirmataPlusRB feature.
+
+        :param cb: callback function to report Pixy blocks
+        :param cb_type: Constants.CB_TYPE_DIRECT = direct call or
+                        Constants.CB_TYPE_ASYNCIO = asyncio coroutine
+        :returns: No return value.
+        """
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(self.core.pixy_init(cb, cb_type))
+
+
+    def pixy_get_blocks(self):
+        """
+        This method retrieves the latest Pixy data value
+
+        :returns: Pixy data
+        """
+        loop = asyncio.get_event_loop()
+        try:
+            value = loop.run_until_complete(self.core.pixy_get_blocks())
+            return value
+        except RuntimeError:
+            self.shutdown()
+
+
+    def pixy_set_servos(self, s0, s1):
+        """
+        Sends the setServos Pixy command.
+        This method sets the pan/tilt servos that are plugged into Pixy's two servo ports.
+
+        :param s0: value 0 to 1000
+        :param s1: value 0 to 1000
+        :returns: No return value.
+        """
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(self.core.pixy_set_servos(s0, s1))
+
+
+    def pixy_set_brightness(self, brightness):
+        """
+        Sends the setBrightness Pixy command.
+        This method sets the brightness (exposure) of Pixy's camera.
+
+        :param brightness: range between 0 and 255 with 255 being the brightest setting
+        :returns: No return value.
+        """
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(self.core.pixy_set_brightness(brightness))
+
+
+    def pixy_set_led(self, r, g, b):
+        """
+        Sends the setLed Pixy command.
+        This method sets the RGB LED on front of Pixy.
+
+        :param r: red range between 0 and 255
+        :param g: green range between 0 and 255
+        :param b: blue range between 0 and 255
+        :returns: No return value.
+        """
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(self.core.pixy_set_led(r, g, b))
