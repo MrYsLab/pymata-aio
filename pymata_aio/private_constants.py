@@ -44,7 +44,8 @@ class PrivateConstants:
     ENCODER_DATA = 0x61  # current encoder position data
     SONAR_CONFIG = 0x62  # configure pins to control a sonar distance device
     SONAR_DATA = 0x63  # distance data returned
-    PIXY_CONFIG = 0x64 # control a Pixy camera
+    PIXY_INIT = 0x64 # initialize a Pixy camera to automatically return data
+    PIXY_SET_COMMAND = 0x65 # use a Pixy set command
     PIXY_DATA = 0x65 # blocks data returned
     # end of FirmataPlus defined SYSEX commands
 
@@ -70,7 +71,7 @@ class PrivateConstants:
     SYSEX_REALTIME = 0x7F  # MIDI Reserved for realtime messages
 
     # reserved for PyMata
-    PYMATA_VERSION = "2.6"
+    PYMATA_VERSION = "2.7 exp"
 
     # each byte represents a digital port
     #  and its value contains the current port settings
