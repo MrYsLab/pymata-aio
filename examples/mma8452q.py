@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from pymata_aio.pymata3 import PyMata3
 from pymata_aio.constants import Constants
+import math
 
 
 class MMA8452Q:
@@ -154,7 +155,8 @@ class MMA8452Q:
         """
         register = self.MMA8452Q_Register['WHO_AM_I']
 
-        self.board.i2c_read_request(self.address, register, 1, Constants.I2C_READ | Constants.I2C_END_TX_MASK,
+        self.board.i2c_read_request(self.address, register, 1,
+                                    Constants.I2C_READ | Constants.I2C_END_TX_MASK,
                                     self.data_val)
         reply = self.wait_for_read_result()
 
@@ -170,7 +172,8 @@ class MMA8452Q:
         @return: No return value
         """
         register = self.MMA8452Q_Register['CTRL_REG1']
-        self.board.i2c_read_request(self.address, register, 1, Constants.I2C_READ | Constants.I2C_END_TX_MASK,
+        self.board.i2c_read_request(self.address, register, 1,
+                                    Constants.I2C_READ | Constants.I2C_END_TX_MASK,
                                     self.data_val)
 
         ctrl1 = self.wait_for_read_result()
@@ -188,7 +191,8 @@ class MMA8452Q:
         @return: No return value
         """
         register = self.MMA8452Q_Register['XYZ_DATA_CFG']
-        self.board.i2c_read_request(self.address, register, 1, Constants.I2C_READ | Constants.I2C_END_TX_MASK,
+        self.board.i2c_read_request(self.address, register, 1,
+                                    Constants.I2C_READ | Constants.I2C_END_TX_MASK,
                                     self.data_val)
 
         config_reg = self.wait_for_read_result()
@@ -206,7 +210,8 @@ class MMA8452Q:
         """
         # self.standby()
         register = self.MMA8452Q_Register['CTRL_REG1']
-        self.board.i2c_read_request(self.address, register, 1, Constants.I2C_READ | Constants.I2C_END_TX_MASK,
+        self.board.i2c_read_request(self.address, register, 1,
+                                    Constants.I2C_READ | Constants.I2C_END_TX_MASK,
                                     self.data_val)
 
         control_reg = self.wait_for_read_result()
@@ -224,7 +229,8 @@ class MMA8452Q:
         """
         register = self.MMA8452Q_Register['PL_CFG']
 
-        self.board.i2c_read_request(self.address, register, 1, Constants.I2C_READ | Constants.I2C_END_TX_MASK,
+        self.board.i2c_read_request(self.address, register, 1,
+                                    Constants.I2C_READ | Constants.I2C_END_TX_MASK,
                                     self.data_val)
 
         control_reg = self.wait_for_read_result()
@@ -246,7 +252,8 @@ class MMA8452Q:
         @return: See above.
         """
         register = self.MMA8452Q_Register['PL_STATUS']
-        self.board.i2c_read_request(self.address, register, 1, Constants.I2C_READ | Constants.I2C_END_TX_MASK,
+        self.board.i2c_read_request(self.address, register, 1,
+                                    Constants.I2C_READ | Constants.I2C_END_TX_MASK,
                                     self.data_val)
 
         pl_status = self.wait_for_read_result()
@@ -300,7 +307,8 @@ class MMA8452Q:
         #  Set the second pulse window - maximum allowed time between end of
         #  latency and start of second pulse
         register = self.MMA8452Q_Register['PULSE_WIND']
-        self.board.i2c_write_request(self.address, [register, 0xFF])  # 5. 318ms (max value) between taps max
+        self.board.i2c_write_request(self.address, [register,
+                                                    0xFF])  # 5. 318ms (max value) between taps max
 
     def read_tap(self):
         """
@@ -310,7 +318,8 @@ class MMA8452Q:
         @return: 0 or lower 7 bits of the PULSE_SRC register.
         """
         register = self.MMA8452Q_Register['PULSE_SRC']
-        self.board.i2c_read_request(self.address, register, 1, Constants.I2C_READ | Constants.I2C_RESTART_TX,
+        self.board.i2c_read_request(self.address, register, 1,
+                                    Constants.I2C_READ | Constants.I2C_RESTART_TX,
                                     self.data_val)
 
         tap_status = self.wait_for_read_result()
@@ -326,7 +335,8 @@ class MMA8452Q:
         @return: No return value.
         """
         register = self.MMA8452Q_Register['CTRL_REG1']
-        self.board.i2c_read_request(self.address, register, 1, Constants.I2C_READ | Constants.I2C_END_TX_MASK,
+        self.board.i2c_read_request(self.address, register, 1,
+                                    Constants.I2C_READ | Constants.I2C_END_TX_MASK,
                                     self.data_val)
 
         control_reg = self.wait_for_read_result()
@@ -341,7 +351,8 @@ class MMA8452Q:
         @return: Returns 0 if not available. 1 if it is available
         """
         register = self.MMA8452Q_Register['STATUS']
-        self.board.i2c_read_request(self.address, register, 1, Constants.I2C_READ | Constants.I2C_END_TX_MASK,
+        self.board.i2c_read_request(self.address, register, 1,
+                                    Constants.I2C_READ | Constants.I2C_END_TX_MASK,
                                     self.data_val)
 
         avail = self.wait_for_read_result()
@@ -376,16 +387,27 @@ class MMA8452Q:
         zmsb = xyz[4]
         zlsb = xyz[5]
 
-        # OR the 2 pieces together, shift 4 places to get 12 bits
-        x = (xmsb << 8 | xlsb) >> 4
+        x = int((xmsb << 8) | xlsb) >> 4
 
-        y = (ymsb << 8 | ylsb) >> 4
+        if xmsb > 127:
+            x = 4095 - x
+            x = ~x + 1
 
-        z = (zmsb << 8 | zlsb) >> 4
+        y = int(((ymsb << 8) | ylsb)) >> 4
 
-        cx = float(x) / float(2048) * float(self.scale)
-        cy = float(y) / float(2048) * float(self.scale)
-        cz = float(z) / float(2048) * float(self.scale)
+        if ymsb > 127:
+            y = 4095 - y
+            y = ~y + 1
+
+        z = int((zmsb << 8) | zlsb) >> 4
+
+        if zmsb > 127:
+            z = 4095 - z
+            z = ~z + 1
+
+        cx = x / 2048 * self.scale
+        cy = y / 2048 * self.scale
+        cz = z / 2048 * self.scale
 
         # get portrait/landscape
         port_land = self.read_portrait_landscape()
@@ -407,7 +429,14 @@ class MMA8452Q:
         else:
             tap = "TAPPED"
 
-        return [x, y, z, cx, cy, cz, port_land, tap]
+        self.board.sleep(.2)
+
+        angle_xz = 180 * math.atan2(x, z) / math.pi
+        angle_xy = 180 * math.atan2(x, y) / math.pi
+        angle_yz = 180 * math.atan2(y, z) / math.pi
+
+        return [x, y, z, cx, cy, cz, angle_xz, angle_yz, angle_xy, port_land,
+                tap]
 
     def wait_for_read_result(self):
         """
@@ -426,8 +455,10 @@ while True:
     if accel.available():
         values = accel.read()
         print(
-            '{0:4d}, {1:4d}, {2:4d}, {3:.3f}, {4:.3f}, {5:.3f}, {6:}'.format(values[0], values[1], values[2], values[3],
-                                                                             values[4], values[5], values[6]))
+            '{0:4d}, {1:4d}, {2:4d}, {3:.3f}, {4:.3f}, {5:.3f},  {6:.3f}, {7:.3f}, {8:.3f}, {9:}'.format(
+                values[0], values[1], values[2], values[3],
+                values[4], values[5], values[6], values[7], values[8],
+                values[9]))
     else:
         print("Where's the device?")
         accel.board.sleep(.001)
