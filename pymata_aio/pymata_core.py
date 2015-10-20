@@ -1193,7 +1193,7 @@ class PymataCore:
         :param s1: value 0 to 1000
         :returns: No return value.
         """
-        data = [PrivateConstants.PIXY_SET_SERVOS, s0 & 0x7f, (s0 >> 7) & 0x7f]
+        data = [PrivateConstants.PIXY_SET_SERVOS, s0 & 0x7f, (s0 >> 7) & 0x7f, s1 & 0x7f, (s1 >> 7) & 0x7f]
         await self._send_sysex(PrivateConstants.PIXY_SET_COMMAND, data)
 
 
