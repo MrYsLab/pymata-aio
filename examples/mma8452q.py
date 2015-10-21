@@ -277,6 +277,7 @@ class MMA8452Q:
         @return: No return value.
         """
         temp = 0
+
         if not (x_ths & 0x80):  # If top bit ISN'T set
             temp |= 0x3  # Enable taps on x
             register = self.MMA8452Q_Register["PULSE_THSX"]
@@ -288,9 +289,11 @@ class MMA8452Q:
             self.board.i2c_write_request(self.address, [register, y_ths])
 
         if not (z_ths & 0x80):  # If top bit Izx
+            temp |= 0x30  # Enable taps on z
             register = self.MMA8452Q_Register["PULSE_THSZ"]
             self.board.i2c_write_request(self.address, [register, z_ths])
 
+        # self.board.sleep(2)
         # Set up single and/or double tap detection on each axis individually.
         register = self.MMA8452Q_Register['PULSE_CFG']
         self.board.i2c_write_request(self.address, [register, temp | 0x40])
@@ -307,8 +310,8 @@ class MMA8452Q:
         #  Set the second pulse window - maximum allowed time between end of
         #  latency and start of second pulse
         register = self.MMA8452Q_Register['PULSE_WIND']
-        self.board.i2c_write_request(self.address, [register,
-                                                    0xFF])  # 5. 318ms (max value) between taps max
+        self.board.i2c_write_request(self.address, [register, 0xFF])  # 5. 318ms (max value) between taps max
+
 
     def read_tap(self):
         """
@@ -319,9 +322,9 @@ class MMA8452Q:
         """
         register = self.MMA8452Q_Register['PULSE_SRC']
         self.board.i2c_read_request(self.address, register, 1,
-                                    Constants.I2C_READ | Constants.I2C_RESTART_TX,
+                                    Constants.I2C_READ | Constants.I2C_END_TX_MASK,
                                     self.data_val)
-
+        #self.board.sleep(.1)
         tap_status = self.wait_for_read_result()
         tap_status = tap_status[self.data_start]
         if tap_status & 0x80:  # Read EA bit to check if a interrupt was generated
@@ -425,11 +428,9 @@ class MMA8452Q:
         # get tap status
         tap = self.read_tap()
         if tap:
-            tap = "No Tap"
-        else:
             tap = "TAPPED"
-
-        self.board.sleep(.2)
+        else:
+            tap = "No Tap"
 
         angle_xz = 180 * math.atan2(x, z) / math.pi
         angle_xy = 180 * math.atan2(x, y) / math.pi
@@ -455,10 +456,10 @@ while True:
     if accel.available():
         values = accel.read()
         print(
-            '{0:4d}, {1:4d}, {2:4d}, {3:.3f}, {4:.3f}, {5:.3f},  {6:.3f}, {7:.3f}, {8:.3f}, {9:}'.format(
+            '{0:4d}, {1:4d}, {2:4d}, {3:.3f}, {4:.3f}, {5:.3f},  {6:.3f}, {7:.3f}, {8:.3f}, {9:} {10:}'.format(
                 values[0], values[1], values[2], values[3],
                 values[4], values[5], values[6], values[7], values[8],
-                values[9]))
+                values[9], values[10]))
     else:
         print("Where's the device?")
-        accel.board.sleep(.001)
+    accel.board.sleep(.001)
