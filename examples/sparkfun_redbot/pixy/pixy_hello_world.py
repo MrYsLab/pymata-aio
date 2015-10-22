@@ -22,7 +22,7 @@ def got_blocks(blocks):
         for block_index in range(len(blocks)):
             block = blocks[block_index]
             print("block {1:3d}: sig: {1:3d}  x: {1:3d} y: {1:3d} width: {1:3d} height: {1:3d}".format(
-                    block_index, block.signature, block.x, block.y, block.width, block.height))
+                    block_index, block["signature"], block["x"], block["y"], block["width"], block["height"]))
 
 def got_pushbutton_press(current_value):
     print("Pushbutton " + str(current_value))
