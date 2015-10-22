@@ -649,6 +649,7 @@ class PyMata3:
             value = loop.run_until_complete(self.core.pixy_get_blocks())
             return value
         except RuntimeError:
+            print("Error getting Pixy blocks")
             self.shutdown()
 
 

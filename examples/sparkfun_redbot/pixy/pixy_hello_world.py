@@ -11,19 +11,22 @@ from pymata_aio.pymata3 import Constants
 
 
 board = PyMata3()
-
+got_blocks_counter = 0
 
 def got_blocks(blocks):
-    print("Detected " + str(len(blocks)) + " blocks:")
-    print(blocks)
-#     for block_index in range(len(blocks)):
-#         block = blocks[block_index]
-#         print("block {1:3d}: sig: {1:3d}  x: {1:3d} y: {1:3d} width: {1:3d} height: {1:3d}".format(
-#                 block_index, block.signature, block.x, block.y, block.width, block.height))
+    global got_blocks_counter
+    got_blocks_counter += 1
+    if got_blocks_counter % 40 == 0:
+        print("Detected " + str(len(blocks)) + " blocks:")
+        print(blocks)
+        for block_index in range(len(blocks)):
+            block = blocks[block_index]
+            print("block {1:3d}: sig: {1:3d}  x: {1:3d} y: {1:3d} width: {1:3d} height: {1:3d}".format(
+                    block_index, block.signature, block.x, block.y, block.width, block.height))
 
 def got_pushbutton_press(current_value):
     print("Pushbutton " + str(current_value))
-    print(board.pixy_get_blocks())
+    #print(board.pixy_get_blocks())  # TODO: Implement this function.
 
 
 def main():
@@ -32,6 +35,8 @@ def main():
 
     # Only get the Pixy blocks when the pushbutton is pressed.
     #board.pixy_init()
+
+    board.keep_alive(period=2)
 
     # Do nothing.  Just kill time to allow callback to keep running
     board.set_pin_mode(13, Constants.OUTPUT)

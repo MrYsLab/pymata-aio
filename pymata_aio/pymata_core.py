@@ -1168,9 +1168,8 @@ class PymataCore:
         :param max_block: Maximum number of Pixy blocks to report when many signatures are found.
         :returns: No return value.
         """
-        # CONSIDER: :param use_pan_tilt_tracking: true to use pan/tilt automatic tracking
         if cb:
-            self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb = cb # Pixy uses SPI.  Pin 11 is MOSI
+            self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb = cb # Pixy uses SPI.  Pin 11 is MOSI.
         if cb_type:
             self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb_type = cb_type
         data = [PrivateConstants.PIXY_INIT, max_blocks & 0x7f]
@@ -1416,21 +1415,27 @@ class PymataCore:
         :param data: pixy data
         :returns: None - but update is saved in the digital pins structure
         """
+        if len(self.digital_pins) < PrivateConstants.PIN_PIXY_MOSI:
+            print("Board did not properly finish pin discovery")
+            self.shutdown()
+
         # strip off sysex start and end
         data = data[1:-1]
         # TODO: Use real Pixy data once we figure out what we'd like to send and how.
-        print("Pixy data arrived:")
-        print("Raw:" + str(data))
+        #print("Pixy data arrived:")
+        #print("Raw:" + str(data))
         num_blocks = data[0]
         blocks = []
         for i in range(num_blocks):
-            blocks[i].signature = int((data[i * 12 + 1] << 7) + data[i * 12 + 2])
-            blocks[i].x = int((data[i * 12 + 3] << 7) + data[i * 12 + 4])
-            blocks[i].y = int((data[i * 12 + 5] << 7) + data[i * 12 + 6])
-            blocks[i].width = int((data[i * 12 + 7] << 7) + data[i * 12 + 8])
-            blocks[i].height = int((data[i * 12 + 9] << 7) + data[i * 12 + 10])
-            blocks[i].angle = int((data[i * 12 + 11] << 7) + data[i * 12 + 12])
-        print("Cooked:" + str(blocks))
+            block = {}
+            block["signature"] = int((data[i * 12 + 1] << 7) + data[i * 12 + 2])
+            block["x"] = int((data[i * 12 + 3] << 7) + data[i * 12 + 4])
+            block["y"] = int((data[i * 12 + 5] << 7) + data[i * 12 + 6])
+            block["width"] = int((data[i * 12 + 7] << 7) + data[i * 12 + 8])
+            block["height"] = int((data[i * 12 + 9] << 7) + data[i * 12 + 10])
+            block["angle"] = int((data[i * 12 + 11] << 7) + data[i * 12 + 12])
+            blocks.append(block)
+        #print("Blocks:" + str(blocks))
         self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].current_value = blocks
         if self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb_type:
             await self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb(blocks)
