@@ -1428,12 +1428,12 @@ class PymataCore:
         blocks = []
         for i in range(num_blocks):
             block = {}
-            block["signature"] = int((data[i * 12 + 1] << 7) + data[i * 12 + 2])
-            block["x"] = int((data[i * 12 + 3] << 7) + data[i * 12 + 4])
-            block["y"] = int((data[i * 12 + 5] << 7) + data[i * 12 + 6])
-            block["width"] = int((data[i * 12 + 7] << 7) + data[i * 12 + 8])
-            block["height"] = int((data[i * 12 + 9] << 7) + data[i * 12 + 10])
-            block["angle"] = int((data[i * 12 + 11] << 7) + data[i * 12 + 12])
+            block["signature"] = int((data[i * 12 + 2] << 7) + data[i * 12 + 1])
+            block["x"] = int((data[i * 12 + 4] << 7) + data[i * 12 + 3])
+            block["y"] = int((data[i * 12 + 6] << 7) + data[i * 12 + 5])
+            block["width"] = int((data[i * 12 + 8] << 7) + data[i * 12 + 7])
+            block["height"] = int((data[i * 12 + 10] << 7) + data[i * 12 + 9])
+            block["angle"] = int((data[i * 12 + 12] << 7) + data[i * 12 + 11])
             blocks.append(block)
         #print("Blocks:" + str(blocks))
         self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].current_value = blocks

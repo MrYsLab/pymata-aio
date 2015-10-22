@@ -19,9 +19,12 @@ def got_blocks(blocks):
     if got_blocks_counter % 40 == 0:
         print("Detected " + str(len(blocks)) + " blocks:")
         print(blocks)
+        if len(blocks) > 0 and blocks[0] == 11:
+            print("Wrong kind of block :)  Accidentally reported it as a digital again.  Oops.")
+            return
         for block_index in range(len(blocks)):
             block = blocks[block_index]
-            print("block {1:3d}: sig: {1:3d}  x: {1:3d} y: {1:3d} width: {1:3d} height: {1:3d}".format(
+            print("block {}: sig: {}  x: {} y: {} width: {} height: {}".format(
                     block_index, block["signature"], block["x"], block["y"], block["width"], block["height"]))
 
 def got_pushbutton_press(current_value):
