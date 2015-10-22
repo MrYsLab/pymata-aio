@@ -44,8 +44,7 @@ class PrivateConstants:
     ENCODER_DATA = 0x61  # current encoder position data
     SONAR_CONFIG = 0x62  # configure pins to control a sonar distance device
     SONAR_DATA = 0x63  # distance data returned
-    PIXY_INIT = 0x64 # initialize a Pixy camera to automatically return data
-    PIXY_SET_COMMAND = 0x65 # use a Pixy set command
+    PIXY_CONFIG = 0x64 # configure the Pixy.  Configure has 4 subcommands
     PIXY_DATA = 0x65 # blocks data returned
     # end of FirmataPlus defined SYSEX commands
 
@@ -96,7 +95,10 @@ class PrivateConstants:
     STEPPER_LIBRARY_VERSION = 2  # used to get stepper library version number
 
     # Pixy sub commands
-    PIXY_SET_SERVOS = 0 # directly control the pan and tilt servo motors
-    PIXY_SET_BRIGHTNESS = 1 # adjust the brightness of the Pixy exposure
-    PIXY_SET_LED = 2 # control the color of the Pixy LED
+    PIXY_INIT = 0 # Initialize the Pixy object and set the max number of blocks to report
+    PIXY_SET_SERVOS = 1 # directly control the pan and tilt servo motors
+    PIXY_SET_BRIGHTNESS = 2 # adjust the brightness of the Pixy exposure
+    PIXY_SET_LED = 3 # control the color of the Pixy LED
+
+    # Pin used to store Pixy data
     PIN_PIXY_MOSI = 11

@@ -17,9 +17,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 import asyncio
-import sys
-import logging
 
+from .constants import Constants
 from .pymata_core import PymataCore
 
 
@@ -125,7 +124,7 @@ class PyMata3:
         loop = asyncio.get_event_loop()
         loop.run_until_complete(self.core.disable_digital_reporting(pin))
 
-    def encoder_config(self, pin_a, pin_b, cb=None, cb_type=None,
+    def encoder_config(self, pin_a, pin_b, cb=None, cb_type=Constants.CB_TYPE_DIRECT,
                        hall_encoder=False):
         """
         This command enables the rotary encoder (2 pin + ground) and will
@@ -352,7 +351,7 @@ class PyMata3:
         return value
 
     def i2c_read_request(self, address, register, number_of_bytes, read_type,
-                         cb=None, cb_type=None):
+                         cb=None, cb_type=Constants.CB_TYPE_DIRECT):
         """
         This method issues an i2c read request for a single read,continuous
         read or a stop, specified by the read_type.
@@ -452,7 +451,7 @@ class PyMata3:
                                                        max_pulse))
 
     def set_analog_latch(self, pin, threshold_type, threshold_value,
-                         cb=None, cb_type=None):
+                         cb=None, cb_type=Constants.CB_TYPE_DIRECT):
         """
         This method "arms" an analog pin for its data to be latched and
         saved in the latching table.
@@ -475,7 +474,7 @@ class PyMata3:
             pin, threshold_type, threshold_value, cb, cb_type))
         return result
 
-    def set_digital_latch(self, pin, threshold_value, cb=None, cb_type=None):
+    def set_digital_latch(self, pin, threshold_value, cb=None, cb_type=Constants.CB_TYPE_DIRECT):
         """
         This method "arms" a digital pin for its data to be latched and saved
         in the latching table.
@@ -496,7 +495,7 @@ class PyMata3:
             pin, threshold_value, cb, cb_type))
         return result
 
-    def set_pin_mode(self, pin_number, pin_state, callback=None, cb_type=None):
+    def set_pin_mode(self, pin_number, pin_state, callback=None, cb_type=Constants.CB_TYPE_DIRECT):
         """
         This method sets the  pin mode for the specified pin.
 
@@ -567,7 +566,7 @@ class PyMata3:
 
     # noinspection PyUnusedLocal
     def sonar_config(self, trigger_pin, echo_pin, cb=None, ping_interval=50,
-                     max_distance=200, cb_type=None):
+                     max_distance=200, cb_type=Constants.CB_TYPE_DIRECT):
         """
         Configure the pins,ping interval and maximum distance for an HC-SR04
         type device.
@@ -624,7 +623,7 @@ class PyMata3:
 
 
 
-    def pixy_init(self, cb=None, cb_type=None,):
+    def pixy_init(self, cb=None, cb_type=Constants.CB_TYPE_DIRECT, max_blocks=5):
         """
         Initialize Pixy and will enable Pixy block reporting.
         This is a FirmataPlusRB feature.
@@ -632,10 +631,11 @@ class PyMata3:
         :param cb: callback function to report Pixy blocks
         :param cb_type: Constants.CB_TYPE_DIRECT = direct call or
                         Constants.CB_TYPE_ASYNCIO = asyncio coroutine
+        :param max_block: Maximum number of Pixy blocks to report when many signatures are found.
         :returns: No return value.
         """
         loop = asyncio.get_event_loop()
-        loop.run_until_complete(self.core.pixy_init(cb, cb_type))
+        loop.run_until_complete(self.core.pixy_init(cb, cb_type, max_blocks))
 
 
     def pixy_get_blocks(self):

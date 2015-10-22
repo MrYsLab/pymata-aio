@@ -1157,14 +1157,15 @@ class PymataCore:
         await self._send_sysex(PrivateConstants.STEPPER_DATA, data)
 
 
-    async def pixy_init(self, cb=None, cb_type=None,):
+    async def pixy_init(self, cb=None, cb_type=None, max_blocks=5):
         """
-        Initialize Pixy and will enable Pixy block reporting.
+        Initialize Pixy and enable Pixy block reporting.
         This is a FirmataPlusRB feature.
 
         :param cb: callback function to report Pixy blocks
         :param cb_type: Constants.CB_TYPE_DIRECT = direct call or
                         Constants.CB_TYPE_ASYNCIO = asyncio coroutine
+        :param max_block: Maximum number of Pixy blocks to report when many signatures are found.
         :returns: No return value.
         """
         # CONSIDER: :param use_pan_tilt_tracking: true to use pan/tilt automatic tracking
@@ -1172,7 +1173,8 @@ class PymataCore:
             self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb = cb # Pixy uses SPI.  Pin 11 is MOSI
         if cb_type:
             self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb_type = cb_type
-        await self._send_sysex(PrivateConstants.PIXY_INIT, None)
+        data = [PrivateConstants.PIXY_INIT, max_blocks & 0x7f]
+        await self._send_sysex(PrivateConstants.PIXY_CONFIG, data)
 
 
     async def pixy_get_blocks(self):
@@ -1194,7 +1196,7 @@ class PymataCore:
         :returns: No return value.
         """
         data = [PrivateConstants.PIXY_SET_SERVOS, s0 & 0x7f, (s0 >> 7) & 0x7f, s1 & 0x7f, (s1 >> 7) & 0x7f]
-        await self._send_sysex(PrivateConstants.PIXY_SET_COMMAND, data)
+        await self._send_sysex(PrivateConstants.PIXY_CONFIG, data)
 
 
     async def pixy_set_brightness(self, brightness):
@@ -1206,7 +1208,7 @@ class PymataCore:
         :returns: No return value.
         """
         data = [PrivateConstants.PIXY_SET_BRIGHTNESS, brightness & 0x7f, brightness >> 7]
-        await self._send_sysex(PrivateConstants.PIXY_SET_COMMAND, data)
+        await self._send_sysex(PrivateConstants.PIXY_CONFIG, data)
 
 
     async def pixy_set_led(self, r, g, b):
@@ -1220,7 +1222,7 @@ class PymataCore:
         :returns: No return value.
         """
         data = [PrivateConstants.PIXY_SET_LED, r & 0x7f, r >> 7, g & 0x7f, g >> 7, b & 0x7f, b >> 7]
-        await self._send_sysex(PrivateConstants.PIXY_SET_COMMAND, data)
+        await self._send_sysex(PrivateConstants.PIXY_CONFIG, data)
 
 
     async def _command_dispatcher(self):
@@ -1417,13 +1419,24 @@ class PymataCore:
         # strip off sysex start and end
         data = data[1:-1]
         # TODO: Use real Pixy data once we figure out what we'd like to send and how.
-        pixy_data = data
-        pixy_data = [1, 2, 3, 4, 5] # Test with completely fake data for now.
+        print("Pixy data arrived:")
+        print("Raw:" + str(data))
+        num_blocks = data[0]
+        blocks = []
+        for i in range(num_blocks):
+            blocks[i].signature = int((data[i * 12 + 1] << 7) + data[i * 12 + 2])
+            blocks[i].x = int((data[i * 12 + 3] << 7) + data[i * 12 + 4])
+            blocks[i].y = int((data[i * 12 + 5] << 7) + data[i * 12 + 6])
+            blocks[i].width = int((data[i * 12 + 7] << 7) + data[i * 12 + 8])
+            blocks[i].height = int((data[i * 12 + 9] << 7) + data[i * 12 + 10])
+            blocks[i].angle = int((data[i * 12 + 11] << 7) + data[i * 12 + 12])
+        print("Cooked:" + str(blocks))
+        self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].current_value = blocks
         if self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb_type:
-            await self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb(pixy_data)
+            await self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb(blocks)
         else:
             loop = asyncio.get_event_loop()
-            loop.call_soon(self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb, pixy_data)
+            loop.call_soon(self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb, blocks)
 
 
     async def _i2c_reply(self, data):
