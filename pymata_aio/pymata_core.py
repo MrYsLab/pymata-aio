@@ -221,6 +221,7 @@ class PymataCore:
         # a list of PinData objects - one for each pin segregate by pin type
         self.analog_pins = []
         self.digital_pins = []
+        self.pixy_blocks = []
         self.loop = None
         self.the_task = None
         self.serial_port = None
@@ -1176,15 +1177,6 @@ class PymataCore:
         await self._send_sysex(PrivateConstants.PIXY_CONFIG, data)
 
 
-    async def pixy_get_blocks(self):
-        """
-        This method retrieves the latest Pixy data value
-
-        :returns: Pixy data
-        """
-        return self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].current_value
-
-
     async def pixy_set_servos(self, s0, s1):
         """
         Sends the setServos Pixy command.
@@ -1436,7 +1428,8 @@ class PymataCore:
             block["angle"] = int((data[i * 12 + 12] << 7) + data[i * 12 + 11])
             blocks.append(block)
         #print("Blocks:" + str(blocks))
-        self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].current_value = blocks
+        self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].current_value = num_blocks
+        self.pixy_blocks = blocks
         if self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb_type:
             await self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb(blocks)
         else:

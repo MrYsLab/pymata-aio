@@ -644,13 +644,7 @@ class PyMata3:
 
         :returns: Pixy data
         """
-        loop = asyncio.get_event_loop()
-        try:
-            value = loop.run_until_complete(self.core.pixy_get_blocks())
-            return value
-        except RuntimeError:
-            print("Error getting Pixy blocks")
-            self.shutdown()
+        return self.core.pixy_blocks
 
 
     def pixy_set_servos(self, s0, s1):
