@@ -10,16 +10,15 @@ from pymata_aio.pymata3 import PyMata3
 from pymata_aio.pymata3 import Constants
 
 
+# board = PyMata3(ip_address="r01.wlan.rose-hulman.edu")
 board = PyMata3()
-pixy_callback_counter = 0
 
-use_pixy_callback = True
+use_pixy_callback = False
 
 def print_pixy_blocks(blocks):
     """ Prints the Pixy blocks data."""
     print("Detected " + str(len(blocks)) + " blocks:")
-    print(blocks)
-    if len(blocks) > 0 and not hasattr(blocks[0], "signature"):
+    if len(blocks) > 0 and not "signature" in blocks[0]:
         print("Something went wrong.  This does not appear to be a printable block.")
         board.shutdown()
         return
@@ -29,18 +28,10 @@ def print_pixy_blocks(blocks):
                 block_index, block["signature"], block["x"], block["y"], block["width"], block["height"]))
 
 
-def my_pixy_data_callback(blocks):
-    global pixy_callback_counter
-    pixy_callback_counter += 1
-    if pixy_callback_counter % 80 == 0:  # with a 0.025 sampling intervale this becomes 2 seconds.
-        print_pixy_blocks(blocks)
-
-
-
 def main():
     if use_pixy_callback:
-        # Use a callback to display the readings every time Pixy is reported.
-        board.pixy_init(cb=my_pixy_data_callback, cb_type=Constants.CB_TYPE_DIRECT)
+        # Use a callback to display the Pixy readings.
+        board.pixy_init(cb=print_pixy_blocks, cb_type=Constants.CB_TYPE_DIRECT)
     else:
         # Use the pixy_block property to display the readings.
         board.pixy_init()
@@ -55,6 +46,6 @@ def main():
         board.digital_write(13, 0)
         board.sleep(1.0)
         if not use_pixy_callback:
-            print_pixy_blocks(board.pixy_blocks)
+            print_pixy_blocks(board.pixy_get_blocks())
 
 main()

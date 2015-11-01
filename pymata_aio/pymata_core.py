@@ -1158,7 +1158,7 @@ class PymataCore:
         await self._send_sysex(PrivateConstants.STEPPER_DATA, data)
 
 
-    async def pixy_init(self, cb=None, cb_type=None, max_blocks=5):
+    async def pixy_init(self, max_blocks=5, cb=None, cb_type=None):
         """
         Initialize Pixy and enable Pixy block reporting.
         This is a FirmataPlusRB feature.
@@ -1408,15 +1408,13 @@ class PymataCore:
         :returns: None - but update is saved in the digital pins structure
         """
         if len(self.digital_pins) < PrivateConstants.PIN_PIXY_MOSI:
-            print("Board did not properly finish pin discovery")
+            print("Something went wrong.  Board did not properly finish pin discovery")
             self.shutdown()
 
         # strip off sysex start and end
         data = data[1:-1]
-        # TODO: Use real Pixy data once we figure out what we'd like to send and how.
-        #print("Pixy data arrived:")
-        #print("Raw:" + str(data))
-        num_blocks = data[0]
+        num_blocks = data[0] # First byte is the number of blocks.
+        # Prepare the new blocks list and then used it to overwrite the pixy_blocks.
         blocks = []
         for i in range(num_blocks):
             block = {}
@@ -1427,14 +1425,13 @@ class PymataCore:
             block["height"] = int((data[i * 12 + 10] << 7) + data[i * 12 + 9])
             block["angle"] = int((data[i * 12 + 12] << 7) + data[i * 12 + 11])
             blocks.append(block)
-        #print("Blocks:" + str(blocks))
-        self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].current_value = num_blocks
         self.pixy_blocks = blocks
-        if self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb_type:
-            await self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb(blocks)
-        else:
-            loop = asyncio.get_event_loop()
-            loop.call_soon(self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb, blocks)
+        if self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb:
+            if self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb_type:
+                await self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb(blocks)
+            else:
+                loop = asyncio.get_event_loop()
+                loop.call_soon(self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb, blocks)
 
 
     async def _i2c_reply(self, data):

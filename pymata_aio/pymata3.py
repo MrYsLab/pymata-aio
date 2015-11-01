@@ -623,7 +623,7 @@ class PyMata3:
 
 
 
-    def pixy_init(self, cb=None, cb_type=None, max_blocks=5):
+    def pixy_init(self, max_blocks=5, cb=None, cb_type=None):
         """
         Initialize Pixy and will enable Pixy block reporting.
         This is a FirmataPlusRB feature.
@@ -635,7 +635,7 @@ class PyMata3:
         :returns: No return value.
         """
         loop = asyncio.get_event_loop()
-        loop.run_until_complete(self.core.pixy_init(cb, cb_type, max_blocks))
+        loop.run_until_complete(self.core.pixy_init(max_blocks, cb, cb_type))
 
 
     def pixy_get_blocks(self):
