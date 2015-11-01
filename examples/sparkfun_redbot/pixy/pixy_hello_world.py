@@ -17,7 +17,7 @@ use_pixy_callback = False
 
 def print_pixy_blocks(blocks):
     """ Prints the Pixy blocks data."""
-    print("Detected " + str(len(blocks)) + " blocks:")
+    print("Detected " + str(len(blocks)) + " Pixy blocks:")
     if len(blocks) > 0 and not "signature" in blocks[0]:
         print("Something went wrong.  This does not appear to be a printable block.")
         board.shutdown()
@@ -40,11 +40,10 @@ def main():
     # Flash the LED while killing time.
     board.set_pin_mode(13, Constants.OUTPUT)
     while True:
-        print(".")
         board.digital_write(13, 1)
-        board.sleep(1.0)
+        board.sleep(0.25)
         board.digital_write(13, 0)
-        board.sleep(1.0)
+        board.sleep(0.25)
         if not use_pixy_callback:
             print_pixy_blocks(board.pixy_get_blocks())
 

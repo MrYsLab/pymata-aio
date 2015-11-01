@@ -1408,8 +1408,8 @@ class PymataCore:
         :returns: None - but update is saved in the digital pins structure
         """
         if len(self.digital_pins) < PrivateConstants.PIN_PIXY_MOSI:
-            print("Something went wrong.  Board did not properly finish pin discovery")
-            self.shutdown()
+            print("\n\nSomething went wrong.  Board did not properly finish pin discovery.  Please try again.")
+            await self.shutdown()
 
         # strip off sysex start and end
         data = data[1:-1]
