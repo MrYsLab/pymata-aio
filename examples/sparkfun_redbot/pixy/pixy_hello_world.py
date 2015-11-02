@@ -3,7 +3,17 @@
 Basic demo of reporting Pixy data.
 
  This sketch is a good place to start if you're just getting started with
- Pixy and pymata-aio.  This program simply prints the detected object blocks.
+ Pixy and pymata-aio.  This program simply prints the detected object blocks
+ much like the standard Pixy Hello World demo for Arduino.
+
+ In order to run this example you of course you need a Pixy and a RedBot with an ICSP header.
+ The cable goes such that the red wire of the ribbon cable is on bottom.
+ Also make sure you have nothing plugged into pin 11 which is just above that header.
+ The Pixy uses pins 11 and 12, but the button does not seem to interfere with Pixy as long as
+ it doesn't get pressed (just don't try to use the button and Pixy at the same time).
+
+ You also need to make sure the Pixy has been trained to track a color
+  (http://cmucam.org/projects/cmucam5/wiki/Teach_Pixy_an_object).
 """
 
 from pymata_aio.pymata3 import PyMata3
@@ -13,7 +23,7 @@ from pymata_aio.pymata3 import Constants
 # board = PyMata3(ip_address="r01.wlan.rose-hulman.edu")
 board = PyMata3()
 
-use_pixy_callback = False
+use_pixy_callback = True
 
 def print_pixy_blocks(blocks):
     """ Prints the Pixy blocks data."""
