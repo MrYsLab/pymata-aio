@@ -70,7 +70,7 @@ def main():
     board.servo_config(PIN_PAN_SERVO)
     board.analog_write(PIN_PAN_SERVO, int(pan_servo_angle_deg))
     while True:
-        board.sleep(0.1)
+        board.sleep(0.01)
         pan_servo_angle_deg, prev_move_deg = pixy_value_update(pan_servo_angle_deg, prev_move_deg, board.pixy_get_blocks())
         board.analog_write(PIN_PAN_SERVO, int(pan_servo_angle_deg))
 
