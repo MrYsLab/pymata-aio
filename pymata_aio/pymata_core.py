@@ -1016,7 +1016,7 @@ class PymataCore:
         :returns: No return value.
         """
         data = [interval & 0x7f, interval >> 7]
-        self._send_sysex(PrivateConstants.SAMPLING_INTERVAL, data)
+        await self._send_sysex(PrivateConstants.SAMPLING_INTERVAL, data)
 
     async def shutdown(self):
         """
@@ -1408,8 +1408,9 @@ class PymataCore:
         :returns: None - but update is saved in the digital pins structure
         """
         if len(self.digital_pins) < PrivateConstants.PIN_PIXY_MOSI:
-            print("\n\nSomething went wrong.  Board did not properly finish pin discovery.  Please try again.")
-            await self.shutdown()
+            # Pixy data sent before board finished pin discovery.
+            #print("Pixy data sent before board finished pin discovery.")
+            return
 
         # strip off sysex start and end
         data = data[1:-1]
