@@ -7,7 +7,9 @@ Demo of using the pan and tilt servo kit.
    2. Plug the servos in on the Pixy board as recommended here http://cmucam.org/projects/cmucam5/wiki/Assembling_pantilt_Mechanism
 
  This version of the code assumes you have connected the servo to the Pixy board directly.
- Warning! The tilt servo can sometimes act sporadic so we recommend option #1 or *only using the pan servo*.
+ Warning! The tilt servo can act pretty crazy if you are only using ICSP power.  So we recommend option #1 or only using the pan servo or...
+ Note, if you use the servos directly connected to the Pixy you need to use white power connector not just ICSP power.
+ More information here: http://cmucam.org/projects/cmucam5/wiki/My_pantilt_is_acting_sort_of_crazy
 
  In addition to the pan and tilt demo you also need all of the setup that was necessar for the pixy_hello_world.py program....
    In order to run this example you of course you need a Pixy and a RedBot with an ICSP header.
