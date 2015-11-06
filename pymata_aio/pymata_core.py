@@ -737,6 +737,7 @@ class PymataCore:
         """
         return PrivateConstants.PYMATA_VERSION
 
+    # noinspection PyIncorrectDocstring
     async def i2c_config(self, read_delay_time=0):
         """
         NOTE: THIS METHOD MUST BE CALLED BEFORE ANY I2C REQUEST IS MADE
@@ -1011,7 +1012,7 @@ class PymataCore:
         :returns: No return value.
         """
         data = [interval & 0x7f, interval >> 7]
-        self._send_sysex(PrivateConstants.SAMPLING_INTERVAL, data)
+        await self._send_sysex(PrivateConstants.SAMPLING_INTERVAL, data)
 
     async def shutdown(self):
         """
