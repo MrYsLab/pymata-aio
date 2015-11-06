@@ -29,7 +29,7 @@ class PyMata3:
     the API that you should use..
     """
 
-    def __init__(self, arduino_wait=2, log_output=False, com_port=None,
+    def __init__(self, arduino_wait=2, sleep_tune=.001, log_output=False, com_port=None,
                  ip_address=None, ip_port=2000, ip_handshake='*HELLO*'):
         """
         Constructor for the PyMata3 API
@@ -39,6 +39,8 @@ class PyMata3:
 
         :param arduino_wait: Amount of time to allow Arduino to finish its
                              reset (2 seconds for Uno, Leonardo can be 0)
+        :param sleep_tune: This parameter sets the amount of time PyMata core
+                           uses to set asyncio.sleep
         :param log_output: If True, pymata_aio.log is created and all
                             console output is redirected to this file.
         :param com_port: If specified, auto port detection will not be
@@ -50,7 +52,7 @@ class PyMata3:
         :returns: None
         """
         self.log_out = log_output
-        self.sleep_tune = .001
+        self.sleep_tune = sleep_tune
         self.core = PymataCore(arduino_wait, self.sleep_tune, log_output,
                                com_port, ip_address, ip_port, ip_handshake)
         self.core.start()

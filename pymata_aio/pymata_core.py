@@ -1269,12 +1269,13 @@ class PymataCore:
                     await asyncio.sleep(self.sleep_tune)
                     continue
             except Exception as ex:
-                # should never get here
+                # A error occurred while transmitting the Firmata message, message arrived invalid.
                 if self.log_output:
                     logging.exception(ex)
                 else:
                     print(ex)
-                raise  # re-raise exception.
+                print("An exception occured on the asyncio event loop while receiving data.  Invalid message.")
+                #raise  # re-raise exception.
 
     '''
     Firmata message handlers
