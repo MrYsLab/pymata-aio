@@ -4,13 +4,17 @@
 
   Time to make sure the electronics work! To test everything out, we're
   going to blink the LED on the board.
+
+  In Arduino, an LED is often connected to pin 13 for "debug" purposes.
+  This LED is used as an indicator to make sure that we're able to upload
+  code to the board. It's also a good indicator that your program is running.
 """
 
 from pymata_aio.pymata3 import PyMata3
 from pymata_aio.constants import Constants
 
 WIFLY_IP_ADDRESS = None            # Leave set as None if not using WiFly
-WIFLY_IP_ADDRESS = "137.112.217.88"  # If using a WiFly on the RedBot, set the ip address here.
+#WIFLY_IP_ADDRESS = "r01.wlan.rose-hulman.edu"  # If using a WiFly on the RedBot, set the ip address here.
 if WIFLY_IP_ADDRESS:
     board = PyMata3(ip_address=WIFLY_IP_ADDRESS)
 else:
@@ -42,8 +46,3 @@ if __name__ == "__main__":
         loop()
 
 
-# **********************************************************************
-#  In Arduino, an LED is often connected to pin 13 for "debug" purposes.
-#  This LED is used as an indicator to make sure that we're able to upload
-#  code to the board. It's also a good indicator that your program is running.
-# **********************************************************************

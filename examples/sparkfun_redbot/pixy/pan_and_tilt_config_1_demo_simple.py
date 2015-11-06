@@ -23,7 +23,6 @@ Demo of using the pan servo kit.
 import math
 
 from pymata_aio.pymata3 import PyMata3
-from pymata_aio.pymata3 import Constants
 
 
 # board = PyMata3(arduino_wait=0, sleep_tune=0.0, ip_address="r01.wlan.rose-hulman.edu")
