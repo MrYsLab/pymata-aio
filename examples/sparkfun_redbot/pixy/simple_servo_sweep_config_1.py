@@ -12,8 +12,8 @@ Demo of using the pan and tilt servo kit.
 
 from pymata_aio.pymata3 import PyMata3
 
-# board = PyMata3(ip_address="r01.wlan.rose-hulman.edu")
-board = PyMata3()
+# board = PyMata3(arduino_wait=0, sleep_tune=0.0001, ip_address="r01.wlan.rose-hulman.edu")
+board = PyMata3(sleep_tune=0.0001) # Since the Pixy can transmit a lot of data reduce the asyncio sleep time to reduce the possibility of lagging behind messages.
 
 # Servo connection locations on the RedBot board.
 PIN_PAN_SERVO = 3
@@ -44,7 +44,7 @@ def main():
             board.sleep(0.05)
         print_pixy_blocks(board.pixy_get_blocks())
 
-        # Test the titl servo.
+        # Test the tilt servo.
         for tilt_deg in range(90, 150, 2):
             board.analog_write(PIN_TILT_SERVO, tilt_deg)
             board.sleep(0.05)

@@ -26,8 +26,9 @@ from pymata_aio.pymata3 import PyMata3
 from pymata_aio.pymata3 import Constants
 
 
-# board = PyMata3(ip_address="r01.wlan.rose-hulman.edu")
-board = PyMata3()
+# board = PyMata3(arduino_wait=0, sleep_tune=0.0, ip_address="r01.wlan.rose-hulman.edu")
+board = PyMata3(sleep_tune=0.0) # Since the Pixy can transmit a lot of data reduce the asyncio sleep time to reduce the possibility of lagging behind messages.
+
 
 # Pixy x-y position values
 PIXY_MIN_X = 0
@@ -70,7 +71,7 @@ def main():
     board.servo_config(PIN_PAN_SERVO)
     board.analog_write(PIN_PAN_SERVO, int(pan_servo_angle_deg))
     while True:
-        board.sleep(0.1)
+        board.sleep(0.05)
         pan_servo_angle_deg, prev_move_deg = pixy_value_update(pan_servo_angle_deg, prev_move_deg, board.pixy_get_blocks())
         board.analog_write(PIN_PAN_SERVO, int(pan_servo_angle_deg))
 

@@ -7,9 +7,7 @@ Demo of using the pan and tilt servo kit.
    2. Plug the servos in on the Pixy board as recommended here http://cmucam.org/projects/cmucam5/wiki/Assembling_pantilt_Mechanism
 
  This version of the code assumes you have connected the servo to the Pixy board directly.
- Warning! The tilt servo can act pretty crazy if you are only using ICSP power.  So we recommend option #1 or only using the pan servo or...
- Note, if you use the servos directly connected to the Pixy you need to use white power connector not just ICSP power.
- More information here: http://cmucam.org/projects/cmucam5/wiki/My_pantilt_is_acting_sort_of_crazy
+ Due to power limitations we only use the pan servo in this demo.
 
  In addition to the pan and tilt demo you also need all of the setup that was necessar for the pixy_hello_world.py program....
    In order to run this example you of course you need a Pixy and a RedBot with an ICSP header.
@@ -27,8 +25,9 @@ from pymata_aio.pymata3 import PyMata3
 from pymata_aio.pymata3 import Constants
 
 
-# board = PyMata3(ip_address="r01.wlan.rose-hulman.edu")
-board = PyMata3()
+# board = PyMata3(arduino_wait=0, sleep_tune=0.0, ip_address="r01.wlan.rose-hulman.edu")
+board = PyMata3(sleep_tune=0.0) # Since the Pixy can transmit a lot of data reduce the asyncio sleep time to reduce the possibility of lagging behind messages.
+
 
 # Pixy x-y position values
 PIXY_MIN_X = 0
@@ -63,24 +62,24 @@ class ServoLoop:
         self.previous_error = error
 
 pan_loop = ServoLoop(100.0, 300.0)  # Reduced the default values
-tilt_loop = ServoLoop(100.0, 300.0) # Reduced the default values
+#tilt_loop = ServoLoop(100.0, 300.0) # Reduced the default values
 
 def pixy_value_update(blocks):
     """ Prints the Pixy blocks data."""
     if len(blocks) > 0:
         pan_error = X_CENTER - blocks[0]["x"]
-        titl_error = blocks[0]["y"] - Y_CENTER
         pan_loop.update(pan_error)
-        tilt_loop.update(titl_error)
+#         tilt_error = blocks[0]["y"] - Y_CENTER  # not used for power over ICSP reasons
+#         tilt_loop.update(tilt_error)
 
         loop = asyncio.get_event_loop()
         if loop.is_running():
             # This is the version that will be used since we are in a callback, but I wanted to show how to
             # properly protect against calls to board.something when you don't know if you are in the non-async
             # land vs when you are currently executing code from within async land.
-            asyncio.ensure_future(board.core.pixy_set_servos(int(pan_loop.position), int(tilt_loop.position)))
+            asyncio.ensure_future(board.core.pixy_set_servos(int(pan_loop.position), int(PIXY_RCS_CENTER_POS)))
         else:
-            board.pixy_set_servos(int(pan_loop.position), int(tilt_loop.position))
+            board.pixy_set_servos(int(pan_loop.position), int(PIXY_RCS_CENTER_POS))
 
 
 def print_pixy_blocks(blocks):

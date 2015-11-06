@@ -20,7 +20,7 @@ from pymata_aio.pymata3 import PyMata3
 from pymata_aio.pymata3 import Constants
 
 
-# board = PyMata3(ip_address="r01.wlan.rose-hulman.edu")
+# board = PyMata3(arduino_wait=0, sleep_tune=0.0001, ip_address="r01.wlan.rose-hulman.edu")
 board = PyMata3(sleep_tune=0.0001) # Since the Pixy can transmit a lot of data reduce the asyncio sleep time to reduce the possibility of lagging behind messages.
 
 use_pixy_callback = True

@@ -24,8 +24,9 @@ from pymata_aio.pymata3 import PyMata3
 from pymata_aio.pymata3 import Constants
 
 
-# board = PyMata3(ip_address="r01.wlan.rose-hulman.edu")
-board = PyMata3()
+# board = PyMata3(arduino_wait=0, sleep_tune=0.0, ip_address="r01.wlan.rose-hulman.edu")
+board = PyMata3(sleep_tune=0.0) # Since the Pixy can transmit a lot of data reduce the asyncio sleep time to reduce the possibility of lagging behind messages.
+
 
 # Pixy x-y position values
 PIXY_MIN_X = 0
@@ -69,9 +70,9 @@ def pixy_value_update(blocks):
     """ Prints the Pixy blocks data."""
     if len(blocks) > 0:
         pan_error = X_CENTER - blocks[0]["x"]
-        titl_error = blocks[0]["y"] - Y_CENTER
+        tilt_error = blocks[0]["y"] - Y_CENTER
         pan_loop.update(pan_error)
-        tilt_loop.update(titl_error)
+        tilt_loop.update(tilt_error)
 
         loop = asyncio.get_event_loop()
         if loop.is_running():
