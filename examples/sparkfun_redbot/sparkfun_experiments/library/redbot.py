@@ -257,8 +257,6 @@ class RedBotAccelerometer(MMA8452Q3):
     VAL_ANGLE_XZ = 6
     VAL_ANGLE_YZ = 7
     VAL_ANGLE_XY = 8
-    VAL_PORT_LAND = 9
-    VAL_TAPPED = 10
     
     def __init__(self, board):
         DEVICE_ADDRESS = 0x1d  # Physical board address of the accelerometer 
