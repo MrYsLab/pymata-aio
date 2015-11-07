@@ -742,6 +742,7 @@ class PymataCore:
         """
         return PrivateConstants.PYMATA_VERSION
 
+    # noinspection PyIncorrectDocstring
     async def i2c_config(self, read_delay_time=0):
         """
         NOTE: THIS METHOD MUST BE CALLED BEFORE ANY I2C REQUEST IS MADE

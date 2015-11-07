@@ -409,7 +409,6 @@ class PyMata3:
         """
         asyncio.ensure_future(self.core.keep_alive(period, margin))
 
-
     def play_tone(self, pin, tone_command, frequency, duration=None):
         """
         This method will call the Tone library for the selected pin.
@@ -558,7 +557,7 @@ class PyMata3:
         'data' is the current measured distance (in centimeters)
         for that pin. If there is no data, the value is set to None.
         This is a FirmataPlus feature.
-
+        :param trigger_pin: trigger pin specified in sonar_config
         :returns: active_sonar_map
         """
         loop = asyncio.get_event_loop()
@@ -608,7 +607,7 @@ class PyMata3:
         """
         loop = asyncio.get_event_loop()
         loop.run_until_complete(self.core.stepper_config(steps_per_revolution,
-                                                       stepper_pins))
+                                                         stepper_pins))
 
     def stepper_step(self, motor_speed, number_of_steps):
         """
