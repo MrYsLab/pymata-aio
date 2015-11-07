@@ -18,24 +18,27 @@ import sys
 import signal
 
 from pymata_aio.pymata3 import PyMata3
-from library.redbot import RedBotSensor
+import library.redbot as rb
 
 WIFLY_IP_ADDRESS = None            # Leave set as None if not using WiFly
-WIFLY_IP_ADDRESS = "10.0.1.18"  # If using a WiFly on the RedBot, set the ip address here.
+WIFLY_IP_ADDRESS = "10.0.1.19"  # If using a WiFly on the RedBot, set the ip address here.
+#WIFLY_IP_ADDRESS = "r01.wlan.rose-hulman.edu"  # If your WiFi network allows it, you can use the device hostname instead.
 if WIFLY_IP_ADDRESS:
-    board = PyMata3(ip_address=WIFLY_IP_ADDRESS)
+    # The Arduino does not need 2 seconds to reboot when using WiFly.  The WiFly doesn't trigger a reset on connection.
+    # Reduce the asyncio receive sleep value to 0.0001 (instead of 0.001) allow for lots of data.
+    board = PyMata3(arduino_wait=0, ip_address=WIFLY_IP_ADDRESS, sleep_tune=0.0001)
 else:
     # Use a USB cable to RedBot or an XBee connection instead of WiFly.
     COM_PORT = None # Use None for automatic com port detection, or set if needed i.e. "COM7"
-    board = PyMata3(com_port=COM_PORT)
+    board = PyMata3(com_port=COM_PORT, sleep_tune=0.0001)
 
 LEFT_LINE_FOLLOWER = 3  # pin number assignments for each IR sensor
 CENTRE_LINE_FOLLOWER = 6
 RIGHT_LINE_FOLLOWER = 7
 
-IR_sensor_1 = RedBotSensor(board, LEFT_LINE_FOLLOWER)
-IR_sensor_2 = RedBotSensor(board, CENTRE_LINE_FOLLOWER)
-IR_sensor_3 = RedBotSensor(board, RIGHT_LINE_FOLLOWER)
+IR_sensor_1 = rb.RedBotSensor(board, LEFT_LINE_FOLLOWER)
+IR_sensor_2 = rb.RedBotSensor(board, CENTRE_LINE_FOLLOWER)
+IR_sensor_3 = rb.RedBotSensor(board, RIGHT_LINE_FOLLOWER)
 
 
 def signal_handler(sig, frame):
