@@ -30,12 +30,11 @@ WIFLY_IP_ADDRESS = "10.0.1.19"  # If using a WiFly on the RedBot, set the ip add
 #WIFLY_IP_ADDRESS = "r01.wlan.rose-hulman.edu"  # If your WiFi network allows it, you can use the device hostname instead.
 if WIFLY_IP_ADDRESS:
     # The Arduino does not need 2 seconds to reboot when using WiFly.  The WiFly doesn't trigger a reset on connection.
-    # Reduce the asyncio receive sleep value to 0.0001 (instead of 0.001) allow for lots of accelerometer data.
-    board = PyMata3(arduino_wait=0, ip_address=WIFLY_IP_ADDRESS, sleep_tune=0.0001)
+    board = PyMata3(arduino_wait=0, ip_address=WIFLY_IP_ADDRESS)
 else:
     # Use a USB cable to RedBot or an XBee connection instead of WiFly.
     COM_PORT = None # Use None for automatic com port detection, or set if needed i.e. "COM7"
-    board = PyMata3(com_port=COM_PORT, sleep_tune=0.0001)
+    board = PyMata3(com_port=COM_PORT)
 
 board.keep_alive(2) # Important because it will stop the encoder data stream if you stop the Python program.
 
@@ -45,7 +44,6 @@ accelerometer = rb.RedBotAccelerometer(board)
 
 def setup():
     accelerometer.start()
-
 
 def loop():
         if accelerometer.available():
@@ -75,7 +73,7 @@ def loop():
                 port_land = 'Tilt Up'
             else:
                 port_land = 'Tilt Dn'
-            print('x-val: {:.2f}, y-val: {:.2f}, z-val: {:.2f} \t  angle x-z:{:.2f}, angle y-z: {:.2f}, angle x-y: {:.2f} \t Tapped: {} \t Orientation: {}'.format( \
+            print('x-val: {:.2f}, y-val: {:.2f}, z-val: {:.2f} \t angle x-z:{:.2f}, angle y-z: {:.2f}, angle x-y: {:.2f} \t Tapped: {} \t Orientation: {}'.format( \
                   x, y, z, angle_xz, angle_yz, angle_xy, tap, port_land))
         else:
             print("Accelerometer not available.  Please try again.")
