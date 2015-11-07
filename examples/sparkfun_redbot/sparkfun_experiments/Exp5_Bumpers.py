@@ -17,21 +17,21 @@
   Revised 2 Oct 2015 L. Mathews
 """
 
-import sys
-import signal
-
 from pymata_aio.pymata3 import PyMata3
 from library.redbot import RedBotMotors, RedBotBumper
 
 
 WIFLY_IP_ADDRESS = None            # Leave set as None if not using WiFly
-WIFLY_IP_ADDRESS = "137.112.217.88"  # If using a WiFly on the RedBot, set the ip address here.
+WIFLY_IP_ADDRESS = "10.0.1.19"  # If using a WiFly on the RedBot, set the ip address here.
+#WIFLY_IP_ADDRESS = "r01.wlan.rose-hulman.edu"  # If your WiFi network allows it, you can use the device hostname instead.
 if WIFLY_IP_ADDRESS:
     board = PyMata3(ip_address=WIFLY_IP_ADDRESS)
 else:
     # Use a USB cable to RedBot or an XBee connection instead of WiFly.
     COM_PORT = None # Use None for automatic com port detection, or set if needed i.e. "COM7"
     board = PyMata3(com_port=COM_PORT)
+
+board.keep_alive(2) # Important because it will stop the motors if you stop the Python program.
 
 # Instantiate the motor control object. This only needs to be done once.
 motors = RedBotMotors(board)
@@ -42,17 +42,7 @@ right_bumper = RedBotBumper(board, 11)  # initializes bumper object on pin 11
 BUTTON_PIN = 12
 
 
-def signal_handler(sig, frame):
-    """Helper method to shutdown the RedBot if Ctrl-c is pressed"""
-    print('\nYou pressed Ctrl+C')
-    if board is not None:
-        board.send_reset()
-        board.shutdown()
-    sys.exit(0)
-
-
 def setup():
-    signal.signal(signal.SIGINT, signal_handler)
     print("Experiment 5 - Bump sensors")
 
 
@@ -103,8 +93,3 @@ if __name__ == "__main__":
     setup()
     while True:
         loop()
-
-
-
-
-

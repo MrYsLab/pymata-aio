@@ -18,22 +18,20 @@
  *  2 Oct 2015 L. Mathews
  ***********************************************************************/"""
 
-import sys
-import signal
-
 from pymata_aio.pymata3 import PyMata3
 from library.redbot import RedBotMotors, RedBotSensor
-# This line "includes" the RedBot library into your sketch.
-# Provides special objects, methods, and functions for the RedBot.
 
 WIFLY_IP_ADDRESS = None            # Leave set as None if not using WiFly
-WIFLY_IP_ADDRESS = "10.0.1.18"  # If using a WiFly on the RedBot, set the ip address here.
+WIFLY_IP_ADDRESS = "10.0.1.19"  # If using a WiFly on the RedBot, set the ip address here.
+#WIFLY_IP_ADDRESS = "r01.wlan.rose-hulman.edu"  # If your WiFi network allows it, you can use the device hostname instead.
 if WIFLY_IP_ADDRESS:
     board = PyMata3(ip_address=WIFLY_IP_ADDRESS)
 else:
     # Use a USB cable to RedBot or an XBee connection instead of WiFly.
     COM_PORT = None # Use None for automatic com port detection, or set if needed i.e. "COM7"
     board = PyMata3(com_port=COM_PORT)
+
+board.keep_alive(2) # Important because it will stop the motors and analog sensor stream if you stop the Python program.
 
 left = RedBotSensor(board, 3)  # pin number assignments for each IR sensor
 center = RedBotSensor(board, 6)
@@ -51,17 +49,7 @@ SPEED = 150  # sets the nominal speed. Set to any number 0-255
 motors = RedBotMotors(board)
 
 
-def signal_handler(sig, frame):
-    """Helper method to shutdown the RedBot if Ctrl-c is pressed"""
-    print('\nYou pressed Ctrl+C')
-    if board is not None:
-        board.send_reset()
-        board.shutdown()
-    sys.exit(0)
-
-
 def setup():
-    signal.signal(signal.SIGINT, signal_handler)
     print("Welcome to Experiment 6.2 - Line Following")
     print("------------------------------------------")
     print("IR Sensor Readings:")

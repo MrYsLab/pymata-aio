@@ -20,13 +20,18 @@ from library.redbot import RedBotMotors,RedBotEncoder
 import math
 
 WIFLY_IP_ADDRESS = None            # Leave set as None if not using WiFly
-WIFLY_IP_ADDRESS = "10.0.1.18"  # If using a WiFly on the RedBot, set the ip address here.
+WIFLY_IP_ADDRESS = "10.0.1.19"  # If using a WiFly on the RedBot, set the ip address here.
+#WIFLY_IP_ADDRESS = "r01.wlan.rose-hulman.edu"  # If your WiFi network allows it, you can use the device hostname instead.
 if WIFLY_IP_ADDRESS:
-    board = PyMata3(ip_address=WIFLY_IP_ADDRESS)
+    # The Arduino does not need 2 seconds to reboot when using WiFly.  The WiFly doesn't trigger a reset on connection.
+    # Reduce the asyncio receive sleep value to 0.0001 (instead of 0.001) allow for lots of encoder data.
+    board = PyMata3(arduino_wait=0, ip_address=WIFLY_IP_ADDRESS, sleep_tune=0.0001)
 else:
     # Use a USB cable to RedBot or an XBee connection instead of WiFly.
     COM_PORT = None # Use None for automatic com port detection, or set if needed i.e. "COM7"
-    board = PyMata3(com_port=COM_PORT)
+    board = PyMata3(com_port=COM_PORT, sleep_tune=0.0001)
+
+board.keep_alive(2) # Important because it will stop the encoder data stream if you stop the Python program.
 
 motors = RedBotMotors(board)
 encoders = RedBotEncoder(board)
@@ -58,7 +63,7 @@ def driveDistance(distance, motor_power):
     num_rev = distance / WHEEL_CIRC
 
     # debug
-    print("drive_distance() {} inches at {} power for {:.2f} revolutions".format(distance, motor_power, num_rev))
+    print("\ndrive_distance() {} inches at {} power for {:.2f} revolutions".format(distance, motor_power, num_rev))
 
     encoders.clear_enc()  # clear the encoder count
     motors.drive(motor_power)

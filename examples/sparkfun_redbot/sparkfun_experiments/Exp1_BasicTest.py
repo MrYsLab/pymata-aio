@@ -14,7 +14,8 @@ from pymata_aio.pymata3 import PyMata3
 from pymata_aio.constants import Constants
 
 WIFLY_IP_ADDRESS = None            # Leave set as None if not using WiFly
-#WIFLY_IP_ADDRESS = "r01.wlan.rose-hulman.edu"  # If using a WiFly on the RedBot, set the ip address here.
+WIFLY_IP_ADDRESS = "137.112.217.88"  # If using a WiFly on the RedBot, set the ip address here.
+WIFLY_IP_ADDRESS = "r01.wlan.rose-hulman.edu"  # If your WiFi network allows it, you can use the device hostname instead.
 if WIFLY_IP_ADDRESS:
     board = PyMata3(ip_address=WIFLY_IP_ADDRESS)
 else:
