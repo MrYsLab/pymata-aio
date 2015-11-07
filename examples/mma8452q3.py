@@ -18,14 +18,13 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-import asyncio
 import math
-from pymata_aio.pymata_core import PymataCore
+from pymata_aio.pymata3 import PyMata3
 from pymata_aio.constants import Constants
 
 
 # noinspection PyPep8
-class MMA8452Q:
+class MMA8452Q3:
     """
     This library is a direct port of: https://github.com/sparkfun/SparkFun_MMA8452Q_Arduino_Library/tree/V_1.1.0
     Special Note: All reads have the Constants.I2C_END_TX_MASK bit sit. Most devices do not need to do this, but it
@@ -118,40 +117,41 @@ class MMA8452Q:
 
         self.board = board
 
-    async def start(self):
+    def start(self):
         # configure firmata for i2c
-        await self.board.i2c_config()
+        self.board.i2c_config()
 
         # reset the device
         register = self.MMA8452Q_Register['CTRL_REG2']
-        await self.board.i2c_write_request(self.address, [register, 0x40])
+        self.board.i2c_write_request(self.address, [register, 0x40])
 
         # verify the device by sending a WHO AM I command and checking the results
-        id_board = await self.check_who_am_i()
+        id_board = self.check_who_am_i()
         if not id_board:
             print("Who am I fails")
-            await self.board.shutdown()
+            self.board.shutdown()
         else:
             # Correct device, continue with init
             # Must be in standby to change registers
-            await self.standby()
+            self.standby()
 
             # set up the scale register
-            await self.set_scale(self.scale)
+            self.set_scale(self.scale)
 
             # set the output data rate
-            await self.set_output_data_rate(self.output_data_rate)
+            self.set_output_data_rate(self.output_data_rate)
 
             # Set up portrait/landscape detection
-            await self.setup_portrait_landscape()
+            self.setup_portrait_landscape()
 
             # Disable x, y, set z to 0.5g
-            await self.setup_tap(0x80, 0x80, 0x08)
+            self.setup_tap(0x80, 0x80, 0x08)
 
             # set device to active state
-            await self.set_active()
+            self.set_active()
 
-    async def data_val(self, data):
+
+    def data_val(self, data):
         """
         This is the callback method used to save read results
         @param data: Data returned from the device
@@ -159,17 +159,20 @@ class MMA8452Q:
         """
         self.callback_data = data
 
-    async def check_who_am_i(self):
+
+    def check_who_am_i(self):
         """
         This method checks verifies the device ID.
         @return: True if valid, False if not
         """
         register = self.MMA8452Q_Register['WHO_AM_I']
 
-        await self.board.i2c_read_request(self.address, register, 1,
-                                               Constants.I2C_READ | Constants.I2C_END_TX_MASK,
-                                               self.data_val, Constants.CB_TYPE_ASYNCIO)
-        reply = await self.wait_for_read_result()
+        self.board.i2c_read_request(self.address, register, 1,
+                                    Constants.I2C_READ | Constants.I2C_END_TX_MASK,
+                                    self.data_val, Constants.CB_TYPE_DIRECT)
+
+
+        reply = self.wait_for_read_result()
 
         if reply[self.data_start] == self.device_id:
             rval = True
@@ -177,24 +180,27 @@ class MMA8452Q:
             rval = False
         return rval
 
-    async def standby(self):
+
+    def standby(self):
         """
         Put the device into standby mode so that the registers can be set.
         @return: No return value
         """
         register = self.MMA8452Q_Register['CTRL_REG1']
-        await self.board.i2c_read_request(self.address, register, 1,
-                                               Constants.I2C_READ | Constants.I2C_END_TX_MASK,
-                                               self.data_val, Constants.CB_TYPE_ASYNCIO)
+        self.board.i2c_read_request(self.address, register, 1,
+                                    Constants.I2C_READ | Constants.I2C_END_TX_MASK,
+                                    self.data_val, Constants.CB_TYPE_DIRECT)
 
-        ctrl1 = await self.wait_for_read_result()
+
+        ctrl1 = self.wait_for_read_result()
 
         ctrl1 = (ctrl1[self.data_start]) & ~0x01
         self.callback_data = []
 
-        await self.board.i2c_write_request(self.address, [register, ctrl1])
+        self.board.i2c_write_request(self.address, [register, ctrl1])
 
-    async def set_scale(self, scale):
+
+    def set_scale(self, scale):
         """
         Set the device scale register.
         Device must be in standby before calling this function
@@ -202,17 +208,19 @@ class MMA8452Q:
         @return: No return value
         """
         register = self.MMA8452Q_Register['XYZ_DATA_CFG']
-        await self.board.i2c_read_request(self.address, register, 1,
-                                               Constants.I2C_READ | Constants.I2C_END_TX_MASK,
-                                               self.data_val, Constants.CB_TYPE_ASYNCIO)
+        self.board.i2c_read_request(self.address, register, 1,
+                                    Constants.I2C_READ | Constants.I2C_END_TX_MASK,
+                                    self.data_val, Constants.CB_TYPE_DIRECT)
 
-        config_reg = await self.wait_for_read_result()
+
+        config_reg = self.wait_for_read_result()
         config_reg = config_reg[self.data_start]
         config_reg &= 0xFC  # Mask out scale bits
         config_reg |= (scale >> 2)
-        await self.board.i2c_write_request(self.address, [register, config_reg])
+        self.board.i2c_write_request(self.address, [register, config_reg])
 
-    async def set_output_data_rate(self, output_data_rate):
+
+    def set_output_data_rate(self, output_data_rate):
         """
         Set the device output data rate.
         Device must be in standby before calling this function
@@ -221,18 +229,20 @@ class MMA8452Q:
         """
         # self.standby()
         register = self.MMA8452Q_Register['CTRL_REG1']
-        await self.board.i2c_read_request(self.address, register, 1,
-                                               Constants.I2C_READ | Constants.I2C_END_TX_MASK,
-                                               self.data_val, Constants.CB_TYPE_ASYNCIO)
+        self.board.i2c_read_request(self.address, register, 1,
+                                    Constants.I2C_READ | Constants.I2C_END_TX_MASK,
+                                    self.data_val, Constants.CB_TYPE_DIRECT)
 
-        control_reg = await self.wait_for_read_result()
+
+        control_reg = self.wait_for_read_result()
         control_reg = control_reg[self.data_start]
 
         control_reg &= 0xC7  # Mask out data rate bits
         control_reg |= (output_data_rate << 3)
-        await self.board.i2c_write_request(self.address, [register, control_reg])
+        self.board.i2c_write_request(self.address, [register, control_reg])
 
-    async def setup_portrait_landscape(self):
+
+    def setup_portrait_landscape(self):
         """
         Setup the portrait/landscape registers
         Device must be in standby before calling this function
@@ -240,22 +250,24 @@ class MMA8452Q:
         """
         register = self.MMA8452Q_Register['PL_CFG']
 
-        await self.board.i2c_read_request(self.address, register, 1,
-                                               Constants.I2C_READ | Constants.I2C_END_TX_MASK,
-                                               self.data_val, Constants.CB_TYPE_ASYNCIO)
+        self.board.i2c_read_request(self.address, register, 1,
+                                    Constants.I2C_READ | Constants.I2C_END_TX_MASK,
+                                    self.data_val, Constants.CB_TYPE_DIRECT)
 
-        control_reg = await self.wait_for_read_result()
+
+        control_reg = self.wait_for_read_result()
         control_reg = control_reg[self.data_start] | 0x40
 
         #  1. Enable P/L
-        await self.board.i2c_write_request(self.address, [register, control_reg])
+        self.board.i2c_write_request(self.address, [register, control_reg])
 
         register = self.MMA8452Q_Register['PL_COUNT']
 
         # 2. Set the de-bounce rate
-        await self.board.i2c_write_request(self.address, [register, 0x50])
+        self.board.i2c_write_request(self.address, [register, 0x50])
 
-    async def read_portrait_landscape(self, callback=None):
+
+    def read_portrait_landscape(self, callback=None):
         """
         This function reads the portrait/landscape status register of the MMA8452Q.
         It will return either PORTRAIT_U, PORTRAIT_D, LANDSCAPE_R, LANDSCAPE_L,
@@ -264,11 +276,12 @@ class MMA8452Q:
         :returns: See above.
         """
         register = self.MMA8452Q_Register['PL_STATUS']
-        await self.board.i2c_read_request(self.address, register, 1,
-                                               Constants.I2C_READ | Constants.I2C_END_TX_MASK,
-                                               self.data_val, Constants.CB_TYPE_ASYNCIO)
+        self.board.i2c_read_request(self.address, register, 1,
+                                    Constants.I2C_READ | Constants.I2C_END_TX_MASK,
+                                    self.data_val, Constants.CB_TYPE_DIRECT)
 
-        pl_status = await self.wait_for_read_result()
+
+        pl_status = self.wait_for_read_result()
         pl_status = pl_status[self.data_start]
         if pl_status & 0x40:  # Z-tilt lockout
             pl_status = self.LOCKOUT
@@ -276,12 +289,13 @@ class MMA8452Q:
             pl_status = (pl_status & 0x6) >> 1
 
         if callback:
-            await callback(pl_status)
-        await asyncio.sleep(.001)
+            callback(pl_status)
+        self.board.sleep(.001)
 
         return pl_status
 
-    async def setup_tap(self, x_ths, y_ths, z_ths):
+
+    def setup_tap(self, x_ths, y_ths, z_ths):
         """
         This method sets the tap thresholds.
         Device must be in standby before calling this function.
@@ -299,37 +313,36 @@ class MMA8452Q:
         if not (x_ths & 0x80):  # If top bit ISN'T set
             temp |= 0x3  # Enable taps on x
             register = self.MMA8452Q_Register["PULSE_THSX"]
-            await self.board.i2c_write_request(self.address, [register, x_ths])
+            self.board.i2c_write_request(self.address, [register, x_ths])
+
 
         if not (y_ths & 0x80):  # If top bit ISN'T set
             temp |= 0x0C  # Enable taps on y
             register = self.MMA8452Q_Register["PULSE_THSY"]
-            await self.board.i2c_write_request(self.address, [register, y_ths])
+            self.board.i2c_write_request(self.address, [register, y_ths])
 
         if not (z_ths & 0x80):  # If top bit Izx
             temp |= 0x30  # Enable taps on z
             register = self.MMA8452Q_Register["PULSE_THSZ"]
-            await self.board.i2c_write_request(self.address, [register, z_ths])
-
-        # Set up single and/or double tap detection on each axis individually.
+            self.board.i2c_write_request(self.address, [register,
+                                                        z_ths])  # Set up single and/or double tap detection on each axis individually.
         register = self.MMA8452Q_Register['PULSE_CFG']
-        await self.board.i2c_write_request(self.address, [register, temp | 0x40])
-
-        #  Set the time limit - the maximum time that a tap can be above the thresh
+        self.board.i2c_write_request(self.address, [register,
+                                                    temp | 0x40])  # Set the time limit - the maximum time that a tap can be above the thresh
         register = self.MMA8452Q_Register['PULSE_TMLT']
         #  30ms time limit at 800Hz odr
-        await self.board.i2c_write_request(self.address, [register, 0x30])
-
-        #  Set the pulse latency - the minimum required time between pulses
+        self.board.i2c_write_request(self.address, [register,
+                                                    0x30])  # Set the pulse latency - the minimum required time between pulses
         register = self.MMA8452Q_Register['PULSE_LTCY']
-        await self.board.i2c_write_request(self.address, [register, 0xA0])
-
-        #  Set the second pulse window - maximum allowed time between end of
+        self.board.i2c_write_request(self.address, [register,
+                                                    0xA0])  # Set the second pulse window - maximum allowed time between end of
         #  latency and start of second pulse
         register = self.MMA8452Q_Register['PULSE_WIND']
-        await self.board.i2c_write_request(self.address, [register, 0xFF])  # 5. 318ms (max value) between taps max
+        self.board.i2c_write_request(self.address, [register,
+                                                    0xFF])  # 5. 318ms (max value) between taps max
 
-    async def read_tap(self, callback=None):
+
+    def read_tap(self, callback=None):
         """
         This function returns any taps read by the MMA8452Q. If the function
         returns 0, no new taps were detected. Otherwise the function will return the
@@ -338,11 +351,12 @@ class MMA8452Q:
         :returns: 0 or lower 7 bits of the PULSE_SRC register.
         """
         register = self.MMA8452Q_Register['PULSE_SRC']
-        await self.board.i2c_read_request(self.address, register, 1,
-                                               Constants.I2C_READ | Constants.I2C_END_TX_MASK,
-                                               self.data_val, Constants.CB_TYPE_ASYNCIO)
+        self.board.i2c_read_request(self.address, register, 1,
+                                    Constants.I2C_READ | Constants.I2C_END_TX_MASK,
+                                    self.data_val, Constants.CB_TYPE_DIRECT)
 
-        tap_status = await self.wait_for_read_result()
+
+        tap_status = self.wait_for_read_result()
         tap_status = tap_status[self.data_start]
         if tap_status & 0x80:
             tap_status &= 0x7f
@@ -350,42 +364,47 @@ class MMA8452Q:
             tap_status = 0
 
         if callback:
-            await callback(tap_status)
-        await asyncio.sleep(.001)
+            callback(tap_status)
+        self.board.sleep(.001)
         return tap_status
 
-    async def set_active(self):
+
+    def set_active(self):
         """
         This method sets the device to the active state
         @return: No return value.
         """
         register = self.MMA8452Q_Register['CTRL_REG1']
-        await self.board.i2c_read_request(self.address, register, 1,
-                                               Constants.I2C_READ | Constants.I2C_END_TX_MASK,
-                                               self.data_val, Constants.CB_TYPE_ASYNCIO)
+        self.board.i2c_read_request(self.address, register, 1,
+                                    Constants.I2C_READ | Constants.I2C_END_TX_MASK,
+                                    self.data_val, Constants.CB_TYPE_DIRECT)
 
-        control_reg = await self.wait_for_read_result()
+
+        control_reg = self.wait_for_read_result()
 
         control_reg = control_reg[self.data_start] | 0x01
 
-        await self.board.i2c_write_request(self.address, [register, control_reg])
+        self.board.i2c_write_request(self.address, [register, control_reg])
 
-    async def available(self):
+
+    def available(self):
         """
         This method checks to see if new xyz data is available
         @return: Returns 0 if not available. 1 if it is available
         """
         register = self.MMA8452Q_Register['STATUS']
-        await self.board.i2c_read_request(self.address, register, 1,
-                                               Constants.I2C_READ | Constants.I2C_END_TX_MASK,
-                                               self.data_val, Constants.CB_TYPE_ASYNCIO)
+        self.board.i2c_read_request(self.address, register, 1,
+                                    Constants.I2C_READ | Constants.I2C_END_TX_MASK,
+                                    self.data_val, Constants.CB_TYPE_DIRECT)
 
-        avail = await self.wait_for_read_result()
+
+        avail = self.wait_for_read_result()
         avail = (avail[self.data_start] & 0x08) >> 3
 
         return avail
 
-    async def read(self, callback=None):
+
+    def read(self, callback=None):
         """
         The device returns an MSB and LSB (in that order) for each axis.
         These are 12 bit values - that is only the upper 4 bits of the LSB are used.
@@ -397,15 +416,14 @@ class MMA8452Q:
         Call available() first to make sure new data is really available.
         """
         register = self.MMA8452Q_Register['OUT_X_MSB']
-        await self.board.i2c_read_request(self.address, register, 6,
-                                               Constants.I2C_READ | Constants.I2C_END_TX_MASK,
-                                               self.data_val, Constants.CB_TYPE_ASYNCIO)
+        self.board.i2c_read_request(self.address, register, 6,
+                                    Constants.I2C_READ | Constants.I2C_END_TX_MASK,
+                                    self.data_val, Constants.CB_TYPE_DIRECT)
+
 
         # get x y z data
-        xyz = await self.wait_for_read_result()
-        await asyncio.sleep(.001)
-
-        # string off address and register bytes
+        xyz = self.wait_for_read_result()
+        self.board.sleep(.001)  # string off address and register bytes
         xyz = xyz[2:]
 
         xmsb = xyz[0]
@@ -442,33 +460,32 @@ class MMA8452Q:
         angle_yz = 180 * math.atan2(ya, za) / math.pi
 
         if callback:
-            await callback([xa, ya, za, cx, cy, cz, angle_xz, angle_yz, angle_xy])
-        await asyncio.sleep(.001)
+            callback([xa, ya, za, cx, cy, cz, angle_xz, angle_yz, angle_xy])
+        self.board.sleep(.001)
 
         return [xa, ya, za, cx, cy, cz, angle_xz, angle_yz, angle_xy]
 
-    async def wait_for_read_result(self):
+
+    def wait_for_read_result(self):
         """
         This is a utility function to wait for return data call back
         @return: Returns resultant data from callback
         """
         while not self.callback_data:
-            await asyncio.sleep(.001)
+            self.board.sleep(.001)
         rval = self.callback_data
         self.callback_data = []
         return rval
 
 
 if __name__ == "__main__":
-    my_board = PymataCore(2)
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(my_board.start_aio())
-    accel = MMA8452Q(my_board, 0x1d, 2, 0)
-    loop.run_until_complete(accel.start())
+    my_board = PyMata3()
+    accel = MMA8452Q3(my_board, 0x1d, 2, 0)
+    accel.start()
     while True:
-        availb = loop.run_until_complete(accel.available())
+        availb = accel.available()
         if availb:
-            axis = loop.run_until_complete(accel.read())
+            axis = accel.read()
 
             x = axis[3]
             y = axis[4]
@@ -480,12 +497,12 @@ if __name__ == "__main__":
             yd = axis[7]
             zd = axis[8]
 
-            tap = loop.run_until_complete(accel.read_tap())
+            tap = accel.read_tap()
             if tap:
                 tap = 'TAPPED'
             else:
                 tap = 'NO TAP'
-            port_land = loop.run_until_complete(accel.read_portrait_landscape())
+            port_land = accel.read_portrait_landscape()
             if port_land == accel.LOCKOUT:
                 port_land = 'Flat   '
             elif port_land == 0:
@@ -497,7 +514,9 @@ if __name__ == "__main__":
             else:
                 port_land = 'Tilt Dn'
             # noinspection PyPep8
-            print('{0:.2f}   {1:.2f}   {2:.2f}   {3:.2f}   {4:.2f}   {5:.2f}   {6:.2f}   {7:.2f}   {8:.2f}   {9}   {10}'.format(x, y, z,
-                                                                                                                                xg, yg, zg,
-                                                                                                                                xd, yd, zd, port_land, tap))
-    loop.run_forever()
+            print(
+                '{0:.2f}   {1:.2f}   {2:.2f}   {3:.2f}   {4:.2f}   {5:.2f}   {6:.2f}   {7:.2f}   {8:.2f}   {9}   {10}'.format(
+                    x, y, z,
+                    xg, yg, zg,
+                    xd, yd, zd, port_land, tap))
+
