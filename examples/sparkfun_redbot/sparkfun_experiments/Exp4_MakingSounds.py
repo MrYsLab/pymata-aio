@@ -12,12 +12,12 @@
 """
 
 from pymata_aio.pymata3 import PyMata3
-from library.redbot import RedBotMotors
 from pymata_aio.constants import Constants
+import library.redbot as rb
 
 WIFLY_IP_ADDRESS = None            # Leave set as None if not using WiFly
 WIFLY_IP_ADDRESS = "10.0.1.19"  # If using a WiFly on the RedBot, set the ip address here.
-WIFLY_IP_ADDRESS = "r01.wlan.rose-hulman.edu"  # If your WiFi network allows it, you can use the device hostname instead.
+#WIFLY_IP_ADDRESS = "r01.wlan.rose-hulman.edu"  # If your WiFi network allows it, you can use the device hostname instead.
 if WIFLY_IP_ADDRESS:
     board = PyMata3(ip_address=WIFLY_IP_ADDRESS)
 else:
@@ -26,7 +26,7 @@ else:
     board = PyMata3(com_port=COM_PORT)
 
 # Instantiate the motor control object. This only needs to be done once.
-motors = RedBotMotors(board)
+motors = rb.RedBotMotors(board)
 
 BUZZER_PIN = 9
 BUTTON_PIN = 12

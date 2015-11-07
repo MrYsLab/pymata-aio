@@ -18,7 +18,7 @@
 """
 
 from pymata_aio.pymata3 import PyMata3
-from library.redbot import RedBotMotors, RedBotBumper
+import library.redbot as rb
 
 
 WIFLY_IP_ADDRESS = None            # Leave set as None if not using WiFly
@@ -34,10 +34,10 @@ else:
 board.keep_alive(2) # Important because it will stop the motors if you stop the Python program.
 
 # Instantiate the motor control object. This only needs to be done once.
-motors = RedBotMotors(board)
+motors = rb.RedBotMotors(board)
 
-left_bumper = RedBotBumper(board, 3)  # initializes bumper object on pin 3
-right_bumper = RedBotBumper(board, 11)  # initializes bumper object on pin 11
+left_bumper = rb.RedBotBumper(board, 3)  # initializes bumper object on pin 3
+right_bumper = rb.RedBotBumper(board, 11)  # initializes bumper object on pin 11
 
 BUTTON_PIN = 12
 

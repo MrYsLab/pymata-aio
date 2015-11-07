@@ -19,23 +19,26 @@
  ***********************************************************************/"""
 
 from pymata_aio.pymata3 import PyMata3
-from library.redbot import RedBotMotors, RedBotSensor
+import library.redbot as rb
+
 
 WIFLY_IP_ADDRESS = None            # Leave set as None if not using WiFly
 WIFLY_IP_ADDRESS = "10.0.1.19"  # If using a WiFly on the RedBot, set the ip address here.
 #WIFLY_IP_ADDRESS = "r01.wlan.rose-hulman.edu"  # If your WiFi network allows it, you can use the device hostname instead.
 if WIFLY_IP_ADDRESS:
-    board = PyMata3(ip_address=WIFLY_IP_ADDRESS)
+    # The Arduino does not need 2 seconds to reboot when using WiFly.  The WiFly doesn't trigger a reset on connection.
+    # Reduce the asyncio receive sleep value to 0.0001 (instead of 0.001) allow for lots of data.
+    board = PyMata3(arduino_wait=0, ip_address=WIFLY_IP_ADDRESS, sleep_tune=0.0001)
 else:
     # Use a USB cable to RedBot or an XBee connection instead of WiFly.
     COM_PORT = None # Use None for automatic com port detection, or set if needed i.e. "COM7"
-    board = PyMata3(com_port=COM_PORT)
+    board = PyMata3(com_port=COM_PORT, sleep_tune=0.0001)
 
 board.keep_alive(2) # Important because it will stop the motors and analog sensor stream if you stop the Python program.
 
-left = RedBotSensor(board, 3)  # pin number assignments for each IR sensor
-center = RedBotSensor(board, 6)
-right = RedBotSensor(board, 7)
+left = rb.RedBotSensor(board, 3)  # pin number assignments for each IR sensor
+center = rb.RedBotSensor(board, 6)
+right = rb.RedBotSensor(board, 7)
 
 # constants that are used in the code. LINETHRESHOLD is the level to detect
 # if the sensor is on the line or not. If the sensor value is greater than this
@@ -46,7 +49,7 @@ right = RedBotSensor(board, 7)
 LINE_THRESHOLD = 800
 SPEED = 150  # sets the nominal speed. Set to any number 0-255
 
-motors = RedBotMotors(board)
+motors = rb.RedBotMotors(board)
 
 
 def setup():

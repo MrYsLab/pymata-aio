@@ -13,18 +13,19 @@
   Revised, 31 Oct 2014 B. Huang
   Revised, 2 Oct 2015 L. Mathews
 """
+import math
 
 from pymata_aio.pymata3 import PyMata3
 from pymata_aio.constants import Constants
-from library.redbot import RedBotMotors,RedBotEncoder
-import math
+import library.redbot as rb
+
 
 WIFLY_IP_ADDRESS = None            # Leave set as None if not using WiFly
 WIFLY_IP_ADDRESS = "10.0.1.19"  # If using a WiFly on the RedBot, set the ip address here.
 #WIFLY_IP_ADDRESS = "r01.wlan.rose-hulman.edu"  # If your WiFi network allows it, you can use the device hostname instead.
 if WIFLY_IP_ADDRESS:
     # The Arduino does not need 2 seconds to reboot when using WiFly.  The WiFly doesn't trigger a reset on connection.
-    # Reduce the asyncio receive sleep value to 0.0001 (instead of 0.001) allow for lots of encoder data.
+    # Reduce the asyncio receive sleep value to 0.0001 (instead of 0.001) allow for lots of data.
     board = PyMata3(arduino_wait=0, ip_address=WIFLY_IP_ADDRESS, sleep_tune=0.0001)
 else:
     # Use a USB cable to RedBot or an XBee connection instead of WiFly.
@@ -33,13 +34,12 @@ else:
 
 board.keep_alive(2) # Important because it will stop the encoder data stream if you stop the Python program.
 
-motors = RedBotMotors(board)
-encoders = RedBotEncoder(board)
+motors = rb.RedBotMotors(board)
+encoders = rb.RedBotEncoder(board)
 BUTTON_PIN = 12
 COUNT_PER_REV = 192    # 4 pairs of N-S x 48:1 gearbox = 192 ticks per wheel rev
 WHEEL_DIAM = 2.56 # diam = 65mm / 25.4 mm/in
 WHEEL_CIRC = math.pi * WHEEL_DIAM
-print(WHEEL_CIRC)
 
 ENCODER_PIN_LEFT = 16
 ENCODER_PIN_RIGHT = 10
