@@ -32,6 +32,8 @@ else:
     COM_PORT = None # Use None for automatic com port detection, or set if needed i.e. "COM7"
     board = PyMata3(com_port=COM_PORT, sleep_tune=0.0001)
 
+board.keep_alive(2) # Important because it will stop the analog sensor stream if you stop the Python program.
+
 LEFT_LINE_FOLLOWER = 3  # pin number assignments for each IR sensor
 CENTRE_LINE_FOLLOWER = 6
 RIGHT_LINE_FOLLOWER = 7
