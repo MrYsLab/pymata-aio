@@ -23,40 +23,66 @@
  """
 
 from pymata_aio.pymata3 import PyMata3
-from library.redbot import RedBotMotors
-from library.accelerometer import RedBotAccel
+import library.redbot as rb
 
 WIFLY_IP_ADDRESS = None            # Leave set as None if not using WiFly
-WIFLY_IP_ADDRESS = "10.0.1.18"  # If using a WiFly on the RedBot, set the ip address here.
+WIFLY_IP_ADDRESS = "10.0.1.19"  # If using a WiFly on the RedBot, set the ip address here.
+#WIFLY_IP_ADDRESS = "r01.wlan.rose-hulman.edu"  # If your WiFi network allows it, you can use the device hostname instead.
 if WIFLY_IP_ADDRESS:
-  board = PyMata3(ip_address=WIFLY_IP_ADDRESS)
+    # arduino_wait is a timer parameter to allow for the arduino to reboot when the connection is made which is NA for WiFly.
+    board = PyMata3(arduino_wait=0, ip_address=WIFLY_IP_ADDRESS)
 else:
-  # Use a USB cable to RedBot or an XBee connection instead of WiFly.
-  COM_PORT = None # Use None for automatic com port detection, or set if needed i.e. "COM7"
-  board = PyMata3(com_port=COM_PORT)
+    # Use a USB cable to RedBot or an XBee connection instead of WiFly.
+    COM_PORT = None # Use None for automatic com port detection, or set if needed i.e. "COM7"
+    board = PyMata3(com_port=COM_PORT)
 
-motors = RedBotMotors(board)
-accelerometer = RedBotAccel(board)
+board.keep_alive(2) # Important because it will stop the encoder data stream if you stop the Python program.
+
+motors = rb.RedBotMotors(board)
+accelerometer = rb.RedBotAccelerometer(board)
 
 
 def setup():
-    pass
-
+    accelerometer.start()
 
 def loop():
-    if accelerometer.available():
-        accelerometer.read()
-        """Display out the X, Y, and Z - axis "acceleration" measurements and also
-        the relative angle between the X-Z, Y-Z, and X-Y vectors. (These give us
-        the orientation of the RedBot in 3D space."""
-        print("({}, {}, {}) -- [{:4.2f}, {:4.2f}, {:4.2f}]".format(accelerometer.x, accelerometer.y, accelerometer.z,
-                                                               accelerometer.angleXZ, accelerometer.angleYZ,
-                                                               accelerometer.angleXY))
-
-        board.sleep(0.2)  # short delay in between readings
-
+        if accelerometer.available():
+            values = accelerometer.read()
+            #print("values = " + str(values))
+            x = values[rb.RedBotAccelerometer.VAL_X]
+            y = values[rb.RedBotAccelerometer.VAL_Y]
+            z = values[rb.RedBotAccelerometer.VAL_Z]
+            angle_xz = values[rb.RedBotAccelerometer.VAL_ANGLE_XZ]
+            angle_yz = values[rb.RedBotAccelerometer.VAL_ANGLE_YZ]
+            angle_xy = values[rb.RedBotAccelerometer.VAL_ANGLE_XY]
+            
+            tap = accelerometer.read_tap()
+            if tap:
+                tap = 'TAPPED'
+            else:
+                tap = 'NO TAP'
+                
+            port_land = accelerometer.read_portrait_landscape()
+            if port_land == accelerometer.LOCKOUT:
+                port_land = 'Flat   '
+            elif port_land == 0:
+                port_land = 'Tilt Lf'
+            elif port_land == 1:
+                port_land = 'Tilt Rt'
+            elif port_land == 2:
+                port_land = 'Tilt Up'
+            else:
+                port_land = 'Tilt Dn'
+            print('x-val: {:.2f}, y-val: {:.2f}, z-val: {:.2f} \t angle x-z:{:.2f}, angle y-z: {:.2f}, angle x-y: {:.2f} \t Tapped: {} \t Orientation: {}'.format( \
+                  x, y, z, angle_xz, angle_yz, angle_xy, tap, port_land))
+        else:
+            print("Accelerometer not available.  Please try again.")
+            board.sleep(2.0)
+        board.sleep(0.025)
+    
 
 if __name__ == "__main__":
     setup()
     while True:
         loop()
+        board.sleep(.025)

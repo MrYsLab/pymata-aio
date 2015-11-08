@@ -41,7 +41,7 @@ class PymataCore:
     perform Arduino pin auto-detection.
     """
 
-    def __init__(self, arduino_wait=2, sleep_tune=.001, log_output=False,
+    def __init__(self, arduino_wait=2, sleep_tune=0.0001, log_output=False,
                  com_port=None, ip_address=None, ip_port=2000,
                  ip_handshake='*HELLO*'):
         """
@@ -116,7 +116,9 @@ class PymataCore:
                                    PrivateConstants.SONAR_DATA:
                                        self._sonar_data,
                                    PrivateConstants.ENCODER_DATA:
-                                       self._encoder_data}
+                                       self._encoder_data,
+                                   PrivateConstants.PIXY_DATA:
+                                       self._pixy_data}
 
         # report query results are stored in this dictionary
         self.query_reply_data = {PrivateConstants.REPORT_VERSION: '',
@@ -219,6 +221,7 @@ class PymataCore:
         # a list of PinData objects - one for each pin segregate by pin type
         self.analog_pins = []
         self.digital_pins = []
+        self.pixy_blocks = []
         self.loop = None
         self.the_task = None
         self.serial_port = None
@@ -235,6 +238,7 @@ class PymataCore:
 
         # set up signal handler for controlC
         self.loop = asyncio.get_event_loop()
+
 
     def start(self):
         """
@@ -333,6 +337,7 @@ class PymataCore:
                                           'Digital Pins and',
                                           len(self.analog_pins),
                                           'Analog Pins\n\n'))
+
 
     async def start_aio(self):
         """
@@ -1153,6 +1158,65 @@ class PymataCore:
                 abs_number_of_steps & 0x7f, abs_number_of_steps >> 7, direction]
         await self._send_sysex(PrivateConstants.STEPPER_DATA, data)
 
+
+    async def pixy_init(self, max_blocks=5, cb=None, cb_type=None):
+        """
+        Initialize Pixy and enable Pixy block reporting.
+        This is a FirmataPlusRB feature.
+
+        :param cb: callback function to report Pixy blocks
+        :param cb_type: Constants.CB_TYPE_DIRECT = direct call or
+                        Constants.CB_TYPE_ASYNCIO = asyncio coroutine
+        :param max_block: Maximum number of Pixy blocks to report when many signatures are found.
+        :returns: No return value.
+        """
+        if cb:
+            self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb = cb # Pixy uses SPI.  Pin 11 is MOSI.
+        if cb_type:
+            self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb_type = cb_type
+        data = [PrivateConstants.PIXY_INIT, max_blocks & 0x7f]
+        await self._send_sysex(PrivateConstants.PIXY_CONFIG, data)
+
+
+    async def pixy_set_servos(self, s0, s1):
+        """
+        Sends the setServos Pixy command.
+        This method sets the pan/tilt servos that are plugged into Pixy's two servo ports.
+
+        :param s0: value 0 to 1000
+        :param s1: value 0 to 1000
+        :returns: No return value.
+        """
+        data = [PrivateConstants.PIXY_SET_SERVOS, s0 & 0x7f, (s0 >> 7) & 0x7f, s1 & 0x7f, (s1 >> 7) & 0x7f]
+        await self._send_sysex(PrivateConstants.PIXY_CONFIG, data)
+
+
+    async def pixy_set_brightness(self, brightness):
+        """
+        Sends the setBrightness Pixy command.
+        This method sets the brightness (exposure) of Pixy's camera.
+
+        :param brightness: range between 0 and 255 with 255 being the brightest setting
+        :returns: No return value.
+        """
+        data = [PrivateConstants.PIXY_SET_BRIGHTNESS, brightness & 0x7f, brightness >> 7]
+        await self._send_sysex(PrivateConstants.PIXY_CONFIG, data)
+
+
+    async def pixy_set_led(self, r, g, b):
+        """
+        Sends the setLed Pixy command.
+        This method sets the RGB LED on front of Pixy.
+
+        :param r: red range between 0 and 255
+        :param g: green range between 0 and 255
+        :param b: blue range between 0 and 255
+        :returns: No return value.
+        """
+        data = [PrivateConstants.PIXY_SET_LED, r & 0x7f, r >> 7, g & 0x7f, g >> 7, b & 0x7f, b >> 7]
+        await self._send_sysex(PrivateConstants.PIXY_CONFIG, data)
+
+
     async def _command_dispatcher(self):
         """
         This is a private method.
@@ -1206,12 +1270,13 @@ class PymataCore:
                     await asyncio.sleep(self.sleep_tune)
                     continue
             except Exception as ex:
-                # should never get here
+                # A error occurred while transmitting the Firmata message, message arrived invalid.
                 if self.log_output:
                     logging.exception(ex)
                 else:
                     print(ex)
-                raise  # re-raise exception.
+                print("An exception occured on the asyncio event loop while receiving data.  Invalid message.")
+                #raise  # re-raise exception.
 
     '''
     Firmata message handlers
@@ -1334,6 +1399,43 @@ class PymataCore:
                 # self.digital_pins[pin].cb(data)
                 loop = asyncio.get_event_loop()
                 loop.call_soon(self.digital_pins[pin].cb, hall_data)
+
+
+    async def _pixy_data(self, data):
+        """
+        This is a private message handler method.
+        It handles pixy data messages.
+
+        :param data: pixy data
+        :returns: None - but update is saved in the digital pins structure
+        """
+        if len(self.digital_pins) < PrivateConstants.PIN_PIXY_MOSI:
+            # Pixy data sent before board finished pin discovery.
+            #print("Pixy data sent before board finished pin discovery.")
+            return
+
+        # strip off sysex start and end
+        data = data[1:-1]
+        num_blocks = data[0] # First byte is the number of blocks.
+        # Prepare the new blocks list and then used it to overwrite the pixy_blocks.
+        blocks = []
+        for i in range(num_blocks):
+            block = {}
+            block["signature"] = int((data[i * 12 + 2] << 7) + data[i * 12 + 1])
+            block["x"] = int((data[i * 12 + 4] << 7) + data[i * 12 + 3])
+            block["y"] = int((data[i * 12 + 6] << 7) + data[i * 12 + 5])
+            block["width"] = int((data[i * 12 + 8] << 7) + data[i * 12 + 7])
+            block["height"] = int((data[i * 12 + 10] << 7) + data[i * 12 + 9])
+            block["angle"] = int((data[i * 12 + 12] << 7) + data[i * 12 + 11])
+            blocks.append(block)
+        self.pixy_blocks = blocks
+        if self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb:
+            if self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb_type:
+                await self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb(blocks)
+            else:
+                loop = asyncio.get_event_loop()
+                loop.call_soon(self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb, blocks)
+
 
     async def _i2c_reply(self, data):
         """

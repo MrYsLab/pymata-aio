@@ -22,25 +22,28 @@ Exp9_SerialDrive -- RedBot Experiment 9
 """
 
 from pymata_aio.pymata3 import PyMata3
-from library.redbot import RedBotMotors
+import library.redbot as rb
 
 WIFLY_IP_ADDRESS = None            # Leave set as None if not using WiFly
-WIFLY_IP_ADDRESS = "10.0.1.18"  # If using a WiFly on the RedBot, set the ip address here.
+WIFLY_IP_ADDRESS = "10.0.1.19"  # If using a WiFly on the RedBot, set the ip address here.
+#WIFLY_IP_ADDRESS = "r01.wlan.rose-hulman.edu"  # If your WiFi network allows it, you can use the device hostname instead.
 if WIFLY_IP_ADDRESS:
-  board = PyMata3(ip_address=WIFLY_IP_ADDRESS)
+    # arduino_wait is a timer parameter to allow for the arduino to reboot when the connection is made which is NA for WiFly.
+    board = PyMata3(arduino_wait=0, ip_address=WIFLY_IP_ADDRESS)
 else:
-  # Use a USB cable to RedBot or an XBee connection instead of WiFly.
-  COM_PORT = None # Use None for automatic com port detection, or set if needed i.e. "COM7"
-  board = PyMata3(com_port=COM_PORT)
+    # Use a USB cable to RedBot or an XBee connection instead of WiFly.
+    COM_PORT = None # Use None for automatic com port detection, or set if needed i.e. "COM7"
+    board = PyMata3(com_port=COM_PORT)
 
-motors = RedBotMotors(board)
+
+motors = rb.RedBotMotors(board)
 
 
 def setup():
     print("Type in a number between -255 to 255 to drive at that speed.")
 
 def loop():
-    speed = int(input())
+    speed = int(input()) # Note, adding a board.keep_alive to this program would be bad due the block nature of the input() command.
     speed = throttle(speed)
     motors.drive(speed)
 

@@ -18,6 +18,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import asyncio
 
+from .constants import Constants
 from .pymata_core import PymataCore
 
 
@@ -28,7 +29,7 @@ class PyMata3:
     the API that you should use..
     """
 
-    def __init__(self, arduino_wait=2, log_output=False, com_port=None,
+    def __init__(self, arduino_wait=2, sleep_tune=0.0001, log_output=False, com_port=None,
                  ip_address=None, ip_port=2000, ip_handshake='*HELLO*'):
         """
         Constructor for the PyMata3 API
@@ -38,6 +39,8 @@ class PyMata3:
 
         :param arduino_wait: Amount of time to allow Arduino to finish its
                              reset (2 seconds for Uno, Leonardo can be 0)
+        :param sleep_tune: This parameter sets the amount of time PyMata core
+                           uses to set asyncio.sleep
         :param log_output: If True, pymata_aio.log is created and all
                             console output is redirected to this file.
         :param com_port: If specified, auto port detection will not be
@@ -49,7 +52,7 @@ class PyMata3:
         :returns: None
         """
         self.log_out = log_output
-        self.sleep_tune = .001
+        self.sleep_tune = sleep_tune
         self.core = PymataCore(arduino_wait, self.sleep_tune, log_output,
                                com_port, ip_address, ip_port, ip_handshake)
         self.core.start()
@@ -618,3 +621,67 @@ class PyMata3:
         loop = asyncio.get_event_loop()
         loop.run_until_complete(self.core.stepper_step(motor_speed,
                                                        number_of_steps))
+
+
+
+    def pixy_init(self, max_blocks=5, cb=None, cb_type=None):
+        """
+        Initialize Pixy and will enable Pixy block reporting.
+        This is a FirmataPlusRB feature.
+
+        :param cb: callback function to report Pixy blocks
+        :param cb_type: Constants.CB_TYPE_DIRECT = direct call or
+                        Constants.CB_TYPE_ASYNCIO = asyncio coroutine
+        :param max_block: Maximum number of Pixy blocks to report when many signatures are found.
+        :returns: No return value.
+        """
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(self.core.pixy_init(max_blocks, cb, cb_type))
+
+
+    def pixy_get_blocks(self):
+        """
+        This method retrieves the latest Pixy data value
+
+        :returns: Pixy data
+        """
+        return self.core.pixy_blocks
+
+
+    def pixy_set_servos(self, s0, s1):
+        """
+        Sends the setServos Pixy command.
+        This method sets the pan/tilt servos that are plugged into Pixy's two servo ports.
+
+        :param s0: value 0 to 1000
+        :param s1: value 0 to 1000
+        :returns: No return value.
+        """
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(self.core.pixy_set_servos(s0, s1))
+
+
+    def pixy_set_brightness(self, brightness):
+        """
+        Sends the setBrightness Pixy command.
+        This method sets the brightness (exposure) of Pixy's camera.
+
+        :param brightness: range between 0 and 255 with 255 being the brightest setting
+        :returns: No return value.
+        """
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(self.core.pixy_set_brightness(brightness))
+
+
+    def pixy_set_led(self, r, g, b):
+        """
+        Sends the setLed Pixy command.
+        This method sets the RGB LED on front of Pixy.
+
+        :param r: red range between 0 and 255
+        :param g: green range between 0 and 255
+        :param b: blue range between 0 and 255
+        :returns: No return value.
+        """
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(self.core.pixy_set_led(r, g, b))

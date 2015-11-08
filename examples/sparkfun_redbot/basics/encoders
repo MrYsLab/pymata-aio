@@ -5,7 +5,7 @@ Drives the RedBot forward 5 wheel revolutions then stops
 
 from pymata_aio.pymata3 import PyMata3
 from pymata_aio.constants import Constants
-import time
+
 board = PyMata3()
 
 pins = {"BUTTON_SWITCH": 12, "LEFT_ENCODER": 16, "RIGHT_ENCODER": 10,

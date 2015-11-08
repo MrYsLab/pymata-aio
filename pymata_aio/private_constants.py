@@ -44,6 +44,8 @@ class PrivateConstants:
     ENCODER_DATA = 0x61  # current encoder position data
     SONAR_CONFIG = 0x62  # configure pins to control a sonar distance device
     SONAR_DATA = 0x63  # distance data returned
+    PIXY_CONFIG = 0x64 # configure the Pixy.  Configure has 4 subcommands
+    PIXY_DATA = 0x65 # blocks data returned
     # end of FirmataPlus defined SYSEX commands
 
     SERVO_CONFIG = 0x70  # set servo pin and max and min angles
@@ -68,7 +70,7 @@ class PrivateConstants:
     SYSEX_REALTIME = 0x7F  # MIDI Reserved for realtime messages
 
     # reserved for PyMata
-    PYMATA_VERSION = "2.6"
+    PYMATA_VERSION = "2.7"
 
     # each byte represents a digital port
     #  and its value contains the current port settings
@@ -91,3 +93,12 @@ class PrivateConstants:
     STEPPER_CONFIGURE = 0  # configure a stepper motor for operation
     STEPPER_STEP = 1  # command a motor to move at the provided speed
     STEPPER_LIBRARY_VERSION = 2  # used to get stepper library version number
+
+    # Pixy sub commands
+    PIXY_INIT = 0 # Initialize the Pixy object and set the max number of blocks to report
+    PIXY_SET_SERVOS = 1 # directly control the pan and tilt servo motors
+    PIXY_SET_BRIGHTNESS = 2 # adjust the brightness of the Pixy exposure
+    PIXY_SET_LED = 3 # control the color of the Pixy LED
+
+    # Pin used to store Pixy data
+    PIN_PIXY_MOSI = 11

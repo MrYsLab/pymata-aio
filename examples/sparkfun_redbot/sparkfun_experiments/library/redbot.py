@@ -4,7 +4,7 @@
   It is NOT a complete port. It just shows some of the main basic features.  Feel free to port more.
 """
 from pymata_aio.constants import Constants
-
+from .mma8452q3 import MMA8452Q3 # Some IDEs mark this type of import style as an error, but it should work fine.
 
 # RedBot motor pins from RedBot.h
 L_CTRL_1 = 2
@@ -242,3 +242,26 @@ class RedBotBumper:
 
     def read(self):
         return self.board.digital_read(self.pin_number)
+
+
+class RedBotAccelerometer(MMA8452Q3):
+    """An import of the mma8452q3 library"""
+    
+    # Positions in the returned array for the accel.read() function
+    VAL_RAW_X = 0
+    VAL_RAW_Y = 1
+    VAL_RAW_Z = 2
+    VAL_X = 3  # Corrected X Value. The CX,CY,CZ Values take the 0-2048 raw value and convert them to a 'G-value' 
+    VAL_Y = 4
+    VAL_Z = 5
+    VAL_ANGLE_XZ = 6
+    VAL_ANGLE_YZ = 7
+    VAL_ANGLE_XY = 8
+    
+    def __init__(self, board):
+        DEVICE_ADDRESS = 0x1d  # Physical board address of the accelerometer 
+        SCALE = 2  # sets a scaling factor for the outputted results
+        OUTPUT_DATA_RATE = 0
+    
+        super().__init__(board, DEVICE_ADDRESS, SCALE, OUTPUT_DATA_RATE)
+        self.board = board

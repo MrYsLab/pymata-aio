@@ -12,21 +12,22 @@
 """
 
 from pymata_aio.pymata3 import PyMata3
-from library.redbot import RedBotMotors
 from pymata_aio.constants import Constants
-# This line "includes" the RedBot library into your sketch.
-# Provides special objects, methods, and functions for the RedBot.
+import library.redbot as rb
 
 WIFLY_IP_ADDRESS = None            # Leave set as None if not using WiFly
-WIFLY_IP_ADDRESS = "137.112.217.88"  # If using a WiFly on the RedBot, set the ip address here.
+WIFLY_IP_ADDRESS = "10.0.1.19"  # If using a WiFly on the RedBot, set the ip address here.
+#WIFLY_IP_ADDRESS = "r01.wlan.rose-hulman.edu"  # If your WiFi network allows it, you can use the device hostname instead.
 if WIFLY_IP_ADDRESS:
-  board = PyMata3(ip_address=WIFLY_IP_ADDRESS)
+    # arduino_wait is a timer parameter to allow for the arduino to reboot when the connection is made which is NA for WiFly.
+    board = PyMata3(arduino_wait=0, ip_address=WIFLY_IP_ADDRESS)
 else:
-  # Use a USB cable to RedBot or an XBee connection instead of WiFly.
-  COM_PORT = None # Use None for automatic com port detection, or set if needed i.e. "COM7"
-  board = PyMata3(com_port=COM_PORT)
+    # Use a USB cable to RedBot or an XBee connection instead of WiFly.
+    COM_PORT = None # Use None for automatic com port detection, or set if needed i.e. "COM7"
+    board = PyMata3(com_port=COM_PORT)
+
 # Instantiate the motor control object. This only needs to be done once.
-motors = RedBotMotors(board)
+motors = rb.RedBotMotors(board)
 
 BUZZER_PIN = 9
 BUTTON_PIN = 12
@@ -57,7 +58,7 @@ if __name__ == "__main__":
     setup()
     while True:
         loop()
-# import the API class
+        board.sleep(0.025)
 
 
 
