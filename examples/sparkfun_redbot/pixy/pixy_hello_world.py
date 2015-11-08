@@ -20,10 +20,21 @@ from pymata_aio.pymata3 import PyMata3
 from pymata_aio.pymata3 import Constants
 
 
-#board = PyMata3(arduino_wait=0, sleep_tune=0.0001, ip_address="r01.wlan.rose-hulman.edu")
-board = PyMata3(sleep_tune=0.0001) # Since the Pixy can transmit a lot of data reduce the asyncio sleep time to reduce the possibility of lagging behind messages.
+WIFLY_IP_ADDRESS = None            # Leave set as None if not using WiFly
+WIFLY_IP_ADDRESS = "10.0.1.19"  # If using a WiFly on the RedBot, set the ip address here.
+#WIFLY_IP_ADDRESS = "r01.wlan.rose-hulman.edu"  # If your WiFi network allows it, you can use the device hostname instead.
+if WIFLY_IP_ADDRESS:
+    # arduino_wait is a timer parameter to allow for the arduino to reboot when the connection is made which is NA for WiFly.
+    board = PyMata3(arduino_wait=0, ip_address=WIFLY_IP_ADDRESS)
+else:
+    # Use a USB cable to RedBot or an XBee connection instead of WiFly.
+    COM_PORT = None # Use None for automatic com port detection, or set if needed i.e. "COM7"
+    board = PyMata3(com_port=COM_PORT)
 
-use_pixy_callback = True
+# Much like digital and analog readings, you can read Pixy data by either registering callback function that
+# is called when a new value is received or you can read the most recent value received at any time.
+use_pixy_callback = True    # Use the callback function to be called every time Pixy data arrives.
+#use_pixy_callback = False  # Use board.pixy_get_blocks() to get the value on demand
 
 def print_pixy_blocks(blocks):
     """ Prints the Pixy blocks data."""
@@ -40,7 +51,7 @@ def print_pixy_blocks(blocks):
 
 def main():
     if use_pixy_callback:
-        # Use a callback to display the Pixy readings.
+        # Use a callback to display the Pixy readings.  (very simple callback)
         board.pixy_init(cb=print_pixy_blocks, cb_type=Constants.CB_TYPE_DIRECT)
     else:
         # Use the pixy_block property to display the readings.

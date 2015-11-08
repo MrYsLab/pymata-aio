@@ -41,7 +41,7 @@ class PymataCore:
     perform Arduino pin auto-detection.
     """
 
-    def __init__(self, arduino_wait=2, sleep_tune=.001, log_output=False,
+    def __init__(self, arduino_wait=2, sleep_tune=0.0001, log_output=False,
                  com_port=None, ip_address=None, ip_port=2000,
                  ip_handshake='*HELLO*'):
         """

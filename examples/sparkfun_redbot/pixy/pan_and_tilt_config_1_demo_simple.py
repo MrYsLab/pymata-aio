@@ -25,9 +25,17 @@ import math
 from pymata_aio.pymata3 import PyMata3
 
 
-# board = PyMata3(arduino_wait=0, sleep_tune=0.0, ip_address="r01.wlan.rose-hulman.edu")
-board = PyMata3(sleep_tune=0.0) # Since the Pixy can transmit a lot of data reduce the asyncio sleep time to reduce the possibility of lagging behind messages.
-
+WIFLY_IP_ADDRESS = None            # Leave set as None if not using WiFly
+WIFLY_IP_ADDRESS = "10.0.1.19"  # If using a WiFly on the RedBot, set the ip address here.
+#WIFLY_IP_ADDRESS = "r01.wlan.rose-hulman.edu"  # If your WiFi network allows it, you can use the device hostname instead.
+if WIFLY_IP_ADDRESS:
+    # arduino_wait is a timer parameter to allow for the arduino to reboot when the connection is made which is NA for WiFly.
+    # Since the Pixy can transmit a lot of data reduce the asyncio sleep time to reduce the possibility of lagging behind messages.
+    board = PyMata3(arduino_wait=0, sleep_tune=0.0, ip_address=WIFLY_IP_ADDRESS)
+else:
+    # Use a USB cable to RedBot or an XBee connection instead of WiFly.
+    COM_PORT = None # Use None for automatic com port detection, or set if needed i.e. "COM7"
+    board = PyMata3(sleep_tune=0.0, com_port=COM_PORT)
 
 # Pixy x-y position values
 PIXY_MIN_X = 0
