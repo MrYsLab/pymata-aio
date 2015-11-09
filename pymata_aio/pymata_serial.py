@@ -175,6 +175,6 @@ class PymataSerial:
     async def set_dtr(self, state):
         """
         Set DTR state
+        :param state: DTR state
         """
-        # future = asyncio.Future()
         self.my_serial.setDTR(state)

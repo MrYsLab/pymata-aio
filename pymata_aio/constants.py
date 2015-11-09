@@ -34,7 +34,7 @@ class Constants:
     TONE = 0x09  # Any pin in TONE mode
     ENCODER = 0x0a
     SONAR = 0x0b  # Any pin in SONAR mode
-    PIXY = 0x0c # Any pin used by Pixy camera
+    PIXY = 0x0c  # Any pin used by Pixy camera
     IGNORE = 0x7f
 
     # Tone commands

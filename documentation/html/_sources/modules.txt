@@ -1,7 +1,0 @@
-pymata_aio
-==========
-
-.. toctree::
-   :maxdepth: 4
-
-   pymata_aio

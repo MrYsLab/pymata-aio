@@ -1,5 +1,21 @@
 #Change Log
 
+##Release 2.7
+
+9 November 2015
+
+### New Feature Added
+* [Pixy Cam](http://charmedlabs.com/default/pixy-cmucam5/) support courtesy of Dave Fisher and Leigh Andrew Mathews of the [Rose Hulman Institute of Technology](http://www.rose-hulman.edu/)
+   * pymata_core and pymata3 updated for Pixy Cam support
+   * A new firmata sketch, FirmataPlusRBPixy has been added to the Arduino libraries
+   
+### Updates
+* All FirmataPlus sketches have been updated for the latest dependencies libraries
+* The sleep_tune paramater default was modified to 0.0001 for pymata_core and added to pymata3
+
+### Bug Fixes
+* Typos corrected for stepper_config and a missing await in set_sampling_interval
+
 ##Release 2.6
 
 14 October 2015

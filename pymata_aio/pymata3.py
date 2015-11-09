@@ -18,7 +18,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import asyncio
 
-from .constants import Constants
 from .pymata_core import PymataCore
 
 
@@ -622,8 +621,6 @@ class PyMata3:
         loop.run_until_complete(self.core.stepper_step(motor_speed,
                                                        number_of_steps))
 
-
-
     def pixy_init(self, max_blocks=5, cb=None, cb_type=None):
         """
         Initialize Pixy and will enable Pixy block reporting.
@@ -632,12 +629,11 @@ class PyMata3:
         :param cb: callback function to report Pixy blocks
         :param cb_type: Constants.CB_TYPE_DIRECT = direct call or
                         Constants.CB_TYPE_ASYNCIO = asyncio coroutine
-        :param max_block: Maximum number of Pixy blocks to report when many signatures are found.
+        :param max_blocks: Maximum number of Pixy blocks to report when many signatures are found.
         :returns: No return value.
         """
         loop = asyncio.get_event_loop()
         loop.run_until_complete(self.core.pixy_init(max_blocks, cb, cb_type))
-
 
     def pixy_get_blocks(self):
         """
@@ -646,7 +642,6 @@ class PyMata3:
         :returns: Pixy data
         """
         return self.core.pixy_blocks
-
 
     def pixy_set_servos(self, s0, s1):
         """
@@ -660,7 +655,6 @@ class PyMata3:
         loop = asyncio.get_event_loop()
         loop.run_until_complete(self.core.pixy_set_servos(s0, s1))
 
-
     def pixy_set_brightness(self, brightness):
         """
         Sends the setBrightness Pixy command.
@@ -671,7 +665,6 @@ class PyMata3:
         """
         loop = asyncio.get_event_loop()
         loop.run_until_complete(self.core.pixy_set_brightness(brightness))
-
 
     def pixy_set_led(self, r, g, b):
         """

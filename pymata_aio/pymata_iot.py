@@ -467,9 +467,9 @@ class PymataIOT(WebSocketServerProtocol):
         Frequency of keep alive transmission is calculated as follows:
         keep_alive_sent = period - (period * margin)
 
-
-        :param period: Time period between keepalives. Range is 0-10 seconds. 0 disables the keepalive mechanism.
-        :param margin: Safety margin to assure keepalives are sent before period expires. Range is 0.1 to 0.9
+        :param command:  {"method": "keep_alive", "params": [PERIOD, MARGIN]}
+        Period is time period between keepalives. Range is 0-10 seconds. 0 disables the keepalive mechanism.
+        Margin is a  safety margin to assure keepalives are sent before period expires. Range is 0.1 to 0.9
         :returns: No return value
         """
         period = int(command[0])
