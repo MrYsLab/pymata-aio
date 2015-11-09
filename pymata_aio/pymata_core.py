@@ -17,14 +17,16 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 import asyncio
+import glob
+import logging
 import sys
 import time
-import logging
-import glob
+
 import serial
+
 from .constants import Constants
-from .private_constants import PrivateConstants
 from .pin_data import PinData
+from .private_constants import PrivateConstants
 from .pymata_serial import PymataSerial
 from .pymata_socket import PymataSocket
 
@@ -239,7 +241,6 @@ class PymataCore:
         # set up signal handler for controlC
         self.loop = asyncio.get_event_loop()
 
-
     def start(self):
         """
         This method must be called immediately after the class is instantiated.
@@ -337,7 +338,6 @@ class PymataCore:
                                           'Digital Pins and',
                                           len(self.analog_pins),
                                           'Analog Pins\n\n'))
-
 
     async def start_aio(self):
         """
@@ -969,12 +969,15 @@ class PymataCore:
         For Servo, use servo_config() instead.
 
         :param pin_number: Arduino Pin Number
-        :param pin_state:INPUT/OUTPUT/ANALOG/PWM/
+        :param pin_state: INPUT/OUTPUT/ANALOG/PWM - for SERVO use
+                          servo_config()
         :param callback: Optional: A reference to a call back function to be
-                                   called when pin data value changes
-        :param callback_type: direct call or asyncio await
-        :returns: No return value.
+                         called when pin data value changes
+        :param cb_type: Constants.CB_TYPE_DIRECT = direct call or
+                        Constants.CB_TYPE_ASYNCIO = asyncio coroutine
+        :returns: No return value
         """
+
         # There is a potential start up race condition when running pymata3.
         # This is a workaround for that race condition
         #
@@ -1158,7 +1161,6 @@ class PymataCore:
                 abs_number_of_steps & 0x7f, abs_number_of_steps >> 7, direction]
         await self._send_sysex(PrivateConstants.STEPPER_DATA, data)
 
-
     async def pixy_init(self, max_blocks=5, cb=None, cb_type=None):
         """
         Initialize Pixy and enable Pixy block reporting.
@@ -1167,16 +1169,15 @@ class PymataCore:
         :param cb: callback function to report Pixy blocks
         :param cb_type: Constants.CB_TYPE_DIRECT = direct call or
                         Constants.CB_TYPE_ASYNCIO = asyncio coroutine
-        :param max_block: Maximum number of Pixy blocks to report when many signatures are found.
+        :param max_blocks: Maximum number of Pixy blocks to report when many signatures are found.
         :returns: No return value.
         """
         if cb:
-            self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb = cb # Pixy uses SPI.  Pin 11 is MOSI.
+            self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb = cb  # Pixy uses SPI.  Pin 11 is MOSI.
         if cb_type:
             self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb_type = cb_type
         data = [PrivateConstants.PIXY_INIT, max_blocks & 0x7f]
         await self._send_sysex(PrivateConstants.PIXY_CONFIG, data)
-
 
     async def pixy_set_servos(self, s0, s1):
         """
@@ -1190,7 +1191,6 @@ class PymataCore:
         data = [PrivateConstants.PIXY_SET_SERVOS, s0 & 0x7f, (s0 >> 7) & 0x7f, s1 & 0x7f, (s1 >> 7) & 0x7f]
         await self._send_sysex(PrivateConstants.PIXY_CONFIG, data)
 
-
     async def pixy_set_brightness(self, brightness):
         """
         Sends the setBrightness Pixy command.
@@ -1201,7 +1201,6 @@ class PymataCore:
         """
         data = [PrivateConstants.PIXY_SET_BRIGHTNESS, brightness & 0x7f, brightness >> 7]
         await self._send_sysex(PrivateConstants.PIXY_CONFIG, data)
-
 
     async def pixy_set_led(self, r, g, b):
         """
@@ -1215,7 +1214,6 @@ class PymataCore:
         """
         data = [PrivateConstants.PIXY_SET_LED, r & 0x7f, r >> 7, g & 0x7f, g >> 7, b & 0x7f, b >> 7]
         await self._send_sysex(PrivateConstants.PIXY_CONFIG, data)
-
 
     async def _command_dispatcher(self):
         """
@@ -1275,8 +1273,8 @@ class PymataCore:
                     logging.exception(ex)
                 else:
                     print(ex)
-                print("An exception occured on the asyncio event loop while receiving data.  Invalid message.")
-                #raise  # re-raise exception.
+                print("An exception occurred on the asyncio event loop while receiving data.  Invalid message.")
+                # raise  # re-raise exception.
 
     '''
     Firmata message handlers
@@ -1400,7 +1398,7 @@ class PymataCore:
                 loop = asyncio.get_event_loop()
                 loop.call_soon(self.digital_pins[pin].cb, hall_data)
 
-
+    # noinspection PyDictCreation
     async def _pixy_data(self, data):
         """
         This is a private message handler method.
@@ -1411,14 +1409,15 @@ class PymataCore:
         """
         if len(self.digital_pins) < PrivateConstants.PIN_PIXY_MOSI:
             # Pixy data sent before board finished pin discovery.
-            #print("Pixy data sent before board finished pin discovery.")
+            # print("Pixy data sent before board finished pin discovery.")
             return
 
         # strip off sysex start and end
         data = data[1:-1]
-        num_blocks = data[0] # First byte is the number of blocks.
+        num_blocks = data[0]  # First byte is the number of blocks.
         # Prepare the new blocks list and then used it to overwrite the pixy_blocks.
         blocks = []
+        # noinspection PyDictCreation
         for i in range(num_blocks):
             block = {}
             block["signature"] = int((data[i * 12 + 2] << 7) + data[i * 12 + 1])
@@ -1435,7 +1434,6 @@ class PymataCore:
             else:
                 loop = asyncio.get_event_loop()
                 loop.call_soon(self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb, blocks)
-
 
     async def _i2c_reply(self, data):
         """
