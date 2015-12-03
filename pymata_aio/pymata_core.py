@@ -283,7 +283,7 @@ class PymataCore:
         time.sleep(self.arduino_wait)
 
         # register the get_command method with the event loop
-        self.loop = asyncio.get_event_loop()
+        # self.loop = asyncio.get_event_loop()
         self.the_task = self.loop.create_task(self._command_dispatcher())
 
         # get an analog pin map
@@ -305,7 +305,7 @@ class PymataCore:
                 print('\nDo you have Arduino connectivity and do you have a '
                       'Firmata sketch uploaded to the board?')
             try:
-                loop = asyncio.get_event_loop()
+                loop = self.loop
                 for t in asyncio.Task.all_tasks(loop):
                     t.cancel()
                 loop.run_until_complete(asyncio.sleep(.1))
@@ -409,7 +409,7 @@ class PymataCore:
                 print('\nDo you have Arduino connectivity and do you have a '
                       'Firmata sketch uploaded to the board?')
             try:
-                loop = asyncio.get_event_loop()
+                loop = self.loop
                 for t in asyncio.Task.all_tasks(loop):
                     t.cancel()
                 loop.run_until_complete(asyncio.sleep(.1))
@@ -973,7 +973,7 @@ class PymataCore:
                           servo_config()
         :param callback: Optional: A reference to a call back function to be
                          called when pin data value changes
-        :param cb_type: Constants.CB_TYPE_DIRECT = direct call or
+        :param callback_type: Constants.CB_TYPE_DIRECT = direct call or
                         Constants.CB_TYPE_ASYNCIO = asyncio coroutine
         :returns: No return value
         """
@@ -1310,7 +1310,7 @@ class PymataCore:
             if self.analog_pins[pin].cb_type:
                 await self.analog_pins[pin].cb(value)
             else:
-                loop = asyncio.get_event_loop()
+                loop = self.loop
                 loop.call_soon(self.analog_pins[pin].cb, value)
 
         # is there a latch entry for this pin?
@@ -1349,7 +1349,7 @@ class PymataCore:
                     await self.digital_pins[pin].cb(data)
                 else:
                     # self.digital_pins[pin].cb(data)
-                    loop = asyncio.get_event_loop()
+                    loop = self.loop
                     loop.call_soon(self.digital_pins[pin].cb, data)
 
                 # is there a latch entry for this pin?
@@ -1385,7 +1385,7 @@ class PymataCore:
                         await self.digital_pins[pin].cb(val)
                     else:
                         # self.digital_pins[pin].cb(data)
-                        loop = asyncio.get_event_loop()
+                        loop = self.loop
                         loop.call_soon(self.digital_pins[pin].cb, val)
         else:
             hall_data = [int((data[2] << 7) + data[1]), int((data[5] << 7) +
@@ -1395,7 +1395,7 @@ class PymataCore:
                 await self.digital_pins[pin].cb(hall_data)
             else:
                 # self.digital_pins[pin].cb(data)
-                loop = asyncio.get_event_loop()
+                loop = self.loop
                 loop.call_soon(self.digital_pins[pin].cb, hall_data)
 
     # noinspection PyDictCreation
@@ -1432,7 +1432,7 @@ class PymataCore:
             if self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb_type:
                 await self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb(blocks)
             else:
-                loop = asyncio.get_event_loop()
+                loop = self.loop
                 loop.call_soon(self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb, blocks)
 
     async def _i2c_reply(self, data):
@@ -1472,7 +1472,7 @@ class PymataCore:
                 if cb_type:
                     await cb(reply_data)
                 else:
-                    loop = asyncio.get_event_loop()
+                    loop = self.loop
                     loop.call_soon(cb, reply_data)
                 await asyncio.sleep(self.sleep_tune)
 
@@ -1573,7 +1573,7 @@ class PymataCore:
                         await sonar_pin_entry[0]([pin_number, val])
                     else:
                         # sonar_pin_entry[0]([pin_number, val])
-                        loop = asyncio.get_event_loop()
+                        loop = self.loop
                         loop.call_soon(sonar_pin_entry[0], pin_number, val)
         # update the data in the table with latest value
         # sonar_pin_entry[1] = val
@@ -1822,5 +1822,5 @@ class PymataCore:
             next_command_byte = await self.read()
             current_command.append(next_command_byte)
             number_of_bytes -= 1
-            await asyncio.sleep(self.sleep_tune)
+            # await asyncio.sleep(self.sleep_tune)
         return current_command
