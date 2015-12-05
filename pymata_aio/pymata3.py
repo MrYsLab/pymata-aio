@@ -404,7 +404,6 @@ class PyMata3:
         :returns: No return value
         """
         task = asyncio.ensure_future(self.core.keep_alive(period, margin))
-        self.loop.run_until_complete(task)
 
     def play_tone(self, pin, tone_command, frequency, duration=None):
         """
