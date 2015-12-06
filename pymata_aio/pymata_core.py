@@ -1228,7 +1228,7 @@ class PymataCore:
 
         while True:
             try:
-                next_command_byte = await  self.read()
+                next_command_byte = await self.read()
                 # if this is a SYSEX command, then assemble the entire
                 # command process it
                 if next_command_byte == PrivateConstants.START_SYSEX:
@@ -1303,10 +1303,11 @@ class PymataCore:
         value = (data[PrivateConstants.MSB] << 7) + data[PrivateConstants.LSB]
         # if self.analog_pins[pin].current_value != value:
         self.analog_pins[pin].current_value = value
+
+        # append pin number to return value and return as a list
+        value = [pin, value]
+
         if self.analog_pins[pin].cb:
-            # append pin number to return value and return as a list
-            # self.analog_pins[pin].cb(value)
-            value = [pin, value]
             if self.analog_pins[pin].cb_type:
                 await self.analog_pins[pin].cb(value)
             else:
@@ -1748,10 +1749,13 @@ class PymataCore:
         """
         if latching_entry[Constants.LATCH_CALLBACK]:
             # auto clear entry and execute the callback
-
+            if latching_entry[Constants.LATCH_CALLBACK_TYPE]:
+                await latching_entry[Constants.LATCH_CALLBACK] \
+                    ([key, latching_entry[Constants.LATCHED_DATA], time.time()])
             # noinspection PyPep8
-            latching_entry[Constants.LATCH_CALLBACK] \
-                ([key, latching_entry[Constants.LATCHED_DATA], time.time()])
+            else:
+                latching_entry[Constants.LATCH_CALLBACK] \
+                    ([key, latching_entry[Constants.LATCHED_DATA], time.time()])
             self.latch_map[key] = [0, 0, 0, 0, 0, None]
         else:
             updated_latch_entry = latching_entry
@@ -1822,5 +1826,4 @@ class PymataCore:
             next_command_byte = await self.read()
             current_command.append(next_command_byte)
             number_of_bytes -= 1
-            # await asyncio.sleep(self.sleep_tune)
         return current_command
