@@ -403,7 +403,7 @@ class PyMata3:
         :param margin: Safety margin to assure keepalives are sent before period expires. Range is 0.1 to 0.9
         :returns: No return value
         """
-        task = asyncio.ensure_future(self.core.keep_alive(period, margin))
+        asyncio.ensure_future(self.core.keep_alive(period, margin))
 
     def play_tone(self, pin, tone_command, frequency, duration=None):
         """
