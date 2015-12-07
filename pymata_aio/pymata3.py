@@ -51,6 +51,8 @@ class PyMata3:
         :returns: None
         """
         self.log_out = log_output
+        self.loop = asyncio.get_event_loop()
+
         self.sleep_tune = sleep_tune
         self.core = PymataCore(arduino_wait, self.sleep_tune, log_output,
                                com_port, ip_address, ip_port, ip_handshake)
@@ -65,8 +67,8 @@ class PyMata3:
         :param pin: Analog pin number (ex. A2 is specified as 2)
         :returns: Last value reported for the analog pin
         """
-        loop = asyncio.get_event_loop()
-        value = loop.run_until_complete(self.core.analog_read(pin))
+        task = asyncio.ensure_future(self.core.analog_read(pin))
+        value = self.loop.run_until_complete(task)
         return value
 
     def analog_write(self, pin, value):
@@ -78,8 +80,8 @@ class PyMata3:
                        value. 0-0x4000 (14 bits)
         :returns: No return value
         """
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(self.core.analog_write(pin, value))
+        task = asyncio.ensure_future(self.core.analog_write(pin, value))
+        self.loop.run_until_complete(task)
 
     def digital_read(self, pin):
         """
@@ -89,8 +91,8 @@ class PyMata3:
         :param pin: Digital pin number
         :returns: Last value reported for the digital pin
         """
-        loop = asyncio.get_event_loop()
-        value = loop.run_until_complete(self.core.digital_read(pin))
+        task = asyncio.ensure_future(self.core.digital_read(pin))
+        value = self.loop.run_until_complete(task)
         return value
 
     def digital_write(self, pin, value=0):
@@ -101,8 +103,8 @@ class PyMata3:
         :param value: 0 or 1
         :returns: No return value
         """
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(self.core.digital_write(pin, value))
+        task = asyncio.ensure_future(self.core.digital_write(pin, value))
+        self.loop.run_until_complete(task)
 
     def disable_analog_reporting(self, pin):
         """
@@ -111,8 +113,8 @@ class PyMata3:
         :param pin: Analog pin number. For example for A0, the number is 0.
         :returns: No return value
         """
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(self.core.disable_analog_reporting(pin))
+        task = asyncio.ensure_future(self.core.disable_analog_reporting(pin))
+        self.loop.run_until_complete(task)
 
     def disable_digital_reporting(self, pin):
         """
@@ -122,8 +124,8 @@ class PyMata3:
         :param pin: Pin and all pins for this port
         :returns: No return value
         """
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(self.core.disable_digital_reporting(pin))
+        task = asyncio.ensure_future(self.core.disable_digital_reporting(pin))
+        self.loop.run_until_complete(task)
 
     def encoder_config(self, pin_a, pin_b, cb=None, cb_type=None,
                        hall_encoder=False):
@@ -145,10 +147,10 @@ class PyMata3:
                              hall encoder support support.
         :returns: No return value
         """
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(self.core.encoder_config(pin_a, pin_b,
-                                                         cb, cb_type,
-                                                         hall_encoder))
+        task = asyncio.ensure_future(self.core.encoder_config(pin_a, pin_b,
+                                                              cb, cb_type,
+                                                              hall_encoder))
+        self.loop.run_until_complete(task)
 
     def encoder_read(self, pin):
         """
@@ -158,9 +160,9 @@ class PyMata3:
         :param pin: Encoder Pin
         :returns: encoder data value
         """
-        loop = asyncio.get_event_loop()
         try:
-            value = loop.run_until_complete(self.core.encoder_read(pin))
+            task = asyncio.ensure_future(self.core.encoder_read(pin))
+            value = self.loop.run_until_complete(task)
             return value
         except RuntimeError:
             self.shutdown()
@@ -172,8 +174,8 @@ class PyMata3:
         :param pin: Analog pin number. For example for A0, the number is 0.
         :returns: No return value
         """
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(self.core.enable_analog_reporting(pin))
+        task = asyncio.ensure_future(self.core.enable_analog_reporting(pin))
+        self.loop.run_until_complete(task)
 
     def enable_digital_reporting(self, pin):
         """
@@ -184,8 +186,8 @@ class PyMata3:
         :param pin: Pin and all pins for this port
         :returns: No return value
         """
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(self.core.enable_digital_reporting(pin))
+        task = asyncio.ensure_future(self.core.enable_digital_reporting(pin))
+        self.loop.run_until_complete(task)
 
     def extended_analog(self, pin, data):
         """
@@ -196,8 +198,8 @@ class PyMata3:
         :param data: 0 - 0-0x4000 (14 bits)
         :returns: No return value
         """
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(self.core.extended_analog(pin, data))
+        task = asyncio.ensure_future(self.core.extended_analog(pin, data))
+        self.loop.run_until_complete(task)
 
     def get_analog_latch_data(self, pin):
         """
@@ -212,8 +214,8 @@ class PyMata3:
         :returns:  [latched_state, threshold_type, threshold_value,
                     latched_data, time_stamp]
         """
-        loop = asyncio.get_event_loop()
-        l_data = loop.run_until_complete(self.core.get_analog_latch_data(pin))
+        task = asyncio.ensure_future(self.core.get_analog_latch_data(pin))
+        l_data = self.loop.run_until_complete(task)
         return l_data
 
     def get_analog_map(self, cb=None):
@@ -223,8 +225,8 @@ class PyMata3:
         :param cb: Optional callback reference
         :returns: An analog map response or None if a timeout occurs
         """
-        loop = asyncio.get_event_loop()
-        report = loop.run_until_complete(self.core.get_analog_map())
+        task = asyncio.ensure_future(self.core.get_analog_map())
+        report = self.loop.run_until_complete(task)
         if cb:
             cb(report)
         else:
@@ -240,9 +242,8 @@ class PyMata3:
         :param cb: Optional callback reference to receive a raw report
         :returns: capability report
         """
-        loop = asyncio.get_event_loop()
-
-        report = loop.run_until_complete(self.core.get_capability_report())
+        task = asyncio.ensure_future(self.core.get_capability_report())
+        report = self.loop.run_until_complete(task)
         if raw:
             if cb:
                 cb(report)
@@ -267,8 +268,8 @@ class PyMata3:
         :returns:  [latched_state, threshold_type, threshold_value,
                     latched_data, time_stamp]
         """
-        loop = asyncio.get_event_loop()
-        l_data = loop.run_until_complete(self.core.get_digital_latch_data(pin))
+        task = asyncio.ensure_future(self.core.get_digital_latch_data(pin))
+        l_data = self.loop.run_until_complete(task)
         return l_data
 
     def get_firmware_version(self, cb=None):
@@ -278,10 +279,8 @@ class PyMata3:
         :param cb: Reference to a callback function
         :returns:If no callback is specified, the firmware version
         """
-        loop = asyncio.get_event_loop()
-
-        version = loop.run_until_complete(
-            self.core.get_firmware_version())
+        task = asyncio.ensure_future(self.core.get_firmware_version())
+        version = self.loop.run_until_complete(task)
         if cb:
             cb(version)
         else:
@@ -294,8 +293,8 @@ class PyMata3:
         :param cb: Optional callback reference.
         :returns:If no callback is specified, the firmware version
         """
-        loop = asyncio.get_event_loop()
-        version = loop.run_until_complete(self.core.get_protocol_version())
+        task = asyncio.ensure_future(self.core.get_protocol_version())
+        version = self.loop.run_until_complete(task)
 
         if cb:
             cb(version)
@@ -310,8 +309,9 @@ class PyMata3:
         :param cb: optional callback reference
         :returns: pin state report
         """
-        loop = asyncio.get_event_loop()
-        report = loop.run_until_complete(self.core.get_pin_state(pin))
+        task = asyncio.ensure_future(self.core.get_pin_state(pin))
+        report = self.loop.run_until_complete(task)
+
         if cb:
             cb(report)
         else:
@@ -323,8 +323,8 @@ class PyMata3:
 
         :returns: PyMata version number.
         """
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(self.core.get_pymata_version())
+        task = asyncio.ensure_future(self.core.get_pymata_version())
+        self.loop.run_until_complete(task)
 
     def i2c_config(self, read_delay_time=0):
         """
@@ -333,9 +333,8 @@ class PyMata3:
         :param read_delay_time: firmata i2c delay time
         :returns: No return value
         """
-        loop = asyncio.get_event_loop()
-
-        loop.run_until_complete(self.core.i2c_config(read_delay_time))
+        task = asyncio.ensure_future(self.core.i2c_config(read_delay_time))
+        self.loop.run_until_complete(task)
 
     def i2c_read_data(self, address):
         """
@@ -346,9 +345,8 @@ class PyMata3:
         :param address: i2c
         :returns: last data read or None if no data is present.
         """
-        loop = asyncio.get_event_loop()
-
-        value = loop.run_until_complete(self.core.i2c_read_data(address))
+        task = asyncio.ensure_future(self.core.i2c_read_data(address))
+        value = self.loop.run_until_complete(task)
         return value
 
     def i2c_read_request(self, address, register, number_of_bytes, read_type,
@@ -375,12 +373,12 @@ class PyMata3:
                         Constants.CB_TYPE_ASYNCIO = asyncio coroutine
         :returns: No return value        """
 
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(self.core.i2c_read_request(address, register,
-                                                           number_of_bytes,
-                                                           read_type,
-                                                           cb,
-                                                           cb_type))
+        task = asyncio.ensure_future(self.core.i2c_read_request(address, register,
+                                                                number_of_bytes,
+                                                                read_type,
+                                                                cb,
+                                                                cb_type))
+        self.loop.run_until_complete(task)
 
     def i2c_write_request(self, address, args):
         """
@@ -391,9 +389,8 @@ class PyMata3:
                      passed in as a list.
         :returns: No return value
         """
-        loop = asyncio.get_event_loop()
-
-        loop.run_until_complete(self.core.i2c_write_request(address, args))
+        task = asyncio.ensure_future(self.core.i2c_write_request(address, args))
+        self.loop.run_until_complete(task)
 
     def keep_alive(self, period=1, margin=.3):
         """
@@ -424,9 +421,9 @@ class PyMata3:
         :param duration: Duration of tone in milliseconds
         :returns: No return value
         """
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(self.core.play_tone(pin, tone_command,
-                                                    frequency, duration))
+        task = asyncio.ensure_future(self.core.play_tone(pin, tone_command,
+                                                         frequency, duration))
+        self.loop.run_until_complete(task)
 
     def send_reset(self):
         """
@@ -434,8 +431,8 @@ class PyMata3:
 
         :returns: No return value
         """
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(self.core.send_reset())
+        task = asyncio.ensure_future(self.core.send_reset())
+        self.loop.run_until_complete(task)
 
     def servo_config(self, pin, min_pulse=544, max_pulse=2400):
         """
@@ -446,9 +443,9 @@ class PyMata3:
         :param max_pulse: Maximum pulse width
         :returns: No return value
         """
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(self.core.servo_config(pin, min_pulse,
-                                                       max_pulse))
+        task = asyncio.ensure_future(self.core.servo_config(pin, min_pulse,
+                                                            max_pulse))
+        self.loop.run_until_complete(task)
 
     def set_analog_latch(self, pin, threshold_type, threshold_value,
                          cb=None, cb_type=None):
@@ -468,10 +465,9 @@ class PyMata3:
                         Constants.CB_TYPE_ASYNCIO = asyncio coroutine
         :returns: True if successful, False if parameter data is invalid
         """
-        loop = asyncio.get_event_loop()
 
-        result = loop.run_until_complete(self.core.set_analog_latch(
-            pin, threshold_type, threshold_value, cb, cb_type))
+        task = asyncio.ensure_future(self.core.set_analog_latch(pin, threshold_type, threshold_value, cb, cb_type))
+        result = self.loop.run_until_complete(task)
         return result
 
     def set_digital_latch(self, pin, threshold_value, cb=None, cb_type=None):
@@ -489,10 +485,8 @@ class PyMata3:
                         Constants.CB_TYPE_ASYNCIO = asyncio coroutine
         :returns: True if successful, False if parameter data is invalid
         """
-        loop = asyncio.get_event_loop()
-
-        result = loop.run_until_complete(self.core.set_digital_latch(
-            pin, threshold_value, cb, cb_type))
+        task = asyncio.ensure_future(self.core.set_digital_latch(pin, threshold_value, cb, cb_type))
+        result = self.loop.run_until_complete(task)
         return result
 
     def set_pin_mode(self, pin_number, pin_state, callback=None, cb_type=None):
@@ -508,10 +502,8 @@ class PyMata3:
                         Constants.CB_TYPE_ASYNCIO = asyncio coroutine
         :returns: No return value
         """
-        loop = asyncio.get_event_loop()
-
-        loop.run_until_complete(self.core.set_pin_mode(
-            pin_number, pin_state, callback, cb_type))
+        task = asyncio.ensure_future(self.core.set_pin_mode(pin_number, pin_state, callback, cb_type))
+        self.loop.run_until_complete(task)
 
     def set_sampling_interval(self, interval):
         """
@@ -520,8 +512,8 @@ class PyMata3:
         :param interval: time in milliseconds
         :returns: No return value
         """
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(self.core.set_sampling_interval(interval))
+        task = asyncio.ensure_future(self.core.set_sampling_interval(interval))
+        self.loop.run_until_complete(task)
 
     def sleep(self, time):
         """
@@ -532,8 +524,9 @@ class PyMata3:
         :returns: No return value
         """
         try:
-            loop = asyncio.get_event_loop()
-            loop.run_until_complete(self.core.sleep(time))
+            task = asyncio.ensure_future(self.core.sleep(time))
+            self.loop.run_until_complete(task)
+
         except asyncio.CancelledError:
             pass
         except RuntimeError:
@@ -545,8 +538,8 @@ class PyMata3:
 
         :returns: No return value
         """
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(self.core.shutdown())
+        task = asyncio.ensure_future(self.core.shutdown())
+        self.loop.run_until_complete(task)
 
     def sonar_data_retrieve(self, trigger_pin):
         """
@@ -559,9 +552,8 @@ class PyMata3:
         :param trigger_pin: trigger pin specified in sonar_config
         :returns: active_sonar_map
         """
-        loop = asyncio.get_event_loop()
-        sonar_data = \
-            loop.run_until_complete(self.core.sonar_data_retrieve(trigger_pin))
+        task = asyncio.ensure_future(self.core.sonar_data_retrieve(trigger_pin))
+        sonar_data = self.loop.run_until_complete(task)
         return sonar_data
 
     # noinspection PyUnusedLocal
@@ -588,11 +580,11 @@ class PyMata3:
         :param cb_type: direct call or asyncio yield from
         :returns: No return value
         """
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(self.core.sonar_config(trigger_pin,
-                                                       echo_pin, cb,
-                                                       ping_interval,
-                                                       max_distance, cb_type))
+        task = asyncio.ensure_future(self.core.sonar_config(trigger_pin,
+                                                            echo_pin, cb,
+                                                            ping_interval,
+                                                            max_distance, cb_type))
+        self.loop.run_until_complete(task)
 
     def stepper_config(self, steps_per_revolution, stepper_pins):
         """
@@ -604,9 +596,9 @@ class PyMata3:
         :returns: No return value
 
         """
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(self.core.stepper_config(steps_per_revolution,
-                                                         stepper_pins))
+        task = asyncio.ensure_future(self.core.stepper_config(steps_per_revolution,
+                                                              stepper_pins))
+        self.loop.run_until_complete(task)
 
     def stepper_step(self, motor_speed, number_of_steps):
         """
@@ -617,9 +609,9 @@ class PyMata3:
         :param number_of_steps: 14 bits for number of steps & direction
                                 positive is forward, negative is reverse
         """
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(self.core.stepper_step(motor_speed,
-                                                       number_of_steps))
+        task = asyncio.ensure_future(self.core.stepper_step(motor_speed,
+                                                            number_of_steps))
+        self.loop.run_until_complete(task)
 
     def pixy_init(self, max_blocks=5, cb=None, cb_type=None):
         """
@@ -632,8 +624,8 @@ class PyMata3:
         :param max_blocks: Maximum number of Pixy blocks to report when many signatures are found.
         :returns: No return value.
         """
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(self.core.pixy_init(max_blocks, cb, cb_type))
+        task = asyncio.ensure_future(self.core.pixy_init(max_blocks, cb, cb_type))
+        self.loop.run_until_complete(task)
 
     def pixy_get_blocks(self):
         """
@@ -652,8 +644,8 @@ class PyMata3:
         :param s1: value 0 to 1000
         :returns: No return value.
         """
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(self.core.pixy_set_servos(s0, s1))
+        task = asyncio.ensure_future(self.core.pixy_set_servos(s0, s1))
+        self.loop.run_until_complete(task)
 
     def pixy_set_brightness(self, brightness):
         """
@@ -663,8 +655,8 @@ class PyMata3:
         :param brightness: range between 0 and 255 with 255 being the brightest setting
         :returns: No return value.
         """
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(self.core.pixy_set_brightness(brightness))
+        task = asyncio.ensure_future(self.core.pixy_set_brightness(brightness))
+        self.loop.run_until_complete(task)
 
     def pixy_set_led(self, r, g, b):
         """
@@ -676,5 +668,5 @@ class PyMata3:
         :param b: blue range between 0 and 255
         :returns: No return value.
         """
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(self.core.pixy_set_led(r, g, b))
+        task = asyncio.ensure_future(self.core.pixy_set_led(r, g, b))
+        self.loop.run_until_complete(task)

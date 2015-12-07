@@ -81,6 +81,7 @@ class Constants:
     LATCHED_DATA = 3
     LATCHED_TIME_STAMP = 4
     LATCH_CALLBACK = 5
+    LATCH_CALLBACK_TYPE = 6
 
     # indices for data returned for a latch callback
     LATCH_CALL_BACK_PIN = 0

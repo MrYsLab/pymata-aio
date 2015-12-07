@@ -4,7 +4,7 @@
 """
 
 from pymata_aio.pymata3 import PyMata3
-from pymata_aio.pymata3 import Constants
+from pymata_aio.constants import Constants
 
 
 WIFLY_IP_ADDRESS = None            # Leave set as None if not using WiFly
