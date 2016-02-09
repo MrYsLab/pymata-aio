@@ -1095,8 +1095,8 @@ class PymataCore:
         max_distance_msb = max_distance >> 7
         data = [trigger_pin, echo_pin, ping_interval, max_distance_lsb,
                 max_distance_msb]
-        self.set_pin_mode(trigger_pin, Constants.SONAR, Constants.INPUT)
-        self.set_pin_mode(echo_pin, Constants.SONAR, Constants.INPUT)
+        await self.set_pin_mode(trigger_pin, Constants.SONAR, Constants.INPUT)
+        await self.set_pin_mode(echo_pin, Constants.SONAR, Constants.INPUT)
         # update the ping data map for this pin
         if len(self.active_sonar_map) > 6:
             if self.log_output:
@@ -1729,7 +1729,7 @@ class PymataCore:
                 while data[x] != 127:
                     mode_str = ""
                     pin_mode = pin_modes.get(data[x])
-                    mode_str += pin_mode
+                    mode_str += str(pin_mode)
                     x += 1
                     bits = data[x]
                     print('{:>5}{}{} {}'.format('  ', mode_str, ':', bits))
