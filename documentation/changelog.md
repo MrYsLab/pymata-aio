@@ -1,5 +1,11 @@
 #Change Log
 
+## Release 2.9
+
+9 February 2016
+
+* Fixes [issue #35](https://github.com/MrYsLab/pymata-aio/issues/35) and [issue #36](https://github.com/MrYsLab/pymata-aio/issues/36)
+
 ## Release 2.8
 
 3 December 2015
