@@ -1123,7 +1123,7 @@ class PymataCore:
         """
         # sonar_pin_entry = self.active_sonar_map[pin]
         sonar_pin_entry = self.active_sonar_map.get(trigger_pin)
-        value = sonar_pin_entry[1]
+        value = sonar_pin_entry[2]
         return value
 
     async def stepper_config(self, steps_per_revolution, stepper_pins):
