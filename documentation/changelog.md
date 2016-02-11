@@ -1,5 +1,10 @@
 #Change Log
 
+## Release 2.10
+11 February 2016
+
+There were still issues with Sonar and this release addresses those.
+
 ## Release 2.9
 
 9 February 2016
