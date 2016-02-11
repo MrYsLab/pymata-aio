@@ -1123,7 +1123,7 @@ class PymataCore:
         """
         # sonar_pin_entry = self.active_sonar_map[pin]
         sonar_pin_entry = self.active_sonar_map.get(trigger_pin)
-        value = sonar_pin_entry[2]
+        value = sonar_pin_entry[1]
         return value
 
     async def stepper_config(self, steps_per_revolution, stepper_pins):
@@ -1560,25 +1560,30 @@ class PymataCore:
         pin_number = data[0]
         val = int((data[PrivateConstants.MSB] << 7) +
                   data[PrivateConstants.LSB])
+        reply_data = []
 
         sonar_pin_entry = self.active_sonar_map[pin_number]
 
         if sonar_pin_entry[0] is not None:
             # check if value changed since last reading
-            if sonar_pin_entry[1] != val:
-                sonar_pin_entry[1] = val
+            if sonar_pin_entry[2] != val:
+                sonar_pin_entry[2] = val
                 self.active_sonar_map[pin_number] = sonar_pin_entry
                 # Do a callback if one is specified in the table
                 if sonar_pin_entry[0]:
+                    # if this is an asyncio callback type
+                    reply_data.append(pin_number)
+                    reply_data.append(val)
                     if sonar_pin_entry[1]:
-                        await sonar_pin_entry[0]([pin_number, val])
+                        await sonar_pin_entry[0](reply_data)
                     else:
                         # sonar_pin_entry[0]([pin_number, val])
                         loop = self.loop
-                        loop.call_soon(sonar_pin_entry[0], pin_number, val)
+                        loop.call_soon(sonar_pin_entry[0], reply_data)
         # update the data in the table with latest value
-        # sonar_pin_entry[1] = val
-        self.active_sonar_map[pin_number] = sonar_pin_entry
+        else:
+            sonar_pin_entry[1] = val
+            self.active_sonar_map[pin_number] = sonar_pin_entry
 
         await asyncio.sleep(self.sleep_tune)
 
