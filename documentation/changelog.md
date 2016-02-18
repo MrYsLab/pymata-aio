@@ -5,6 +5,18 @@
 
 There were still issues with Sonar and this release addresses those.
 
+## Release 2.101
+
+18 February 2016
+
+* Assures all data sent to Firmata consists of 7 bit bytes
+
+## Release 2.10
+
+11 February 2016
+
+* Additional Fixes [issue #35](https://github.com/MrYsLab/pymata-aio/issues/35) and [issue #36](https://github.com/MrYsLab/pymata-aio/issues/36)
+
 ## Release 2.9
 
 9 February 2016
