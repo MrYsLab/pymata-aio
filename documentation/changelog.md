@@ -5,7 +5,7 @@
 
 There were still issues with Sonar and this release addresses those.
 
-## Release 2.101
+## Release 2.11
 
 18 February 2016
 
