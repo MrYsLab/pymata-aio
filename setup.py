@@ -4,7 +4,7 @@ setup(
     name='pymata-aio',
     version='2.12',
     packages=['pymata_aio'],
-    install_requires=['pyserial==3.0.1', 'autobahn[asyncio]===0.10.4'],
+    install_requires=['pyserial==2.7', 'autobahn[asyncio]==0.10.4'],
     url='https://github.com/MrYsLab/pymata-aio/wiki',
     download_url='https://github.com/MrYsLab/pymata-aio',
     license='GNU General Public License v3 (GPLv3)',
