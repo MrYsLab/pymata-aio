@@ -1679,7 +1679,6 @@ class PymataCore:
                          'com14', 'com15', 'com16', 'com17', 'com18',
                          'com19', 'com20', 'com21', 'com1', 'end'
                          ]
-            locations = glob.glob('/dev/tty.[wchusb*]*') + locations
 
         detected = None
         for device in locations:

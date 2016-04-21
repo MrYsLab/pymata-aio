@@ -1,5 +1,13 @@
 # Change Log
 
+## Release 2.13
+
+21 April 2016
+
+* Added additional Arduino board type detection
+* Updated setup.py to bring in specific versions of pyserial and autobahn.
+* Version 2.12 not accepted on PyPi
+
 ## Release 2.12
 
 21 April 2016
