@@ -1,5 +1,5 @@
 """
-Copyright (c) 20115 Alan Yorinks All rights reserved.
+Copyright (c) 20115-16 Alan Yorinks All rights reserved.
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU  General Public
@@ -70,7 +70,7 @@ class PrivateConstants:
     SYSEX_REALTIME = 0x7F  # MIDI Reserved for realtime messages
 
     # reserved for PyMata
-    PYMATA_VERSION = "2.11"
+    PYMATA_VERSION = "2.12"
 
     # each byte represents a digital port
     #  and its value contains the current port settings

@@ -1,5 +1,5 @@
 """
-Copyright (c) 2015 Alan Yorinks All rights reserved.
+Copyright (c) 2015-16 Alan Yorinks All rights reserved.
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU  General Public
@@ -1661,6 +1661,7 @@ class PymataCore:
         # if MAC get list of ports
         if sys.platform.startswith('darwin'):
             locations = glob.glob('/dev/tty.[usb*]*')
+            locations = glob.glob('/dev/tty.[wchusb*]*') + locations
             locations.append('end')
         # for everyone else, here is a list of possible ports
         else:
@@ -1678,6 +1679,7 @@ class PymataCore:
                          'com14', 'com15', 'com16', 'com17', 'com18',
                          'com19', 'com20', 'com21', 'com1', 'end'
                          ]
+            locations = glob.glob('/dev/tty.[wchusb*]*') + locations
 
         detected = None
         for device in locations:
