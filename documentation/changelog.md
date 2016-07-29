@@ -1,5 +1,16 @@
 # Change Log
 
+## Release 2.14
+
+26 July 2016
+
+
+* Arduino Firmware Version information is printed as part of start-up banner
+* All FirmataPlus versions were re-baselined against StandardFirmata 2.5.3
+* An additional FirmataPlus variant was created to support AVR 32u4 boards.
+* Corrected 2 calls to asyncio.sleep in pymata_serial.py that were missing awaits. These fixes should not affect the performance of the pymata_aio library, and therefore updating to this release from 2.13 is optional.
+* Forced txaio (required by autobahn) to an earlier release (2.1.0) to avoid warnings generated in latest version.
+
 ## Release 2.13
 
 21 April 2016

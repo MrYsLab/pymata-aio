@@ -48,6 +48,7 @@ class PymataSerial:
         sys.stdout.flush()
         self.my_serial = serial.Serial(com_port, speed, timeout=1,
                                        writeTimeout=1)
+
         self.com_port = com_port
         self.sleep_tune = sleep_tune
 
@@ -71,30 +72,40 @@ class PymataSerial:
         """
         # the secret sauce - it is in your future
         future = asyncio.Future()
-
+        result = None
         try:
             result = self.my_serial.write(bytes([ord(data)]))
         except serial.SerialException:
-            if self.log_output:
-                logging.exception('Write exception')
-            else:
-                print('Write exception')
-            loop = asyncio.get_event_loop()
-            for t in asyncio.Task.all_tasks(loop):
-                t.cancel()
-            loop.run_until_complete(asyncio.sleep(.1))
-            loop.stop()
-            loop.close()
-            self.my_serial.close()
-            sys.exit(0)
+            # self.my_serial.close()
+            # noinspection PyBroadException
+            try:
+                await self.close()
+                future.cancel()
+                if self.log_output:
+                    logging.exception('Write exception')
+                else:
+                    print('Write exception')
 
-        future.set_result(result)
-        while True:
-            if not future.done():
-                # spin our asyncio wheels until future completes
-                asyncio.sleep(self.sleep_tune)
-            else:
-                return future.result()
+                loop = asyncio.get_event_loop()
+                for t in asyncio.Task.all_tasks(loop):
+                    t.cancel()
+                loop.run_until_complete(asyncio.sleep(.1))
+                loop.stop()
+                loop.close()
+                self.my_serial.close()
+                sys.exit(0)
+            except:  # swallow any additional exceptions during shutdown
+                pass
+
+        if result:
+            future.set_result(result)
+            while True:
+                if not future.done():
+                    # spin our asyncio wheels until future completes
+                    await asyncio.sleep(self.sleep_tune)
+
+                else:
+                    return future.result()
 
     async def readline(self):
         """
@@ -108,7 +119,7 @@ class PymataSerial:
         while True:
             if not data_available:
                 if not self.my_serial.inWaiting():
-                    asyncio.sleep(self.sleep_tune)
+                    await asyncio.sleep(self.sleep_tune)
                 else:
                     data_available = True
                     data = self.my_serial.readline()

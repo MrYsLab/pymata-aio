@@ -197,13 +197,13 @@ class PymataCore:
         if self.log_output:
             log_string = 'pymata_aio Version ' + \
                          PrivateConstants.PYMATA_VERSION + \
-                         ' Copyright (c) 2015 Alan Yorinks All rights reserved.'
+                         ' Copyright (c) 2015-2016 Alan Yorinks All rights reserved.'
             logging.info(log_string)
         else:
 
             print('{}{}{}'.format('\n', 'pymata_aio Version ' +
                                   PrivateConstants.PYMATA_VERSION,
-                                  '\tCopyright (c) 2015 Alan Yorinks All '
+                                  '\tCopyright (c) 2015-2016 Alan Yorinks All '
                                   'rights reserved.\n'))
             sys.stdout.flush()
 
@@ -282,9 +282,20 @@ class PymataCore:
         # wait for arduino to go through a reset cycle if need be
         time.sleep(self.arduino_wait)
 
+
         # register the get_command method with the event loop
         # self.loop = asyncio.get_event_loop()
         self.the_task = self.loop.create_task(self._command_dispatcher())
+
+        # get arduino firmware version and print it
+        asyncio.ensure_future(self.get_firmware_version())
+
+        firmware_version = self.loop.run_until_complete(self.get_firmware_version())
+        if self.log_output:
+            log_string = "\nArduino Firmware ID: " + firmware_version
+            logging.exception(log_string)
+        else:
+            print("\nArduino Firmware ID: " + firmware_version)
 
         # get an analog pin map
         asyncio.ensure_future(self.get_analog_map())
@@ -388,6 +399,14 @@ class PymataCore:
         # register the get_command method with the event loop
         self.loop = asyncio.get_event_loop()
         self.the_task = self.loop.create_task(self._command_dispatcher())
+
+        # get arduino firmware version and print it
+        firmware_version = await self.get_firmware_version()
+        if self.log_output:
+            log_string = "\nArduino Firmware ID: " + firmware_version
+            logging.exception(log_string)
+        else:
+            print("\nArduino Firmware ID: " + firmware_version)
 
         # get an analog pin map
         asyncio.ensure_future(self.get_analog_map())
@@ -710,7 +729,7 @@ class PymataCore:
         :returns: Firmata protocol version
         """
         if self.query_reply_data.get(PrivateConstants.REPORT_VERSION) == '':
-            await self._send_command(PrivateConstants.REPORT_VERSION)
+            await self._send_command([PrivateConstants.REPORT_VERSION])
             while self.query_reply_data.get(
                     PrivateConstants.REPORT_VERSION) == '':
                 await asyncio.sleep(self.sleep_tune)
@@ -1274,8 +1293,20 @@ class PymataCore:
                     logging.exception(ex)
                 else:
                     print(ex)
+                await self.shutdown()
+
+                await self.serial_port.close()
+
+
                 print("An exception occurred on the asyncio event loop while receiving data.  Invalid message.")
-                # raise  # re-raise exception.
+                loop = self.loop
+                for t in asyncio.Task.all_tasks(loop):
+                    t.cancel()
+                loop.run_until_complete(asyncio.sleep(.1))
+                loop.close()
+                loop.stop()
+                sys.exit(0)
+
 
     '''
     Firmata message handlers
@@ -1783,6 +1814,7 @@ class PymataCore:
         :returns: length of data sent
         """
         send_message = ""
+
         for i in command:
             send_message += chr(i)
         result = None
