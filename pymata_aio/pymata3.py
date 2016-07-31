@@ -18,7 +18,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import asyncio
 
-from .pymata_core import PymataCore
+try:
+    from pymata_core import PymataCore
+except ImportError:
+    from .pymata_core import PymataCore
 
 
 class PyMata3:
@@ -94,6 +97,17 @@ class PyMata3:
         task = asyncio.ensure_future(self.core.digital_read(pin))
         value = self.loop.run_until_complete(task)
         return value
+
+    def digital_pin_write(self, pin, value=0):
+        """
+        Set the specified digital input pin to the provided value
+
+        :param pin: Digital pin to be set
+        :param value: 0 or 1
+        :returns: No return value
+        """
+        task = asyncio.ensure_future(self.core.digital_pin_write(pin, value))
+        self.loop.run_until_complete(task)
 
     def digital_write(self, pin, value=0):
         """

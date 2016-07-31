@@ -28,6 +28,7 @@ class PrivateConstants:
     REPORT_ANALOG = 0xC0  # enable analog input by pin #
     REPORT_DIGITAL = 0xD0  # enable digital input by port pair
     SET_PIN_MODE = 0xF4  # set a pin to INPUT/OUTPUT/PWM/etc
+    SET_DIGITAL_PIN_VALUE = 0xF5  # set a single digital pin value instead of entire port
     START_SYSEX = 0xF0  # start a MIDI Sysex message
     END_SYSEX = 0xF7  # end a MIDI Sysex message
     SYSTEM_RESET = 0xFF  # reset from MIDI
@@ -70,7 +71,7 @@ class PrivateConstants:
     SYSEX_REALTIME = 0x7F  # MIDI Reserved for realtime messages
 
     # reserved for PyMata
-    PYMATA_VERSION = "2.14"
+    PYMATA_VERSION = "2.15"
 
     # each byte represents a digital port
     #  and its value contains the current port settings

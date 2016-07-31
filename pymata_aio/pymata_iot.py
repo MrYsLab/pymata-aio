@@ -1,104 +1,19 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
-"""
-Copyright (c) 2015 Alan Yorinks All rights reserved.
-
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU  General Public
-License as published by the Free Software Foundation; either
-version 3 of the License, or (at your option) any later version.
-
-This library is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
-
-You should have received a copy of the GNU General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-"""
-
-import json
 import asyncio
 import datetime
-import argparse
+import json
 import sys
-
-from autobahn.asyncio.websocket import WebSocketServerProtocol, \
-    WebSocketServerFactory
-
-from pymata_aio.pymata_core import PymataCore
+import signal
+import argparse
+import websockets
 from pymata_aio.constants import Constants
+from pymata_aio.pymata_core import PymataCore
 
 
-# noinspection PyPep8,PyUnresolvedReferences,PyUnresolvedReferences,PyStatementEffect
-class PymataIOT(WebSocketServerProtocol):
-    """
-    This class implements the PyMata Websocket interface. JSON command messages are received via Websocket connection,
-    decoded and mapped to an associated PyMata method to be executed
-    operation.
-
-    The methods below are not intended to be called directly. The JSON message format is documented as part of the
-    method description. All JSON reply messages (to be handled by the client)  will also be documented for
-    within the description.
-
-    usage: pymata_iot.py [-h] [-host HOSTNAME] [-port PORT] [-wait WAIT]
-                     [-comport COM] [-sleep SLEEP] [-log LOG]
-
-        optional arguments:
-          -h, --help      show this help message and exit
-          -host HOSTNAME  Server name or IP address
-          -port PORT      Server port number
-          -wait WAIT      Arduino wait time
-          -comport COM    Arduino COM port
-          -sleep SLEEP    sleep tune in ms.
-          -log LOG        True = send output to file, False = send output to console
-          -ardIPAddr ADDR Wireless module ip address (WiFly)
-          -ardPort PORT   Wireless module ip port (Wifly)
-          -handshake STR  Wireless device handshake string (WiFly)
-    """
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-host", dest="hostname", default="localhost", help="Server name or IP address")
-    parser.add_argument("-port", dest="port", default="9000", help="Server port number")
-    parser.add_argument("-wait", dest="wait", default="2", help="Arduino wait time")
-    parser.add_argument("-comport", dest="com", default="None", help="Arduino COM port")
-    parser.add_argument("-sleep", dest="sleep", default=".001", help="sleep tune in ms.")
-    parser.add_argument("-log", dest="log", default="False", help="redirect console output to log file")
-    parser.add_argument("-ardIPAddr", dest="aIPaddr", default="None", help="Arduino IP Address (WiFly")
-    parser.add_argument("-ardPort", dest="aIPport", default="2000", help="Arduino IP port (WiFly")
-    parser.add_argument("-handshake", dest="handshake", default="*HELLO*", help="IP Device Handshake String")
-
-
-    args = parser.parse_args()
-
-    ip_addr = args.hostname
-    ip_port = args.port
-
-    if args.com == 'None':
-        comport = None
-    else:
-        comport = args.com
-
-    if args.log == 'True':
-        log = True
-    else:
-        log = False
-
-    ard_ip_addr = args.aIPaddr
-    ard_ip_port = args.aIPport
-    ard_handshake = args.handshake
-
-    core = PymataCore(int(args.wait), float(args.sleep), log, comport,
-                      ard_ip_addr, ard_ip_port, ard_handshake)
-    core.start()
-
-    # noinspection PyMissingConstructor
-    def __init__(self):
-        """
-        This is the "constructor" for PymataIOT. It sets up a translation dictionary using incoming JSON commands
-        and maps them to command methods.
-        :returns: No Return.
-        """
+class PymataIOT:
+    def __init__(self, my_core):
+        self.core = my_core
 
         self.command_map = {
             "analog_read": self.analog_read,
@@ -123,7 +38,7 @@ class PymataIOT(WebSocketServerProtocol):
             "i2c_read_data": self.i2c_read_data,
             "i2c_read_request": self.i2c_read_request,
             "i2c_write_request": self.i2c_write_request,
-            "keep_alive":self.keep_alive,
+            "keep_alive": self.keep_alive,
             "play_tone": self.play_tone,
             "set_analog_latch": self.set_analog_latch,
             "set_digital_latch": self.set_digital_latch,
@@ -135,6 +50,35 @@ class PymataIOT(WebSocketServerProtocol):
             "stepper_config": self.stepper_config,
             "stepper_step": self.stepper_step
         }
+        self.websocket = None
+
+    # noinspection PyUnusedLocal
+    async def get_message(self, websocket, path):
+        """
+
+        :param websocket: websocket
+        :param path: path
+        :return:
+        """
+
+        self.websocket = websocket
+        try:
+            while True:
+                payload = await self.websocket.recv()
+
+                # cmd_dict = json.loads(payload.decode('utf8'))
+                cmd_dict = json.loads(payload)
+                client_cmd = cmd_dict.get("method")
+
+                if client_cmd in self.command_map:
+                    cmd = self.command_map.get(client_cmd)
+                    params = cmd_dict.get("params")
+                    if params[0] != "null":
+                        await cmd(params)
+                    else:
+                        await cmd()
+        except websockets.exceptions.ConnectionClosed:
+            sys.exit()
 
     async def analog_read(self, command):
         """
@@ -149,7 +93,7 @@ class PymataIOT(WebSocketServerProtocol):
         pin = int(command[0])
         data_val = await self.core.analog_read(pin)
         reply = json.dumps({"method": "analog_read_reply", "params": [pin, data_val]})
-        self.sendMessage(reply.encode('utf8'))
+        await self.websocket.send(reply)
 
     async def analog_write(self, command):
         """
@@ -177,7 +121,7 @@ class PymataIOT(WebSocketServerProtocol):
         pin = int(command[0])
         data_val = await self.core.digital_read(pin)
         reply = json.dumps({"method": "digital_read_reply", "params": [pin, data_val]})
-        self.sendMessage(reply.encode('utf8'))
+        await self.websocket.send(reply)
 
     async def digital_write(self, command):
         """
@@ -252,7 +196,7 @@ class PymataIOT(WebSocketServerProtocol):
         pin = int(command[0])
         val = await self.core.encoder_read(pin)
         reply = json.dumps({"method": "encoder_read_reply", "params": [pin, val]})
-        self.sendMessage(reply.encode('utf8'))
+        await self.websocket.send(reply)
 
     async def get_analog_latch_data(self, command):
         """
@@ -269,7 +213,7 @@ class PymataIOT(WebSocketServerProtocol):
         if data_val:
             data_val = data_val[0:-1]
         reply = json.dumps({"method": "get_analog_latch_data_reply", "params": [pin, data_val]})
-        self.sendMessage(reply.encode('utf8'))
+        await self.websocket.send(reply)
 
     async def get_analog_map(self):
         """
@@ -285,7 +229,7 @@ class PymataIOT(WebSocketServerProtocol):
             reply = json.dumps({"method": "analog_map_reply", "params": value})
         else:
             reply = json.dumps({"method": "analog_map_reply", "params": "None"})
-        self.sendMessage(reply.encode('utf8'))
+        await self.websocket.send(reply)
 
     async def get_capability_report(self):
         """
@@ -303,7 +247,7 @@ class PymataIOT(WebSocketServerProtocol):
             reply = json.dumps({"method": "capability_report_reply", "params": value})
         else:
             reply = json.dumps({"method": "capability_report_reply", "params": "None"})
-        self.sendMessage(reply.encode('utf8'))
+        await self.websocket.send(reply)
 
     async def get_digital_latch_data(self, command):
         """
@@ -320,7 +264,7 @@ class PymataIOT(WebSocketServerProtocol):
         if data_val:
             data_val = data_val[0:-1]
         reply = json.dumps({"method": "get_digital_latch_data_reply", "params": [pin, data_val]})
-        self.sendMessage(reply.encode('utf8'))
+        await self.websocket.send(reply)
 
     async def get_firmware_version(self):
         """
@@ -338,7 +282,7 @@ class PymataIOT(WebSocketServerProtocol):
             reply = json.dumps({"method": "firmware_version_reply", "params": value})
         else:
             reply = json.dumps({"method": "firmware_version_reply", "params": "Unknown"})
-        self.sendMessage(reply.encode('utf8'))
+        await self.websocket.send(reply)
 
     async def get_pinstate_report(self, command):
         """
@@ -355,7 +299,7 @@ class PymataIOT(WebSocketServerProtocol):
             reply = json.dumps({"method": "pin_state_reply", "params": value})
         else:
             reply = json.dumps({"method": "pin_state_reply", "params": "Unknown"})
-        self.sendMessage(reply.encode('utf8'))
+        await self.websocket.send(reply)
 
     async def get_protocol_version(self):
         """
@@ -370,7 +314,7 @@ class PymataIOT(WebSocketServerProtocol):
             reply = json.dumps({"method": "protocol_version_reply", "params": value})
         else:
             reply = json.dumps({"method": "protocol_version_reply", "params": "Unknown"})
-        self.sendMessage(reply.encode('utf8'))
+        await self.websocket.send(reply)
 
     async def get_pymata_version(self):
         """
@@ -385,7 +329,7 @@ class PymataIOT(WebSocketServerProtocol):
             reply = json.dumps({"method": "pymata_version_reply", "params": value})
         else:
             reply = json.dumps({"method": "pymata_version_reply", "params": "Unknown"})
-        self.sendMessage(reply.encode('utf8'))
+        await self.websocket.send(reply)
 
     async def i2c_config(self, command):
         """
@@ -409,7 +353,7 @@ class PymataIOT(WebSocketServerProtocol):
         address = int(command[0])
         i2c_data = await self.core.i2c_read_data(address)
         reply = json.dumps({"method": "i2c_read_data_reply", "params": i2c_data})
-        self.sendMessage(reply.encode('utf8'))
+        await self.websocket.send(reply)
 
     async def i2c_read_request(self, command):
         """
@@ -447,7 +391,7 @@ class PymataIOT(WebSocketServerProtocol):
             read_type = Constants.I2C_STOP_READING
 
         await self.core.i2c_read_request(device_address, register, number_of_bytes, read_type,
-                                              self.i2c_read_request_callback)
+                                         self.i2c_read_request_callback)
         await asyncio.sleep(.1)
 
     async def i2c_write_request(self, command):
@@ -566,7 +510,7 @@ class PymataIOT(WebSocketServerProtocol):
         val = await self.core.sonar_data_retrieve(pin)
 
         reply = json.dumps({"method": "sonar_read_reply", "params": [pin, val]})
-        self.sendMessage(reply.encode('utf8'))
+        await self.websocket.send(reply)
 
     async def servo_config(self, command):
         """
@@ -605,65 +549,6 @@ class PymataIOT(WebSocketServerProtocol):
         num_steps = int(command[1])
         await self.core.stepper_step(speed, num_steps)
 
-    async def onClose(self, was_clean, code, reason):
-        """
-        Websocket management message.
-        This message is received when the client closes the connection. A console status message is printed and
-        and the interface is shutdown before exiting.
-        :param was_clean: Autobahn provided flag
-        :param code:Autobahn provided flag
-        :param reason:Autobahn provided flag
-        :returns:Console message is generated.
-        """
-        print("WebSocket connection closed: {0}".format(reason))
-        #await self.core.shutdown()
-        sys.exit(0)
-
-    def onConnect(self, request):
-        """
-        WebSocket management method.
-        This method issues a console status message for Websocket connection establishment.
-        :param request: Websocket request
-        :returns: No return value.
-        """
-        print("Client connecting: {0}".format(request.peer))
-
-    async def onMessage(self, payload, is_binary):
-        """
-        Websocket management method.
-        This method receives JSON messages from the Websocket client. All messages are assumed to be text.
-        If a binary message is sent, a console status message is generated.
-    
-        The JSON command is interpreted and translated to a method call to handle the command request.
-        :param payload: JSON command
-        :param is_binary: True if message is binary. Assumed to always be False
-        :returns: No value is returned.
-        """
-        if is_binary:
-            print("Binary message received: {0} bytes".format(len(payload)))
-            print('Expected text and not binary')
-        else:
-            cmd_dict = json.loads(payload.decode('utf8'))
-            client_cmd = cmd_dict.get("method")
-
-            if client_cmd in self.command_map:
-                cmd = self.command_map.get(client_cmd)
-                params = cmd_dict.get("params")
-                if params[0] != "null":
-                    await cmd(params)
-                else:
-                    await cmd()
-
-    async def onOpen(self):
-        """
-        WebSocket management method.
-        This method issues a console status message for the opening of a Websocket connection. It sends a Firmata
-        reset command to the Arduino.
-        :returns:  No return value.
-        """
-        print("WebSocket connection open.")
-        await self.core.send_reset()
-
     def analog_callback(self, data):
         """
         This method handles the analog message received from pymata_core
@@ -671,7 +556,7 @@ class PymataIOT(WebSocketServerProtocol):
         :returns:{"method": "analog_message_reply", "params": [PIN, DATA_VALUE}
         """
         reply = json.dumps({"method": "analog_message_reply", "params": [data[0], data[1]]})
-        self.sendMessage(reply.encode('utf8'))
+        asyncio.ensure_future(self.websocket.send(reply))
 
     def analog_latch_callback(self, data):
         """
@@ -682,7 +567,7 @@ class PymataIOT(WebSocketServerProtocol):
         ts = data[2]
         st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
         reply = json.dumps({"method": "analog_latch_data_reply", "params": [data[0], data[1], st]})
-        self.sendMessage(reply.encode('utf8'))
+        asyncio.ensure_future(self.websocket.send(reply))
 
     def digital_callback(self, data):
         """
@@ -691,7 +576,7 @@ class PymataIOT(WebSocketServerProtocol):
         :returns:{"method": "digital_message_reply", "params": [PIN, DATA_VALUE]}
         """
         reply = json.dumps({"method": "digital_message_reply", "params": [data[0], data[1]]})
-        self.sendMessage(reply.encode('utf8'))
+        asyncio.ensure_future(self.websocket.send(reply))
 
     def digital_latch_callback(self, data):
         """
@@ -702,7 +587,7 @@ class PymataIOT(WebSocketServerProtocol):
         ts = data[2]
         st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
         reply = json.dumps({"method": "digital_latch_data_reply", "params": [data[0], data[1], st]})
-        self.sendMessage(reply.encode('utf8'))
+        asyncio.ensure_future(self.websocket.send(reply))
 
     def encoder_callback(self, data):
         """
@@ -711,7 +596,7 @@ class PymataIOT(WebSocketServerProtocol):
         :returns:{"method": "encoder_data_reply", "params": [ENCODER VALUE]}
         """
         reply = json.dumps({"method": "encoder_data_reply", "params": data})
-        self.sendMessage(reply.encode('utf8'))
+        asyncio.ensure_future(self.websocket.send(reply))
 
     def i2c_read_request_callback(self, data):
         """
@@ -720,8 +605,7 @@ class PymataIOT(WebSocketServerProtocol):
         :returns:{"method": "i2c_read_request_reply", "params": [DATA_VALUE]}
         """
         reply = json.dumps({"method": "i2c_read_request_reply", "params": data})
-        # print(reply);
-        self.sendMessage(reply.encode('utf8'))
+        asyncio.ensure_future(self.websocket.send(reply))
 
     def i2c_read_data_callback(self, data):
         """
@@ -730,7 +614,7 @@ class PymataIOT(WebSocketServerProtocol):
         :returns:{"method": "i2c_read_data_reply", "params": [DATA_VALUE]}
         """
         reply = json.dumps({"method": "i2c_read_data_reply", "params": data})
-        self.sendMessage(reply.encode('utf8'))
+        asyncio.ensure_future(self.websocket.send(reply))
 
     def sonar_callback(self, data):
         """
@@ -739,27 +623,84 @@ class PymataIOT(WebSocketServerProtocol):
         :returns:{"method": "sonar_data_reply", "params": [DATA_VALUE]}
         """
         reply = json.dumps({"method": "sonar_data_reply", "params": data})
+        asyncio.ensure_future(self.websocket.send(reply))
 
-        self.sendMessage(reply.encode('utf8'))
+"""
+
+ usage: pymata_iot.py [-h] [-host HOSTNAME] [-port PORT] [-wait WAIT]
+                 [-comport COM] [-sleep SLEEP] [-log LOG]
+
+    optional arguments:
+      -h, --help      show this help message and exit
+      -host HOSTNAME  Server name or IP address
+      -port PORT      Server port number
+      -wait WAIT      Arduino wait time
+      -comport COM    Arduino COM port
+      -sleep SLEEP    sleep tune in ms.
+      -log LOG        True = send output to file, False = send output to console
+      -ardIPAddr ADDR Wireless module ip address (WiFly)
+      -ardPort PORT   Wireless module ip port (Wifly)
+      -handshake STR  Wireless device handshake string (WiFly)
+"""
+parser = argparse.ArgumentParser()
+parser.add_argument("-host", dest="hostname", default="localhost", help="Server name or IP address")
+parser.add_argument("-port", dest="port", default="9000", help="Server port number")
+parser.add_argument("-wait", dest="wait", default="2", help="Arduino wait time")
+parser.add_argument("-comport", dest="com", default="None", help="Arduino COM port")
+parser.add_argument("-sleep", dest="sleep", default=".001", help="sleep tune in ms.")
+parser.add_argument("-log", dest="log", default="False", help="redirect console output to log file")
+parser.add_argument("-ardIPAddr", dest="aIPaddr", default="None", help="Arduino IP Address (WiFly")
+parser.add_argument("-ardPort", dest="aIPport", default="2000", help="Arduino IP port (WiFly")
+parser.add_argument("-handshake", dest="handshake", default="*HELLO*", help="IP Device Handshake String")
 
 
-if __name__ == '__main__':
-    ws_string = 'ws://' + PymataIOT.ip_addr + ':' + PymataIOT.ip_port
-    print('Websocket server operating on: ' + ws_string)
-    factory = WebSocketServerFactory(ws_string, debug=False)
-    factory.protocol = PymataIOT
+args = parser.parse_args()
 
-    loop = asyncio.get_event_loop()
-    coro = loop.create_server(factory, '0.0.0.0', int(PymataIOT.ip_port))
-    server = loop.run_until_complete(coro)
+ip_addr = args.hostname
+ip_port = args.port
 
-    try:
-        loop.run_forever()
-    except KeyboardInterrupt:
-        pass
-    finally:
-        loop.run_until_complete(factory.protocol.core.shutdown())
-        server.close()
-        loop.stop()
-        loop.close()
-        sys.exit(0)
+if args.com == 'None':
+    comport = None
+else:
+    comport = args.com
+
+if args.log == 'True':
+    log = True
+else:
+    log = False
+
+ard_ip_addr = args.aIPaddr
+ard_ip_port = args.aIPport
+ard_handshake = args.handshake
+
+core = PymataCore(int(args.wait), float(args.sleep), log, comport,
+                  ard_ip_addr, ard_ip_port, ard_handshake)
+
+# core = PymataCore()
+core.start()
+
+
+# Signal handler to trap control C
+# noinspection PyUnusedLocal,PyUnusedLocal
+def _signal_handler(sig, frame):
+    if core is not None:
+        print('\nYou pressed Ctrl+C')
+        task = asyncio.ensure_future(core.shutdown())
+        asyncio.get_event_loop().run_until_complete(task)
+        sys.exit(1)
+
+
+signal.signal(signal.SIGINT, _signal_handler)
+signal.signal(signal.SIGTERM, _signal_handler)
+server = PymataIOT(core)
+
+try:
+    start_server = websockets.serve(server.get_message, '127.0.0.1', 9000)
+
+    asyncio.get_event_loop().run_until_complete(start_server)
+
+    asyncio.get_event_loop().run_forever()
+except websockets.exceptions.ConnectionClosed:
+    sys.exit()
+except RuntimeError:
+    sys.exit()

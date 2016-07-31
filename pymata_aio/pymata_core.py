@@ -24,11 +24,11 @@ import time
 
 import serial
 
-from .constants import Constants
-from .pin_data import PinData
-from .private_constants import PrivateConstants
-from .pymata_serial import PymataSerial
-from .pymata_socket import PymataSocket
+from pymata_aio.constants import Constants
+from pymata_aio.pin_data import PinData
+from pymata_aio.private_constants import PrivateConstants
+from pymata_aio.pymata_serial import PymataSerial
+from pymata_aio.pymata_socket import PymataSocket
 
 
 # noinspection PyCallingNonCallable,PyCallingNonCallable,PyPep8,PyBroadException,PyBroadException
@@ -282,7 +282,6 @@ class PymataCore:
         # wait for arduino to go through a reset cycle if need be
         time.sleep(self.arduino_wait)
 
-
         # register the get_command method with the event loop
         # self.loop = asyncio.get_event_loop()
         self.the_task = self.loop.create_task(self._command_dispatcher())
@@ -496,6 +495,19 @@ class PymataCore:
         :returns: Last value reported for the digital pin
         """
         return self.digital_pins[pin].current_value
+
+    async def digital_pin_write(self, pin, value):
+        """
+        Set the specified pin to the specified value directly without port manipulation.
+
+        :param pin: pin number
+        :param value: pin value
+        :returns: No return value
+        """
+
+        command = (PrivateConstants.SET_DIGITAL_PIN_VALUE, pin, value)
+
+        await self._send_command(command)
 
     async def digital_write(self, pin, value):
         """
@@ -1297,7 +1309,6 @@ class PymataCore:
 
                 await self.serial_port.close()
 
-
                 print("An exception occurred on the asyncio event loop while receiving data.  Invalid message.")
                 loop = self.loop
                 for t in asyncio.Task.all_tasks(loop):
@@ -1306,7 +1317,6 @@ class PymataCore:
                 loop.close()
                 loop.stop()
                 sys.exit(0)
-
 
     '''
     Firmata message handlers

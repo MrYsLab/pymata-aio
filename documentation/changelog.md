@@ -1,5 +1,18 @@
 # Change Log
 
+## Release 2.15
+
+31 July 2016
+
+* Added support for the SET_DIGITAL_PIN_VALUE Firmata command
+
+  * This release is now fully compatible with StandardFirmata 2.5.3
+  * On-Line API Documents Updated to reflect new command
+  
+* Update pymata_iot.py to use websockets instead of autobahn.
+
+  * setup.py added dependency of websockets and removed autobahn/txaio dependencies
+
 ## Release 2.14
 
 26 July 2016
