@@ -16,7 +16,7 @@
      * **pymata3** - a pymata_aio plugin implementing a method call API that acts as a proxy for pymata_core. It shields the user from the details of the asyncio library.
      * **pymata_iot** - a pymata_aio plugin API that implements an [Autobahn](http://autobahn.ws/python/) Websocket server, and uses JSON messaging for application communication. 
           * After downloading and invoking **pymata_iot**, [**control your Arduino from a webpage!**](http://mryslab.github.io/pymata-aio/examples/uno_iot_tester.html)
-* **Implements 100% of the StandardFirmata Protocol (StandardFirmata 2.43).**
+* **Implements 100% of the StandardFirmata Protocol (StandardFirmata 2.5.3).**
 * **Auto-detects Arduino COM ports.**
 * **FirmataPlus (enhanced StandaradFirmata sketch) included with distribution. It adds support for:**
      * **HC-SRO4 Ultrasonic Distance Sensors using a single pin.**
