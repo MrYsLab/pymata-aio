@@ -401,6 +401,35 @@ class PymataCore:
 
         # get arduino firmware version and print it
         firmware_version = await self.get_firmware_version()
+        if not firmware_version:
+            if self.log_output:
+                log_string = '*** Firmware Version retrieval timed out. ***'
+
+                logging.exception(log_string)
+                log_string = '\nDo you have Arduino connectivity and do you ' \
+                             'have a Firmata sketch uploaded to the board?'
+                logging.exception(log_string)
+
+            else:
+                print('*** Firmware Version retrieval timed out. ***')
+                print('\nDo you have Arduino connectivity and do you have a '
+                      'Firmata sketch uploaded to the board?')
+            try:
+                loop = self.loop
+                for t in asyncio.Task.all_tasks(loop):
+                    t.cancel()
+                loop.run_until_complete(asyncio.sleep(.1))
+                loop.stop()
+                loop.close()
+                sys.exit(0)
+            except RuntimeError:
+                self.the_task.cancel()
+                time.sleep(1)
+                # this suppresses the Event Loop Is Running message,
+                # which may be a bug in python 3.4.3
+                sys.exit(0)
+            except TypeError:
+                sys.exit(0)
         if self.log_output:
             log_string = "\nArduino Firmware ID: " + firmware_version
             logging.exception(log_string)
@@ -720,10 +749,14 @@ class PymataCore:
 
         :returns: Firmata firmware version
         """
+        current_time = time.time()
         if self.query_reply_data.get(PrivateConstants.REPORT_FIRMWARE) == '':
             await self._send_sysex(PrivateConstants.REPORT_FIRMWARE, None)
             while self.query_reply_data.get(
                     PrivateConstants.REPORT_FIRMWARE) == '':
+                elapsed_time = time.time()
+                if elapsed_time - current_time > 2:
+                    return None
                 await asyncio.sleep(self.sleep_tune)
         reply = ''
         for x in self.query_reply_data.get(PrivateConstants.REPORT_FIRMWARE):

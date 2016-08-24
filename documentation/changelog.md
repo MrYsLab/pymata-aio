@@ -1,5 +1,14 @@
 # Change Log
 
+## Release 2.16
+
+24 Auguts 2016
+
+* This is a minor bug fix release
+
+  * Added a 2 second timeout for retrieiving Firmata Firmware Verison
+  * If the request times out, the application will exit since there is no connectivity to the Arduino.
+
 ## Release 2.15
 
 31 July 2016
