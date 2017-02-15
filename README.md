@@ -34,3 +34,5 @@
 
 
 __Detailed package information can be found on the [pymata_aio wiki](https://github.com/MrYsLab/pymata-aio/wiki).__
+
+This project was developed with [Pycharm](https://www.jetbrains.com/pycharm/) ![logo](https://github.com/MrYsLab/python_banyan/blob/master/images/icon_PyCharm.png)
