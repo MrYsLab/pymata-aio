@@ -1104,11 +1104,14 @@ class PymataCore:
         try:
             self.loop.stop()
         except:
-            pass
+            raise RuntimeError
+            # pass
+            raise RuntimeError
         try:
             self.loop.close()
         except:
-            pass
+            # pass
+            raise RuntimeError
         sys.exit(0)
 
     async def sleep(self, sleep_time):
@@ -1338,6 +1341,8 @@ class PymataCore:
                     logging.exception(ex)
                 else:
                     print(ex)
+                await self.serial_port.close()
+
                 await self.shutdown()
 
                 await self.serial_port.close()

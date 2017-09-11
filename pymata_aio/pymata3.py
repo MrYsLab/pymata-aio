@@ -544,7 +544,8 @@ class PyMata3:
         except asyncio.CancelledError:
             pass
         except RuntimeError:
-            pass
+            # pass
+            raise
 
     def shutdown(self):
         """
