@@ -1380,7 +1380,7 @@ class PymataCore:
         self.analog_pins[pin].current_value = value
 
         # append pin number to return value and return as a list
-        value = [pin, value]
+        value = [pin, value, Constants.ANALOG]
 
         if self.analog_pins[pin].cb:
             if self.analog_pins[pin].cb_type:
@@ -1419,7 +1419,7 @@ class PymataCore:
         pin = port * 8
         for pin in range(pin, min(pin + 8, len(self.digital_pins))):
             self.digital_pins[pin].current_value = port_data & 0x01
-            data = [pin, self.digital_pins[pin].current_value]
+            data = [pin, self.digital_pins[pin].current_value, Constants.INPUT]
             if self.digital_pins[pin].cb:
                 if self.digital_pins[pin].cb_type:
                     await self.digital_pins[pin].cb(data)
