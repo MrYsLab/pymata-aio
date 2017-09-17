@@ -1,5 +1,5 @@
 """
- Copyright (c) 2015. 2016, 1017 Alan Yorinks All rights reserved.
+ Copyright (c) 2015-2017 Alan Yorinks All rights reserved.
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -203,7 +203,7 @@ class PymataCore:
 
             print('{}{}{}'.format('\n', 'pymata_aio Version ' +
                                   PrivateConstants.PYMATA_VERSION,
-                                  '\tCopyright (c) 2015-2016 Alan Yorinks All '
+                                  '\tCopyright (c) 2015-2017 Alan Yorinks All '
                                   'rights reserved.\n'))
             sys.stdout.flush()
 
