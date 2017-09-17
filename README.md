@@ -5,13 +5,6 @@
 
 [![Join the chat at https://gitter.im/MrYsLab/pymata-aio](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/MrYsLab/pymata-aio?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-### Changes From Verion 2.16 to 2.17
-
-* Licensing changed from GPL V3 to GPL Affero V3
-* Callbacks now report pin type. See [this wiki page](https://github.com/MrYsLab/pymata-aio/wiki/Digital-And-Analog-Data-Reporting-Callback--Usage-Guidelines)
-for details. __*Note this should not be a breaking change.*__ All existing applications should be able to run without
-modification.
-
 
 ### Major features
 
@@ -42,5 +35,7 @@ modification.
 
 
 __Detailed package information can be found on the [pymata_aio wiki](https://github.com/MrYsLab/pymata-aio/wiki).__
+
+**Change log can be found [here](https://github.com/MrYsLab/pymata-aio/blob/master/documentation/changelog.md)**.
 
 This project was developed with [Pycharm](https://www.jetbrains.com/pycharm/) ![logo](https://github.com/MrYsLab/python_banyan/blob/master/images/icon_PyCharm.png)

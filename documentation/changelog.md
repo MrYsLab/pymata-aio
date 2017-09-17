@@ -1,8 +1,16 @@
 # Change Log
 
+## Release 2.18 (overwrites 2.17)
+
+17 September 2017
+
+* Licensing changed from GPL V3 to GPL Affero V3
+* Callbacks now report pin type. See [this wiki page](https://github.com/MrYsLab/pymata-aio/wiki/Digital-And-Analog-Data-Reporting-Callback--Usage-Guidelines) for details. Note this should not be a breaking change. All existing applications should be able to run without modification.
+* Bumped up version number that was incorrect in 2.17
+
 ## Release 2.16
 
-24 Auguts 2016
+24 August 2016
 
 * This is a minor bug fix release
 
