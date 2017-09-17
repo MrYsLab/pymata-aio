@@ -1379,20 +1379,20 @@ class PymataCore:
         # if self.analog_pins[pin].current_value != value:
         self.analog_pins[pin].current_value = value
 
-        # append pin number to return value and return as a list
-        value = [pin, value]
+        # append pin number, pin value, and pin type to return value and return as a list
+        message = [pin, value, Constants.ANALOG]
 
         if self.analog_pins[pin].cb:
             if self.analog_pins[pin].cb_type:
-                await self.analog_pins[pin].cb(value)
+                await self.analog_pins[pin].cb(message)
             else:
                 loop = self.loop
-                loop.call_soon(self.analog_pins[pin].cb, value)
+                loop.call_soon(self.analog_pins[pin].cb, message)
 
         # is there a latch entry for this pin?
         key = 'A' + str(pin)
         if key in self.latch_map:
-            await self._check_latch_data(key, value[1])
+            await self._check_latch_data(key, message[1])
 
     async def _capability_response(self, data):
         """
@@ -1418,15 +1418,22 @@ class PymataCore:
                     data[PrivateConstants.LSB]
         pin = port * 8
         for pin in range(pin, min(pin + 8, len(self.digital_pins))):
-            self.digital_pins[pin].current_value = port_data & 0x01
-            data = [pin, self.digital_pins[pin].current_value]
+            # get pin value
+            value = port_data & 0x01
+
+            # set the current value in the pin structure
+            self.digital_pins[pin].current_value = value
+
+            # append pin number, pin value, and pin type to return value and return as a list
+            message = [pin, value, Constants.INPUT]
+
             if self.digital_pins[pin].cb:
                 if self.digital_pins[pin].cb_type:
-                    await self.digital_pins[pin].cb(data)
+                    await self.digital_pins[pin].cb(message)
                 else:
                     # self.digital_pins[pin].cb(data)
                     loop = self.loop
-                    loop.call_soon(self.digital_pins[pin].cb, data)
+                    loop.call_soon(self.digital_pins[pin].cb, message)
 
                 # is there a latch entry for this pin?
                 key = 'D' + str(pin)
