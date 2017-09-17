@@ -197,7 +197,7 @@ class PymataCore:
         if self.log_output:
             log_string = 'pymata_aio Version ' + \
                          PrivateConstants.PYMATA_VERSION + \
-                         ' Copyright (c) 2015-2016 Alan Yorinks All rights reserved.'
+                         ' Copyright (c) 2015-2017 Alan Yorinks All rights reserved.'
             logging.info(log_string)
         else:
 
