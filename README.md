@@ -12,7 +12,6 @@ for details. __*Note this should not be a breaking change.*__ All existing appli
 modification.
 
 
-
 ##Major features
 
 * __Python 3.5+__ compatible.

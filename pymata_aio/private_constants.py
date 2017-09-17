@@ -102,3 +102,4 @@ class PrivateConstants:
 
     # Pin used to store Pixy data
     PIN_PIXY_MOSI = 11
+

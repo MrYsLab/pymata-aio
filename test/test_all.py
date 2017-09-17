@@ -15,7 +15,6 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-
 from pymata_aio.pymata3 import PyMata3
 from pymata_aio.constants import Constants
 

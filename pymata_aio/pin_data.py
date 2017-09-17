@@ -57,3 +57,4 @@ class PinData:
     @cb_type.setter
     def cb_type(self, value):
         self._cb_type = value
+

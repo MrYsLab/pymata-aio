@@ -16,7 +16,6 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-
 import asyncio
 import datetime
 import json
@@ -642,6 +641,7 @@ class PymataIOT:
         reply = json.dumps({"method": "sonar_data_reply", "params": data})
         asyncio.ensure_future(self.websocket.send(reply))
 
+
 """
 
  usage: pymata_iot.py [-h] [-host HOSTNAME] [-port PORT] [-wait WAIT]
@@ -669,7 +669,6 @@ parser.add_argument("-log", dest="log", default="False", help="redirect console 
 parser.add_argument("-ardIPAddr", dest="aIPaddr", default="None", help="Arduino IP Address (WiFly")
 parser.add_argument("-ardPort", dest="aIPport", default="2000", help="Arduino IP port (WiFly")
 parser.add_argument("-handshake", dest="handshake", default="*HELLO*", help="IP Device Handshake String")
-
 
 args = parser.parse_args()
 
