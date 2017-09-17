@@ -1,11 +1,11 @@
 ![logo](https://raw.github.com/MrYsLab/pymata-aio/master/documentation/images/logo.png)
 ======
 
-##pymata_aio is a high performance, non-blocking, Python asyncio client for the Firmata Protocol that supports the complete StandardFirmata protocol.
+## pymata_aio is a high performance, non-blocking, Python asyncio client for the Firmata Protocol that supports the complete StandardFirmata protocol.
 
 [![Join the chat at https://gitter.im/MrYsLab/pymata-aio](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/MrYsLab/pymata-aio?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-###Changes From Verion 2.16 to 2.17
+### Changes From Verion 2.16 to 2.17
 
 * Licensing changed from GPL V3 to GPL Affero V3
 * Callbacks now report pin type. See [this wiki page](https://github.com/MrYsLab/pymata-aio/wiki/Digital-And-Analog-Data-Reporting-Callback--Usage-Guidelines)
@@ -13,7 +13,7 @@ for details. __*Note this should not be a breaking change.*__ All existing appli
 modification.
 
 
-###Major features
+### Major features
 
 * __Python 3.5+__ compatible.
     * **Implements [PEP 492](https://www.python.org/dev/peps/pep-0492/)**
