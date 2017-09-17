@@ -1,19 +1,18 @@
 """
-Copyright (c) 2015-16 Alan Yorinks All rights reserved.
+ Copyright (c) 2015. 2016, 1017 Alan Yorinks All rights reserved.
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU  General Public
-License as published by the Free Software Foundation; either
-version 3 of the License, or (at your option) any later version.
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
+ Version 3 as published by the Free Software Foundation; either
+ or (at your option) any later version.
+ This library is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ General Public License for more details.
 
-This library is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
-
-You should have received a copy of the GNU General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ You should have received a copy of the GNU AFFERO GENERAL PUBLIC LICENSE
+ along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 import asyncio
@@ -1379,20 +1378,20 @@ class PymataCore:
         # if self.analog_pins[pin].current_value != value:
         self.analog_pins[pin].current_value = value
 
-        # append pin number to return value and return as a list
-        value = [pin, value]
+        # append pin number, pin value, and pin type to return value and return as a list
+        message = [pin, value, Constants.ANALOG]
 
         if self.analog_pins[pin].cb:
             if self.analog_pins[pin].cb_type:
-                await self.analog_pins[pin].cb(value)
+                await self.analog_pins[pin].cb(message)
             else:
                 loop = self.loop
-                loop.call_soon(self.analog_pins[pin].cb, value)
+                loop.call_soon(self.analog_pins[pin].cb, message)
 
         # is there a latch entry for this pin?
         key = 'A' + str(pin)
         if key in self.latch_map:
-            await self._check_latch_data(key, value[1])
+            await self._check_latch_data(key, message[1])
 
     async def _capability_response(self, data):
         """
@@ -1418,15 +1417,22 @@ class PymataCore:
                     data[PrivateConstants.LSB]
         pin = port * 8
         for pin in range(pin, min(pin + 8, len(self.digital_pins))):
-            self.digital_pins[pin].current_value = port_data & 0x01
-            data = [pin, self.digital_pins[pin].current_value]
+            # get pin value
+            value = port_data & 0x01
+
+            # set the current value in the pin structure
+            self.digital_pins[pin].current_value = value
+
+            # append pin number, pin value, and pin type to return value and return as a list
+            message = [pin, value, Constants.INPUT]
+
             if self.digital_pins[pin].cb:
                 if self.digital_pins[pin].cb_type:
-                    await self.digital_pins[pin].cb(data)
+                    await self.digital_pins[pin].cb(message)
                 else:
                     # self.digital_pins[pin].cb(data)
                     loop = self.loop
-                    loop.call_soon(self.digital_pins[pin].cb, data)
+                    loop.call_soon(self.digital_pins[pin].cb, message)
 
                 # is there a latch entry for this pin?
                 key = 'D' + str(pin)

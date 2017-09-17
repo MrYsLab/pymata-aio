@@ -1,19 +1,18 @@
 """
-Copyright (c) 2015 Alan Yorinks All rights reserved.
+ Copyright (c) 2015. 2016, 1017 Alan Yorinks All rights reserved.
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU  General Public
-License as published by the Free Software Foundation; either
-version 3 of the License, or (at your option) any later version.
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
+ Version 3 as published by the Free Software Foundation; either
+ or (at your option) any later version.
+ This library is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ General Public License for more details.
 
-This library is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
-
-You should have received a copy of the GNU General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ You should have received a copy of the GNU AFFERO GENERAL PUBLIC LICENSE
+ along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 
@@ -43,7 +42,7 @@ class TestAnalogInput:
         self.board.set_pin_mode(2, Constants.ANALOG, self.my_callback)
         self.board.sleep(1)
         self.board.analog_read(2)
-        assert self.result == [2, 1023]
+        assert self.result == [2, 1023,2]
 
     # set slide switch to on for pass or off for fail
     def test_digital_read_write(self):
@@ -68,36 +67,36 @@ class TestAnalogInput:
             self.board.sleep(.1)
         dv = None
         self.board.digital_write(6, dv)
-        assert self.result == [13, 1]
+        assert self.result == [13, 1, 0]
         self.board.sleep(1)
         self.board.digital_write(6, 0)
         self.board.sleep(2)
 
     def test_get_protocol_version(self):
         pv = self.board.get_protocol_version()
-        assert pv == "2.4"
+        assert pv == "2.5"
 
     def test_get_protocol_version_cb(self):
         self.board.get_protocol_version(self.my_callback)
-        assert self.result == "2.4"
+        assert self.result == "2.5"
 
     def test_get_firmware_version(self):
         fv = self.board.get_firmware_version()
-        assert fv == "2.4 FirmataPlus.ino"
+        assert fv == "2.5 FirmataPlus.ino"
 
     def test_get_firmware_version_cb(self):
         self.board.get_firmware_version(self.my_callback)
-        assert self.result == "2.4 FirmataPlus.ino"
+        assert self.result == "2.5 FirmataPlus.ino"
 
     def test_get_capability_report(self):
         cr = self.board.get_capability_report()
         l = len(cr)
-        assert l == 156
+        assert l == 192
 
     def test_get_capability_report_cb(self):
         self.board.get_capability_report(True, self.my_callback)
         l = len(self.result)
-        assert l == 156
+        assert l == 192
 
     def test_get_analog_map(self):
         am = self.board.get_analog_map()

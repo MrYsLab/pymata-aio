@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='pymata-aio',
-    version='2.16',
+    version='2.17',
     packages=['pymata_aio'],
     install_requires=['pyserial==2.7', 'websockets'],
     url='https://github.com/MrYsLab/pymata-aio/wiki',
@@ -17,7 +17,7 @@ setup(
         'Environment :: Other Environment',
         'Intended Audience :: Developers',
         'Intended Audience :: Education',
-        'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
+        'License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3 :: Only',
