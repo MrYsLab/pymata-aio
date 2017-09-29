@@ -1,5 +1,10 @@
 # Change Log
 
+## Release 2.19
+28 September 2017
+
+* Fixes bug in accepting analog data from a Mega 2560 pin 15.
+
 ## Release 2.18 (overwrites 2.17)
 
 17 September 2017

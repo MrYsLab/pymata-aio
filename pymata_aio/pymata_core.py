@@ -1305,7 +1305,7 @@ class PymataCore:
                     sysex = []
                     await asyncio.sleep(self.sleep_tune)
                 # if this is an analog message, process it.
-                elif 0xE0 <= next_command_byte < 0xEF:
+                elif 0xE0 <= next_command_byte <= 0xEF:
                     # analog message
                     # assemble the entire analog message in command
                     command = []

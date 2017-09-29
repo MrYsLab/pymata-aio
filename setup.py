@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='pymata-aio',
-    version='2.18',
+    version='2.19',
     packages=['pymata_aio'],
     install_requires=['pyserial==2.7', 'websockets'],
     url='https://github.com/MrYsLab/pymata-aio/wiki',
