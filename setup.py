@@ -1,16 +1,22 @@
 from setuptools import setup
 
+with open('pypi_desc.md') as f:
+    long_description = f.read()
+
+
 setup(
     name='pymata-aio',
-    version='2.19',
+    version='2.20',
     packages=['pymata_aio'],
     install_requires=['pyserial==2.7', 'websockets'],
     url='https://github.com/MrYsLab/pymata-aio/wiki',
     download_url='https://github.com/MrYsLab/pymata-aio',
-    license='GNU General Public License v3 (GPLv3)',
+    license='GNU Affero General Public License v3 or later (AGPLv3+)',
     author='Alan Yorinks',
     author_email='MisterYsLab@gmail.com',
     description='A Python Protocol Abstraction Library For Arduino Firmata using Python asyncio',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     keywords=['Firmata', 'Arduino', 'Protocol'],
     classifiers=[
         'Development Status :: 5 - Production/Stable',

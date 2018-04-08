@@ -15,7 +15,7 @@
 * **Choose From 3 Included APIs**
      * **pymata_core** - a pure asyncio method call API.
      * **pymata3** - a pymata_aio plugin implementing a method call API that acts as a proxy for pymata_core. It shields the user from the details of the asyncio library.
-     * **pymata_iot** - a pymata_aio plugin API that implements an [Autobahn](http://autobahn.ws/python/) Websocket server, and uses JSON messaging for application communication. 
+     * **pymata_iot** - a pymata_aio plugin API that implements Websocket server, and uses JSON messaging for application communication.
           * After downloading and invoking **pymata_iot**, [**control your Arduino from a webpage!**](http://mryslab.github.io/pymata-aio/examples/uno_iot_tester.html)
 * **Implements 100% of the StandardFirmata Protocol (StandardFirmata 2.5.3).**
 * **Auto-detects Arduino COM ports.**
@@ -24,7 +24,7 @@
      * **Stepper Motors.**
      * **Piezo Tone Generation.**
      * **2 Pin Rotary Encoder Support.**
-* **FirmataPlusRB (enhanced StandaradFirmata sketch to control a [SparkFun Redbot](https://www.sparkfun.com/products/12649)) is included with the distribution. It adds support for:**
+* **FirmataPlusRB (enhanced StandardFirmata sketch to control a [SparkFun Redbot](https://www.sparkfun.com/products/12649)) is included with the distribution. It adds support for:**
      * **Piezo Tone Generation.**
      * **Wheel encoders.**
      * **RedBot Accelerometer.**
