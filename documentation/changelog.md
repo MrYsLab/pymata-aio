@@ -1,8 +1,9 @@
 # Change Log
 
 ## Release 2.20
-* Typo fixes and updates to support the new pypi.org page
 8 April 2018
+
+* Typo fixes and updates to support the new pypi.org page
 
 ## Release 2.19
 28 September 2017
