@@ -3,10 +3,10 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 
-    <title>pymata_aio API documentation</title>
+    <title>pymata_aio.pymata_socket API documentation</title>
     <meta name="description" content="Copyright (c) 2015-2017 Alan Yorinks All rights reserved.
 
- This program is free software; you can r..." />
+This program is free software; you can re..." />
 
   <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300' rel='stylesheet' type='text/css'>
   
@@ -1044,18 +1044,23 @@ table {
     <ul id="index">
 
 
-
-    <li class="set"><h3><a href="#header-submodules">Sub-modules</a></h3>
+    <li class="set"><h3><a href="#header-classes">Classes</a></h3>
       <ul>
-        <li class="mono"><a href="constants.m.html">pymata_aio.constants</a></li>
-        <li class="mono"><a href="pin_data.m.html">pymata_aio.pin_data</a></li>
-        <li class="mono"><a href="private_constants.m.html">pymata_aio.private_constants</a></li>
-        <li class="mono"><a href="pymata3.m.html">pymata_aio.pymata3</a></li>
-        <li class="mono"><a href="pymata_core.m.html">pymata_aio.pymata_core</a></li>
-        <li class="mono"><a href="pymata_serial.m.html">pymata_aio.pymata_serial</a></li>
-        <li class="mono"><a href="pymata_socket.m.html">pymata_aio.pymata_socket</a></li>
+        <li class="mono">
+        <span class="class_name"><a href="#pymata_aio.pymata_socket.PymataSocket">PymataSocket</a></span>
+        
+          
+  <ul>
+    <li class="mono"><a href="#pymata_aio.pymata_socket.PymataSocket.__init__">__init__</a></li>
+    <li class="mono"><a href="#pymata_aio.pymata_socket.PymataSocket.read">read</a></li>
+    <li class="mono"><a href="#pymata_aio.pymata_socket.PymataSocket.start">start</a></li>
+    <li class="mono"><a href="#pymata_aio.pymata_socket.PymataSocket.write">write</a></li>
+  </ul>
+
+        </li>
       </ul>
     </li>
+
     </ul>
   </div>
 
@@ -1067,24 +1072,24 @@ table {
 
 
   <header id="section-intro">
-  <h1 class="title"><span class="name">pymata_aio</span> module</h1>
+  <h1 class="title"><span class="name">pymata_aio.pymata_socket</span> module</h1>
   <p>Copyright (c) 2015-2017 Alan Yorinks All rights reserved.</p>
 <p>This program is free software; you can redistribute it and/or
- modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- Version 3 as published by the Free Software Foundation; either
- or (at your option) any later version.
- This library is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- General Public License for more details.</p>
+modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
+Version 3 as published by the Free Software Foundation; either
+or (at your option) any later version.
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.</p>
 <p>You should have received a copy of the GNU AFFERO GENERAL PUBLIC LICENSE
- along with this library; if not, write to the Free Software
- Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA</p>
-<p>The pymata_aio package that implements a Python asyncio Arduino StandardFirmata client.</p>
+along with this library; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA</p>
   
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-pymata_aio', this);">Show source &equiv;</a></p>
-  <div id="source-pymata_aio" class="source">
-    <div class="codehilite"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-pymata_aio.pymata_socket', this);">Show source &equiv;</a></p>
+  <div id="source-pymata_aio.pymata_socket" class="source">
+    <div class="codehilite"><pre><span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd"> Copyright (c) 2015-2017 Alan Yorinks All rights reserved.</span>
 
 <span class="sd"> This program is free software; you can redistribute it and/or</span>
@@ -1099,9 +1104,53 @@ table {
 <span class="sd"> You should have received a copy of the GNU AFFERO GENERAL PUBLIC LICENSE</span>
 <span class="sd"> along with this library; if not, write to the Free Software</span>
 <span class="sd"> Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA</span>
-
-<span class="sd">The pymata_aio package that implements a Python asyncio Arduino StandardFirmata client.</span>
 <span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+
+<span class="c1"># noinspection PyStatementEffect,PyUnresolvedReferences,PyUnresolvedReferences</span>
+<span class="k">class</span> <span class="nc">PymataSocket</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ip_address</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">loop</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ip_address</span> <span class="o">=</span> <span class="n">ip_address</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">port</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loop</span> <span class="o">=</span> <span class="n">loop</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">writer</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="n">async</span> <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method opens an IP connection on the IP device</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">writer</span> <span class="o">=</span> <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">open_connection</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ip_address</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">loop</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Can&#39;t open connection to &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ip_address</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">async</span> <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method writes sends data to the IP device</span>
+<span class="sd">        :param data:</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">((</span><span class="nb">bytes</span><span class="p">([</span><span class="nb">ord</span><span class="p">(</span><span class="n">data</span><span class="p">)])))</span>
+        <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="o">.</span><span class="n">drain</span><span class="p">()</span>
+
+    <span class="n">async</span> <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method reads one byte of data from IP device</span>
+
+<span class="sd">        :return: Next byte</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">buffer</span> <span class="o">=</span> <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">ord</span><span class="p">(</span><span class="nb">buffer</span><span class="p">)</span>
 </pre></div>
 
   </div>
@@ -1111,92 +1160,237 @@ table {
   <section id="section-items">
 
 
-
-    <h2 class="section-title" id="header-submodules">Sub-modules</h2>
+    <h2 class="section-title" id="header-classes">Classes</h2>
+      
       <div class="item">
-      <p class="name"><a href="constants.m.html">pymata_aio.constants</a></p>
+      <p id="pymata_aio.pymata_socket.PymataSocket" class="name">class <span class="ident">PymataSocket</span></p>
       
   
-    <div class="desc"><p>Copyright (c) 2015-2017 Alan Yorinks All rights reserved.</p>
-<p>This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
-Version 3 as published by the Free Software Foundation; either
-or (at your option) any later version.
-This libra...</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-pymata_aio.pymata_socket.PymataSocket', this);">Show source &equiv;</a></p>
+  <div id="source-pymata_aio.pymata_socket.PymataSocket" class="source">
+    <div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">PymataSocket</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ip_address</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">loop</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ip_address</span> <span class="o">=</span> <span class="n">ip_address</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">port</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loop</span> <span class="o">=</span> <span class="n">loop</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">writer</span> <span class="o">=</span> <span class="bp">None</span>
 
-      </div>
-      <div class="item">
-      <p class="name"><a href="pin_data.m.html">pymata_aio.pin_data</a></p>
-      
+    <span class="n">async</span> <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method opens an IP connection on the IP device</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">writer</span> <span class="o">=</span> <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">open_connection</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ip_address</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">loop</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Can&#39;t open connection to &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ip_address</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">async</span> <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method writes sends data to the IP device</span>
+<span class="sd">        :param data:</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">((</span><span class="nb">bytes</span><span class="p">([</span><span class="nb">ord</span><span class="p">(</span><span class="n">data</span><span class="p">)])))</span>
+        <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="o">.</span><span class="n">drain</span><span class="p">()</span>
+
+    <span class="n">async</span> <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method reads one byte of data from IP device</span>
+
+<span class="sd">        :return: Next byte</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">buffer</span> <span class="o">=</span> <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">ord</span><span class="p">(</span><span class="nb">buffer</span><span class="p">)</span>
+</pre></div>
+
+  </div>
+</div>
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#pymata_aio.pymata_socket.PymataSocket">PymataSocket</a></li>
+          <li>builtins.object</li>
+          </ul>
+          <h3>Static methods</h3>
+            
+  <div class="item">
+    <div class="name def" id="pymata_aio.pymata_socket.PymataSocket.__init__">
+    <p>def <span class="ident">__init__</span>(</p><p>self, ip_address, port, loop)</p>
+    </div>
+    
+
+    
   
-    <div class="desc"><p>Copyright (c) 2015-2017 Alan Yorinks All rights reserved.</p>
-<p>This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
-Version 3 as published by the Free Software Foundation; either
-or (at your option) any later version.
-This libra...</p></div>
+    <div class="desc"><p>Initialize self.  See help(type(self)) for accurate signature.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-pymata_aio.pymata_socket.PymataSocket.__init__', this);">Show source &equiv;</a></p>
+  <div id="source-pymata_aio.pymata_socket.PymataSocket.__init__" class="source">
+    <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ip_address</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">loop</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">ip_address</span> <span class="o">=</span> <span class="n">ip_address</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">port</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">loop</span> <span class="o">=</span> <span class="n">loop</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">writer</span> <span class="o">=</span> <span class="bp">None</span>
+</pre></div>
 
-      </div>
-      <div class="item">
-      <p class="name"><a href="private_constants.m.html">pymata_aio.private_constants</a></p>
-      
+  </div>
+</div>
+
+  </div>
   
-    <div class="desc"><p>Copyright (c) 2015-2017 Alan Yorinks All rights reserved.</p>
-<p>This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
-Version 3 as published by the Free Software Foundation; either
-or (at your option) any later version.
-This libra...</p></div>
+            
+  <div class="item">
+    <div class="name def" id="pymata_aio.pymata_socket.PymataSocket.read">
+    <p>def <span class="ident">read</span>(</p><p>self)</p>
+    </div>
+    
 
-      </div>
-      <div class="item">
-      <p class="name"><a href="pymata3.m.html">pymata_aio.pymata3</a></p>
-      
+    
   
-    <div class="desc"><p>Copyright (c) 2015-2017 Alan Yorinks All rights reserved.</p>
-<p>This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
-Version 3 as published by the Free Software Foundation; either
-or (at your option) any later version.
-This libra...</p></div>
+    <div class="desc"><p>This method reads one byte of data from IP device</p>
+<p>:return: Next byte</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-pymata_aio.pymata_socket.PymataSocket.read', this);">Show source &equiv;</a></p>
+  <div id="source-pymata_aio.pymata_socket.PymataSocket.read" class="source">
+    <div class="codehilite"><pre><span></span><span class="n">async</span> <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This method reads one byte of data from IP device</span>
+<span class="sd">    :return: Next byte</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">buffer</span> <span class="o">=</span> <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">ord</span><span class="p">(</span><span class="nb">buffer</span><span class="p">)</span>
+</pre></div>
 
-      </div>
-      <div class="item">
-      <p class="name"><a href="pymata_core.m.html">pymata_aio.pymata_core</a></p>
-      
+  </div>
+</div>
+
+  </div>
   
-    <div class="desc"><p>Copyright (c) 2015-2017 Alan Yorinks All rights reserved.</p>
-<p>This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
-Version 3 as published by the Free Software Foundation; either
-or (at your option) any later version.
-This libra...</p></div>
+            
+  <div class="item">
+    <div class="name def" id="pymata_aio.pymata_socket.PymataSocket.start">
+    <p>def <span class="ident">start</span>(</p><p>self)</p>
+    </div>
+    
 
-      </div>
-      <div class="item">
-      <p class="name"><a href="pymata_serial.m.html">pymata_aio.pymata_serial</a></p>
-      
+    
   
-    <div class="desc"><p>Copyright (c) 2015-2017 Alan Yorinks All rights reserved.</p>
-<p>This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
-Version 3 as published by the Free Software Foundation; either
-or (at your option) any later version.
-This libra...</p></div>
+    <div class="desc"><p>This method opens an IP connection on the IP device</p>
+<p>:return: None</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-pymata_aio.pymata_socket.PymataSocket.start', this);">Show source &equiv;</a></p>
+  <div id="source-pymata_aio.pymata_socket.PymataSocket.start" class="source">
+    <div class="codehilite"><pre><span></span><span class="n">async</span> <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This method opens an IP connection on the IP device</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">writer</span> <span class="o">=</span> <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">open_connection</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ip_address</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">loop</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Can&#39;t open connection to &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ip_address</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
 
-      </div>
-      <div class="item">
-      <p class="name"><a href="pymata_socket.m.html">pymata_aio.pymata_socket</a></p>
-      
+  </div>
+</div>
+
+  </div>
   
-    <div class="desc"><p>Copyright (c) 2015-2017 Alan Yorinks All rights reserved.</p>
-<p>This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
-Version 3 as published by the Free Software Foundation; either
-or (at your option) any later version.
-This libra...</p></div>
+            
+  <div class="item">
+    <div class="name def" id="pymata_aio.pymata_socket.PymataSocket.write">
+    <p>def <span class="ident">write</span>(</p><p>self, data)</p>
+    </div>
+    
 
+    
+  
+    <div class="desc"><p>This method writes sends data to the IP device
+:param data:</p>
+<p>:return: None</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-pymata_aio.pymata_socket.PymataSocket.write', this);">Show source &equiv;</a></p>
+  <div id="source-pymata_aio.pymata_socket.PymataSocket.write" class="source">
+    <div class="codehilite"><pre><span></span><span class="n">async</span> <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This method writes sends data to the IP device</span>
+<span class="sd">    :param data:</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">((</span><span class="nb">bytes</span><span class="p">([</span><span class="nb">ord</span><span class="p">(</span><span class="n">data</span><span class="p">)])))</span>
+    <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="o">.</span><span class="n">drain</span><span class="p">()</span>
+</pre></div>
+
+  </div>
+</div>
+
+  </div>
+  
+          <h3>Instance variables</h3>
+            <div class="item">
+            <p id="pymata_aio.pymata_socket.PymataSocket.ip_address" class="name">var <span class="ident">ip_address</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="pymata_aio.pymata_socket.PymataSocket.loop" class="name">var <span class="ident">loop</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="pymata_aio.pymata_socket.PymataSocket.port" class="name">var <span class="ident">port</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="pymata_aio.pymata_socket.PymataSocket.reader" class="name">var <span class="ident">reader</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="pymata_aio.pymata_socket.PymataSocket.writer" class="name">var <span class="ident">writer</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
       </div>
+      </div>
+
   </section>
 
     </article>
