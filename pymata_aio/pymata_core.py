@@ -57,14 +57,20 @@ class PymataCore:
 
         :param arduino_wait: Amount of time to wait for Arduino to reset.
                              UNO takes 2 seconds, Leonardo can be zero
+
         :param sleep_tune: This parameter sets the amount of time PyMata core
                            uses to set asyncio.sleep
+
         :param log_output: If false, all output goes to console, else output
                            redirected to log file.
+
         :param com_port: Manually selected com port - normally it is
                          auto-detected
+
         :param ip_address: If using a WiFly module, set its address here
+
         :param ip_port: Port to used with ip_address
+
         :param ip_handshake: Connectivity handshake string sent by IP device
 
         :returns: This method never returns
@@ -497,6 +503,7 @@ class PymataCore:
         Retrieve the last data update for the specified analog pin.
 
         :param pin: Analog pin number (ex. A2 is specified as 2)
+
         :returns: Last value reported for the analog pin
         """
         return self.analog_pins[pin].current_value
@@ -506,7 +513,9 @@ class PymataCore:
         Set the selected pin to the specified value.
 
         :param pin: PWM pin number
+
         :param value: Pin value (0 - 0x4000)
+
         :returns: No return value
         """
         if PrivateConstants.ANALOG_MESSAGE + pin < 0xf0:
@@ -521,6 +530,7 @@ class PymataCore:
         Retrieve the last data update for the specified digital pin.
 
         :param pin: Digital pin number
+
         :returns: Last value reported for the digital pin
         """
         return self.digital_pins[pin].current_value
@@ -530,7 +540,9 @@ class PymataCore:
         Set the specified pin to the specified value directly without port manipulation.
 
         :param pin: pin number
+
         :param value: pin value
+
         :returns: No return value
         """
 
@@ -543,7 +555,9 @@ class PymataCore:
         Set the specified pin to the specified value.
 
         :param pin: pin number
+
         :param value: pin value
+
         :returns: No return value
         """
         # The command value is not a fixed value, but needs to be calculated
@@ -570,6 +584,7 @@ class PymataCore:
         Disables analog reporting for a single analog pin.
 
         :param pin: Analog pin number. For example for A0, the number is 0.
+
         :returns: No return value
         """
         command = [PrivateConstants.REPORT_ANALOG + pin,
@@ -582,6 +597,7 @@ class PymataCore:
         Reporting is disabled for all 8 bits in the "port"
 
         :param pin: Pin and all pins for this port
+
         :returns: No return value
         """
         port = pin // 8
@@ -606,12 +622,17 @@ class PymataCore:
         specify pin_a for 1st encoder and pin_b for 2nd encoder.
 
         :param pin_a: Encoder pin 1.
+
         :param pin_b: Encoder pin 2.
+
         :param cb: callback function to report encoder changes
+
         :param cb_type: Constants.CB_TYPE_DIRECT = direct call or
                         Constants.CB_TYPE_ASYNCIO = asyncio coroutine
+
         :param hall_encoder: wheel hall_encoder - set to
                              True to select hall encoder support support.
+
         :returns: No return value
         """
         # checked when encoder data is returned
@@ -629,6 +650,7 @@ class PymataCore:
         This method retrieves the latest encoder data value
 
         :param pin: Encoder Pin
+
         :returns: encoder data value
         """
         return self.digital_pins[pin].current_value
@@ -638,6 +660,7 @@ class PymataCore:
         Enables analog reporting. By turning reporting on for a single pin,
 
         :param pin: Analog pin number. For example for A0, the number is 0.
+
         :returns: No return value
         """
         command = [PrivateConstants.REPORT_ANALOG + pin,
@@ -650,6 +673,7 @@ class PymataCore:
         in the "port" - this is part of Firmata's protocol specification.
 
         :param pin: Pin and all pins for this port
+
         :returns: No return value
             """
         port = pin // 8
@@ -663,7 +687,9 @@ class PymataCore:
         selected pin.
 
         :param pin: 0 - 127
+
         :param data: 0 - 0xfffff
+
         :returns: No return value
         """
         analog_data = [pin, data & 0x7f, (data >> 7) & 0x7f, (data >> 14) & 0x7f]
@@ -677,6 +703,7 @@ class PymataCore:
          latched_data, time_stamp]
 
         :param pin: Pin number.
+
         :returns:  [latched_state, threshold_type, threshold_value,
                     latched_data, time_stamp]
         """
@@ -733,6 +760,7 @@ class PymataCore:
         [pin_num, latch_state, latched_value, time_stamp]
 
         :param pin: Pin number.
+
         :returns:  [latched_state, threshold_type, threshold_value,
                    latched_data, time_stamp]
         """
@@ -785,6 +813,7 @@ class PymataCore:
         This method retrieves a pin state report for the specified pin
 
         :param pin: Pin of interest
+
         :returns: pin state report
         """
         pin_list = [pin]
@@ -814,6 +843,7 @@ class PymataCore:
 
         :param read_delay_time (in microseconds): an optional parameter,
                                                   default is 0
+
         :returns: No Return Value
         """
         data = [read_delay_time & 0x7f, (read_delay_time >> 7) & 0x7f]
@@ -824,6 +854,7 @@ class PymataCore:
         This method retrieves cached i2c data to support a polling mode.
 
         :param address: I2C device address
+
         :returns: Last cached value read
         """
         if address in self.i2c_map:
@@ -846,14 +877,20 @@ class PymataCore:
         Use Constants.I2C_READ | Constants.I2C_RESTART_TX for those cases.
 
         :param address: i2c device address
+
         :param register: register number (can be set to zero)
+
         :param number_of_bytes: number of bytes expected to be returned
+
         :param read_type: I2C_READ  or I2C_READ_CONTINUOUSLY. I2C_RESTART_TX
                           may be OR'ed when required
+
         :param cb: Optional callback function to report i2c data as a
                    result of read command
+
         :param cb_type: Constants.CB_TYPE_DIRECT = direct call or
                         Constants.CB_TYPE_ASYNCIO = asyncio coroutine
+
         :returns: No return value.
         """
         if address not in self.i2c_map:
@@ -869,8 +906,10 @@ class PymataCore:
         Write data to an i2c device.
 
         :param address: i2c device address
+
         :param args: A variable number of bytes to be sent to the device
                      passed in as a list
+
         :returns: No return value.
         """
         data = [address, Constants.I2C_WRITE]
@@ -888,8 +927,11 @@ class PymataCore:
         keep_alive_sent = period - (period * margin)
 
 
-        :param period: Time period between keepalives. Range is 0-10 seconds. 0 disables the keepalive mechanism.
-        :param margin: Safety margin to assure keepalives are sent before period expires. Range is 0.1 to 0.9
+        :param period: Time period between keepalives. Range is 0-10 seconds.
+                       0 disables the keepalive mechanism.
+
+        :param margin: Safety margin to assure keepalives are sent before
+                    period expires. Range is 0.1 to 0.9
         :returns: No return value
         """
         if period < 0:
@@ -918,14 +960,20 @@ class PymataCore:
         This method will call the Tone library for the selected pin.
         It requires FirmataPlus to be loaded onto the arduino
 
-        If the tone command is set to TONE_TONE, then the specified tone will be played.
+        If the tone command is set to TONE_TONE, then the specified
+        tone will be played.
 
-        Else, if the tone command is TONE_NO_TONE, then any currently playing tone will be disabled.
+        Else, if the tone command is TONE_NO_TONE, then any currently
+        playing tone will be disabled.
 
         :param pin: Pin number
+
         :param tone_command: Either TONE_TONE, or TONE_NO_TONE
+
         :param frequency: Frequency of tone
+
         :param duration: Duration of tone in milliseconds
+
         :returns: No return value
         """
         # convert the integer values to bytes
@@ -961,8 +1009,11 @@ class PymataCore:
         operation.
 
         :param pin: Servo Pin.
+
         :param min_pulse: Min pulse width in ms.
+
         :param max_pulse: Max pulse width in ms.
+
         :returns: No return value
         """
         command = [pin, min_pulse & 0x7f, (min_pulse >> 7) & 0x7f, max_pulse & 0x7f,
@@ -983,12 +1034,17 @@ class PymataCore:
 
         :param pin: Analog pin number
                     (value following an 'A' designator, i.e. A5 = 5
+
         :param threshold_type: ANALOG_LATCH_GT | ANALOG_LATCH_LT  |
                                ANALOG_LATCH_GTE | ANALOG_LATCH_LTE
+
         :param threshold_value: numerical value - between 0 and 1023
+
         :param cb: callback method
+
         :param cb_type: Constants.CB_TYPE_DIRECT = direct call or
                         Constants.CB_TYPE_ASYNCIO = asyncio coroutine
+
         :returns: True if successful, False if parameter data is invalid
         """
         if Constants.LATCH_GT <= threshold_type <= Constants.LATCH_LTE:
@@ -1012,10 +1068,14 @@ class PymataCore:
         first element,
 
         :param pin: Digital pin number
+
         :param threshold_value: 0 or 1
+
         :param cb: callback function
+
         :param cb_type: Constants.CB_TYPE_DIRECT = direct call or
                         Constants.CB_TYPE_ASYNCIO = asyncio coroutine
+
         :returns: True if successful, False if parameter data is invalid
         """
         if 0 <= threshold_value <= 1:
@@ -1033,12 +1093,16 @@ class PymataCore:
         For Servo, use servo_config() instead.
 
         :param pin_number: Arduino Pin Number
+
         :param pin_state: INPUT/OUTPUT/ANALOG/PWM - for SERVO use
                           servo_config()
+
         :param callback: Optional: A reference to a call back function to be
                          called when pin data value changes
+
         :param callback_type: Constants.CB_TYPE_DIRECT = direct call or
                         Constants.CB_TYPE_ASYNCIO = asyncio coroutine
+
         :returns: No return value
         """
 
@@ -1081,6 +1145,7 @@ class PymataCore:
 
         :param interval: Integer value for desired sampling interval
                          in milliseconds
+
         :returns: No return value.
         """
         data = [interval & 0x7f, (interval >> 7) & 0x7f]
@@ -1116,6 +1181,7 @@ class PymataCore:
         This method is a proxy method for asyncio.sleep
 
         :param sleep_time: Sleep interval in seconds
+
         :returns: No return value.
         """
         try:
@@ -1140,11 +1206,16 @@ class PymataCore:
         NOTE: data is measured in centimeters
 
         :param trigger_pin: The pin number of for the trigger (transmitter).
+
         :param echo_pin: The pin number for the received echo.
+
         :param cb: optional callback function to report sonar data changes
+
         :param ping_interval: Minimum interval between pings. Lowest number
                               to use is 33 ms.Max is 127
+
         :param max_distance: Maximum distance in cm. Max is 200.
+
         :param cb_type: Constants.CB_TYPE_DIRECT = direct call or
                         Constants.CB_TYPE_ASYNCIO = asyncio coroutine
         :returns: No return value.
@@ -1183,6 +1254,7 @@ class PymataCore:
         for that pin. If there is no data, the value is set to None.
 
         :param trigger_pin: key into sonar data map
+
         :returns: active_sonar_map
         """
         # sonar_pin_entry = self.active_sonar_map[pin]
@@ -1196,7 +1268,9 @@ class PymataCore:
         This is a FirmataPlus feature.
 
         :param steps_per_revolution: number of steps per motor revolution
+
         :param stepper_pins: a list of control pin numbers - either 4 or 2
+
         :returns: No return value.
         """
         data = [PrivateConstants.STEPPER_CONFIGURE, steps_per_revolution & 0x7f,
@@ -1211,8 +1285,10 @@ class PymataCore:
         This is a FirmataPlus feature.
 
         :param motor_speed: 21 bits of data to set motor speed
+
         :param number_of_steps: 14 bits for number of steps & direction
                                 positive is forward, negative is reverse
+
         :returns: No return value.
         """
         if number_of_steps > 0:
@@ -1231,9 +1307,12 @@ class PymataCore:
         This is a FirmataPlusRB feature.
 
         :param cb: callback function to report Pixy blocks
+
         :param cb_type: Constants.CB_TYPE_DIRECT = direct call or
                         Constants.CB_TYPE_ASYNCIO = asyncio coroutine
+
         :param max_blocks: Maximum number of Pixy blocks to report when many signatures are found.
+
         :returns: No return value.
         """
         if cb:
@@ -1249,10 +1328,13 @@ class PymataCore:
         This method sets the pan/tilt servos that are plugged into Pixy's two servo ports.
 
         :param s0: value 0 to 1000
+
         :param s1: value 0 to 1000
+
         :returns: No return value.
         """
-        data = [PrivateConstants.PIXY_SET_SERVOS, s0 & 0x7f, (s0 >> 7) & 0x7f, s1 & 0x7f, (s1 >> 7) & 0x7f]
+        data = [PrivateConstants.PIXY_SET_SERVOS, s0 & 0x7f, (s0 >> 7) & 0x7f,
+                s1 & 0x7f, (s1 >> 7) & 0x7f]
         await self._send_sysex(PrivateConstants.PIXY_CONFIG, data)
 
     async def pixy_set_brightness(self, brightness):
@@ -1261,9 +1343,11 @@ class PymataCore:
         This method sets the brightness (exposure) of Pixy's camera.
 
         :param brightness: range between 0 and 255 with 255 being the brightest setting
+
         :returns: No return value.
         """
-        data = [PrivateConstants.PIXY_SET_BRIGHTNESS, brightness & 0x7f, (brightness >> 7) & 0x7f]
+        data = [PrivateConstants.PIXY_SET_BRIGHTNESS, brightness & 0x7f,
+                (brightness >> 7) & 0x7f]
         await self._send_sysex(PrivateConstants.PIXY_CONFIG, data)
 
     async def pixy_set_led(self, r, g, b):
@@ -1272,11 +1356,15 @@ class PymataCore:
         This method sets the RGB LED on front of Pixy.
 
         :param r: red range between 0 and 255
+
         :param g: green range between 0 and 255
+
         :param b: blue range between 0 and 255
+
         :returns: No return value.
         """
-        data = [PrivateConstants.PIXY_SET_LED, r & 0x7f, (r >> 7) & 0x7f, g & 0x7f, (g >> 7) & 0x7f, b & 0x7f,
+        data = [PrivateConstants.PIXY_SET_LED, r & 0x7f, (r >> 7) & 0x7f,
+                g & 0x7f, (g >> 7) & 0x7f, b & 0x7f,
                 (b >> 7) & 0x7f]
         await self._send_sysex(PrivateConstants.PIXY_CONFIG, data)
 
@@ -1361,6 +1449,7 @@ class PymataCore:
         It is a message handler for the analog mapping response message
 
         :param data: response data
+
         :returns: none - but saves the response
         """
         self.query_reply_data[PrivateConstants.ANALOG_MAPPING_RESPONSE] = \
@@ -1372,6 +1461,7 @@ class PymataCore:
         It is a message handler for analog messages.
 
         :param data: message data
+
         :returns: None - but saves the data in the pins structure
         """
         pin = data[0]
@@ -1400,6 +1490,7 @@ class PymataCore:
         It is a message handler for capability report responses.
 
         :param data: capability report
+
         :returns: None - but report is saved
         """
         self.query_reply_data[PrivateConstants.CAPABILITY_RESPONSE] = data[1:-1]
@@ -1447,6 +1538,7 @@ class PymataCore:
         It handles encoder data messages.
 
         :param data: encoder data
+
         :returns: None - but update is saved in the digital pins structure
         """
         # strip off sysex start and end
@@ -1488,6 +1580,7 @@ class PymataCore:
         It handles pixy data messages.
 
         :param data: pixy data
+
         :returns: None - but update is saved in the digital pins structure
         """
         if len(self.digital_pins) < PrivateConstants.PIN_PIXY_MOSI:
@@ -1528,6 +1621,7 @@ class PymataCore:
         through the callback
 
         :param data: raw data returned from i2c device
+
         """
         # remove the start and end sysex commands from the data
         data = data[1:-1]
@@ -1565,6 +1659,7 @@ class PymataCore:
         It handles pin state query response messages.
 
         :param data: Pin state message
+
         :returns: None - but response is saved
         """
         self.query_reply_data[PrivateConstants.PIN_STATE_RESPONSE] = data[1:-1]
@@ -1580,6 +1675,7 @@ class PymataCore:
         e.g. "2.3 StandardFirmata.ino"
 
         :param sysex_data: Sysex data sent from Firmata
+
         :returns: None
         """
         # first byte after command is major number
@@ -1634,6 +1730,7 @@ class PymataCore:
         the data in the response table.
 
         :param data: Message data from Firmata
+
         :returns: No return value.
         """
 
@@ -1675,6 +1772,7 @@ class PymataCore:
         It is the message handler for String data messages that will be
         printed to the console.
         :param data:  message
+
         :returns: None - message is sent to console
         """
         reply = ''
@@ -1699,7 +1797,9 @@ class PymataCore:
         latching needs to be processed
 
         :param key: encoded pin number
+
         :param data: data change
+
         :returns: None
         """
         process = False
@@ -1795,6 +1895,7 @@ class PymataCore:
         If log_output = True, no output is generated
 
         :param data: Capability report
+
         :returns: None
         """
 
@@ -1832,7 +1933,9 @@ class PymataCore:
         callback or stores them in the latch map
 
         :param key: Encoded pin
+
         :param latching_entry: a latch table entry
+
         :returns: Callback or store data in latch map
         """
         if latching_entry[Constants.LATCH_CALLBACK]:
@@ -1861,6 +1964,7 @@ class PymataCore:
         The method sends a non-sysex command to Firmata.
 
         :param command:  command data
+
         :returns: length of data sent
         """
         send_message = ""
@@ -1884,7 +1988,9 @@ class PymataCore:
         This method sends a sysex command to Firmata.
 
         :param sysex_command: sysex command
+
         :param sysex_data: data for command
+
         :returns : No return value.
         """
         if not sysex_data:
@@ -1908,7 +2014,9 @@ class PymataCore:
         then returns the full command
 
         :param current_command:  command id
+
         :param number_of_bytes:  how many bytes to wait for
+
         :returns: command
         """
         while number_of_bytes:
