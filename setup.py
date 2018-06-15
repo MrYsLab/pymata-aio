@@ -6,7 +6,7 @@ with open('pypi_desc.md') as f:
 
 setup(
     name='pymata-aio',
-    version='2.20',
+    version='2.21',
     packages=['pymata_aio'],
     install_requires=['pyserial==2.7', 'websockets'],
     url='https://github.com/MrYsLab/pymata-aio/wiki',

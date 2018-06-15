@@ -1,5 +1,10 @@
 # Change Log
 
+## Release 2.21
+15 June 2018
+
+* Extended timeout for analog map to report back - now 4 seconds.
+
 ## Release 2.20
 8 April 2018
 

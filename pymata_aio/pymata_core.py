@@ -1,5 +1,5 @@
 """
- Copyright (c) 2015-2017 Alan Yorinks All rights reserved.
+ Copyright (c) 2015-2018 Alan Yorinks All rights reserved.
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -733,7 +733,7 @@ class PymataCore:
             while self.query_reply_data.get(
                     PrivateConstants.ANALOG_MAPPING_RESPONSE) is None:
                 elapsed_time = time.time()
-                if elapsed_time - current_time > 2:
+                if elapsed_time - current_time > 4:
                     return None
                 await asyncio.sleep(self.sleep_tune)
         return self.query_reply_data.get(
