@@ -2,7 +2,7 @@
   FirmataPlus.h - Firmata library based on v2.5.3 - 2016-06-18 of Firmata
   Copyright (C) 2006-2008 Hans-Christoph Steiner.  All rights reserved.
   Copyright (C) 2009-2015 Jeff Hoefs.  All rights reserved.
-  Copyright (C) 2013-2016    Alan Yorinks. All rights reserved.
+  Copyright (C) 2013-2018    Alan Yorinks. All rights reserved.
  
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -111,12 +111,13 @@
 #define PIN_MODE_ONEWIRE        0x07 // pin configured for 1-wire
 #define PIN_MODE_STEPPER        0x08 // pin configured for stepper motor
 #define PIN_MODE_ENCODER        0x09 // pin configured for rotary encoders
-#define PIN_MODE_TONE           0x0A
-#define PIN_MODE_SONAR          0x0B
-#define PIN_MODE_SERIAL         0x0C // pin configured for serial communication
-#define PIN_MODE_PULLUP         0x0D // enable internal pull-up resistor for pin
+#define PIN_MODE_SERIAL         0x0A
+#define PIN_MODE_PULLUP         0x0B // enable internal pull-up resistor for pin
+#define PIN_MODE_SONAR          0x0C // pin configured for HC-SR04
+#define PIN_MODE_TONE           0x0D 
+#define PIN_MODE_PIXY           0x0E
 #define PIN_MODE_IGNORE         0x7F // pin configured to be ignored by digitalWrite and capabilityResponse
-#define TOTAL_PIN_MODES         15
+#define TOTAL_PIN_MODES         17
 
 
 

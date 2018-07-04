@@ -578,7 +578,7 @@ class PyMata3:
 
         :param pin_number: Arduino Pin Number
 
-        :param pin_state: INPUT/OUTPUT/ANALOG/PWM - for SERVO use
+        :param pin_state: INPUT/OUTPUT/ANALOG/PWM/PULLUP - for SERVO use
                           servo_config()
 
         :param callback: Optional: A reference to a call back function to be

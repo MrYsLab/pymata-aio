@@ -1,5 +1,10 @@
 # Change Log
 
+## Release 2.22
+4 July 2018
+
+* Aligned pin types with StandardFirmata to support pullup input
+
 ## Release 2.21
 15 June 2018
 

@@ -30,10 +30,13 @@ class Constants:
     I2C = 0x06  # pin included in I2C setup
     ONEWIRE = 0x07  # possible future feature
     STEPPER = 0x08  # any pin in stepper mode
-    TONE = 0x09  # Any pin in TONE mode
-    ENCODER = 0x0a
-    SONAR = 0x0b  # Any pin in SONAR mode
-    PIXY = 0x0c  # Any pin used by Pixy camera
+    ENCODER = 0x09  # Any pin in encoder mode
+    SERIAL = 0x0a
+    PULLUP = 0x0b  # Any pin in pullup mode
+    SONAR = 0x0c # Any pin in SONAR mode
+    TONE = 0x0d # Any pin in tone mode
+    PIXY = 0x0e  # Any pin used by Pixy camera
+
     IGNORE = 0x7f
 
     # Tone commands
