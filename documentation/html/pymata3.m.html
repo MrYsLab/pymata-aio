@@ -1637,7 +1637,7 @@ class PyMata3:
 
         :param pin_number: Arduino Pin Number
 
-        :param pin_state: INPUT/OUTPUT/ANALOG/PWM - for SERVO use
+        :param pin_state: INPUT/OUTPUT/ANALOG/PWM/PULLUP - for SERVO use
                           servo_config()
 
         :param callback: Optional: A reference to a call back function to be
@@ -2413,7 +2413,7 @@ the API that you should use.</p></div>
 
         :param pin_number: Arduino Pin Number
 
-        :param pin_state: INPUT/OUTPUT/ANALOG/PWM - for SERVO use
+        :param pin_state: INPUT/OUTPUT/ANALOG/PWM/PULLUP - for SERVO use
                           servo_config()
 
         :param callback: Optional: A reference to a call back function to be
@@ -3960,7 +3960,7 @@ with latching data notification.</p>
   
     <div class="desc"><p>This method sets the  pin mode for the specified pin.</p>
 <p>:param pin_number: Arduino Pin Number</p>
-<p>:param pin_state: INPUT/OUTPUT/ANALOG/PWM - for SERVO use
+<p>:param pin_state: INPUT/OUTPUT/ANALOG/PWM/PULLUP - for SERVO use
                   servo_config()</p>
 <p>:param callback: Optional: A reference to a call back function to be
                  called when pin data value changes</p>
@@ -3974,7 +3974,7 @@ with latching data notification.</p>
     """
     This method sets the  pin mode for the specified pin.
     :param pin_number: Arduino Pin Number
-    :param pin_state: INPUT/OUTPUT/ANALOG/PWM - for SERVO use
+    :param pin_state: INPUT/OUTPUT/ANALOG/PWM/PULLUP - for SERVO use
                       servo_config()
     :param callback: Optional: A reference to a call back function to be
                      called when pin data value changes
