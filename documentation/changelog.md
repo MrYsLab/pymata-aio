@@ -1,5 +1,11 @@
 # Change Log
 
+## Release 2.23
+
+5 July 2018
+
+* Removed restriction of pyserial version 2.7 - newest version can now be used
+
 ## Release 2.22
 4 July 2018
 
