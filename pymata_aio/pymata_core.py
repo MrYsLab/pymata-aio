@@ -15,13 +15,14 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-
+# noinspection PyCompatibility
 import asyncio
 import glob
 import logging
 import sys
 import time
 
+# noinspection PyPackageRequirements
 import serial
 
 from pymata_aio.constants import Constants
@@ -31,7 +32,7 @@ from pymata_aio.pymata_serial import PymataSerial
 from pymata_aio.pymata_socket import PymataSocket
 
 
-# noinspection PyCallingNonCallable,PyCallingNonCallable,PyPep8,PyBroadException,PyBroadException
+# noinspection PyCallingNonCallable,PyCallingNonCallable,PyPep8,PyBroadException,PyBroadException,PyCompatibility
 class PymataCore:
     """
     This class exposes and implements the pymata_core asyncio API,
@@ -203,13 +204,13 @@ class PymataCore:
         if self.log_output:
             log_string = 'pymata_aio Version ' + \
                          PrivateConstants.PYMATA_VERSION + \
-                         ' Copyright (c) 2015-2017 Alan Yorinks All rights reserved.'
+                         ' Copyright (c) 2015-2018 Alan Yorinks All rights reserved.'
             logging.info(log_string)
         else:
 
             print('{}{}{}'.format('\n', 'pymata_aio Version ' +
                                   PrivateConstants.PYMATA_VERSION,
-                                  '\tCopyright (c) 2015-2017 Alan Yorinks All '
+                                  '\tCopyright (c) 2015-2018 Alan Yorinks All '
                                   'rights reserved.\n'))
             sys.stdout.flush()
 
@@ -727,7 +728,7 @@ class PymataCore:
         # message to request one
         if self.query_reply_data.get(
                 PrivateConstants.ANALOG_MAPPING_RESPONSE) is None:
-            await self._send_sysex(PrivateConstants.ANALOG_MAPPING_QUERY, None)
+            await self._send_sysex(PrivateConstants.ANALOG_MAPPING_QUERY)
             # wait for the report results to return for 2 seconds
             # if the timer expires, shutdown
             while self.query_reply_data.get(
@@ -747,7 +748,7 @@ class PymataCore:
         """
         if self.query_reply_data.get(
                 PrivateConstants.CAPABILITY_RESPONSE) is None:
-            await self._send_sysex(PrivateConstants.CAPABILITY_QUERY, None)
+            await self._send_sysex(PrivateConstants.CAPABILITY_QUERY)
             while self.query_reply_data.get(
                     PrivateConstants.CAPABILITY_RESPONSE) is None:
                 await asyncio.sleep(self.sleep_tune)
@@ -779,7 +780,7 @@ class PymataCore:
         """
         current_time = time.time()
         if self.query_reply_data.get(PrivateConstants.REPORT_FIRMWARE) == '':
-            await self._send_sysex(PrivateConstants.REPORT_FIRMWARE, None)
+            await self._send_sysex(PrivateConstants.REPORT_FIRMWARE)
             while self.query_reply_data.get(
                     PrivateConstants.REPORT_FIRMWARE) == '':
                 elapsed_time = time.time()
@@ -1191,7 +1192,7 @@ class PymataCore:
                 logging.info('sleep exception')
             else:
                 print('sleep exception')
-            self.shutdown()
+            await self.shutdown()
 
     async def sonar_config(self, trigger_pin, echo_pin, cb=None,
                            ping_interval=50, max_distance=200, cb_type=None):
