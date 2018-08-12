@@ -726,7 +726,7 @@ class PymataCore:
         # if we do not have existing report results, send a Firmata
         # message to request one
         if self.query_reply_data.get(
-                PrivateConstants.ANALOG_MAPPING_QUERY) is None:
+                PrivateConstants.ANALOG_MAPPING_RESPONSE) is None:
             await self._send_sysex(PrivateConstants.ANALOG_MAPPING_QUERY, None)
             # wait for the report results to return for 2 seconds
             # if the timer expires, shutdown
@@ -746,7 +746,7 @@ class PymataCore:
         :returns: A capability report in the form of a list
         """
         if self.query_reply_data.get(
-                PrivateConstants.CAPABILITY_QUERY) is None:
+                PrivateConstants.CAPABILITY_RESPONSE) is None:
             await self._send_sysex(PrivateConstants.CAPABILITY_QUERY, None)
             while self.query_reply_data.get(
                     PrivateConstants.CAPABILITY_RESPONSE) is None:
