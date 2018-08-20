@@ -358,6 +358,10 @@
         </div>
         <div id="tabs-2">
             <h1>PyMata IoT</h1>
+            <b>Pin 02:</b>
+            <input type="radio" name="p2" value="0" id="p2low" onclick="clicked(this.id);" checked>Low
+            <input type="radio" name="p2" value="1" id="p2high" onclick="clicked(this.id);">High
+            <br>            
             <b>Pin 03:</b>
             <input type="radio" name="p3" value="0" id="p3low" onclick="clicked(this.id);" checked>Low
             <input type="radio" name="p3" value="1" id="p3high" onclick="clicked(this.id);">High
@@ -388,7 +392,7 @@
             <input type="radio" name="p7" value="1" id="p7high" onclick="clicked(this.id);">High
             <br>
             <b>Pin 08:</b>
-            <input type="radio" name="pa" value="0" id="p8low" onclick="clicked(this.id);" checked>Low
+            <input type="radio" name="p8" value="0" id="p8low" onclick="clicked(this.id);" checked>Low
             <input type="radio" name="p8" value="1" id="p8high" onclick="clicked(this.id);">High
             <br>
             <b>Pin 09:</b>
@@ -1308,6 +1312,14 @@
                     break;
 
                 // hide the pwm field
+                case "p2low":
+                    setPinMode('2', outputMode);
+                    digitalWrite('2', '0');
+                    break;
+                case 'p2high':
+                    setPinMode('2', outputMode);
+                    digitalWrite('2', '1');
+                    break;
                 case "p3low":
                     $("#v3").hide();
                     setPinMode('3', outputMode);
@@ -1367,7 +1379,7 @@
                     digitalWrite('86', '0');
                     break;
 
-                case 'p8igh':
+                case 'p8high':
                     setPinMode('8', outputMode);
                     digitalWrite('8', '1');
                     break;
@@ -1495,7 +1507,6 @@
                     break;
 
                 case 'in2a':
-                    //console.log("disable analog pin 2");
                     disableAnalogReporting("2");
                     break;
 
@@ -1622,13 +1633,36 @@
                     break;
 
                 case 'out12d':
-                    //console.log('setting pin mode for pin 12');
                     setPinMode('12', inputMode);
                     break;
 
                 case 'out13d':
                     setPinMode('13', inputMode);
                     break;
+
+                case 'out14d':
+                    setPinMode('14', inputMode);
+                    break;
+
+                case 'out15d':
+                    setPinMode('15', inputMode);
+                    break;
+
+                case 'out16d':
+                    setPinMode('16', inputMode);
+                    break;
+
+                case 'out17d':
+                    setPinMode('17', inputMode);
+                    break;
+
+                case 'out18d':
+                    setPinMode('18', inputMode);
+                    break;
+
+                case 'out19d':
+                    setPinMode('19', inputMode);
+                    break;   
 
                 case 'out0a':
                     setPinMode('0', analogMode);
