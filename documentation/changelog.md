@@ -1,5 +1,15 @@
 # Change Log
 
+## Release 2.25
+23 August 2018
+
+* Incorporates pull request # 74
+
+## Release 2.24
+12 August 2018
+
+* Minor code cleanup
+
 ## Release 2.23
 
 5 July 2018
