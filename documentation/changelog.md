@@ -1,5 +1,13 @@
 # Change Log
 
+## Release 2.26
+20 October 2018
+
+* Incorporates changes for issues #82, 83, and 84
+* Default arduino_wait time increased from 2 to 4 seconds
+* Timeout in get_firmware_version increased to 4 seconds
+
+
 ## Release 2.25
 23 August 2018
 
@@ -29,8 +37,8 @@
 ## Release 2.20
 16 April 2018
 
-Modified comments to generate pdoc API documentation.
-No functional changes.
+* Modified comments to generate pdoc API documentation.
+* No functional changes.
 
 
 8 April 2018
@@ -67,7 +75,7 @@ No functional changes.
 
   * This release is now fully compatible with StandardFirmata 2.5.3
   * On-Line API Documents Updated to reflect new command
-  
+
 * Update pymata_iot.py to use websockets instead of autobahn.
 
   * setup.py added dependency of websockets and removed autobahn/txaio dependencies
@@ -132,7 +140,7 @@ No functional changes.
 * [Pixy Cam](http://charmedlabs.com/default/pixy-cmucam5/) support courtesy of Dave Fisher and Leigh Andrew Mathews of the [Rose Hulman Institute of Technology](http://www.rose-hulman.edu/)
    * pymata_core and pymata3 updated for Pixy Cam support
    * A new firmata sketch, FirmataPlusRBPixy has been added to the Arduino libraries
-   
+
 ### Updates
 * All FirmataPlus sketches have been updated for the latest dependencies libraries
 * The sleep_tune paramater default was modified to 0.0001 for pymata_core and added to pymata3
@@ -234,7 +242,7 @@ FirmataPlusRB updated to report encoder readings every 100 ms.
 
 * Callbacks for both pymata_core and pymata3 can selected to be either asyncio coroutines or direct calls.
     * Default is direct call.
-    
+
 * Option provided in encoder_config() for support of hall effect wheel encoders.
 
 * Minor bug fixes.
@@ -261,7 +269,7 @@ FirmataPlusRB updated to report encoder readings every 100 ms.
 
 19 July 2015
 
-Data format returned from i2c_read_request was normalized from Firmata 2byte format to expected data 
+Data format returned from i2c_read_request was normalized from Firmata 2byte format to expected data
 representation.
 
 
@@ -279,5 +287,5 @@ representation.
 * FirmataPlus updated to be in sync with StandardFirmata 2.4.3
 
 * Updated private_constants.py and constants.py to be consistent with StandardFirmata 2.4.3
-    
-    
+
+

@@ -44,7 +44,7 @@ class PymataCore:
     perform Arduino pin auto-detection.
     """
 
-    def __init__(self, arduino_wait=2, sleep_tune=0.0001, log_output=False,
+    def __init__(self, arduino_wait=4, sleep_tune=0.0001, log_output=False,
                  com_port=None, ip_address=None, ip_port=2000,
                  ip_handshake='*HELLO*'):
         """
@@ -294,12 +294,16 @@ class PymataCore:
         self.the_task = self.loop.create_task(self._command_dispatcher())
 
         # get arduino firmware version and print it
-        firmware_version = self.loop.run_until_complete(self.get_firmware_version())
-        if self.log_output:
-            log_string = "\nArduino Firmware ID: " + firmware_version
-            logging.exception(log_string)
-        else:
-            print("\nArduino Firmware ID: " + firmware_version)
+        try:
+            firmware_version = self.loop.run_until_complete(self.get_firmware_version())
+            if self.log_output:
+                log_string = "\nArduino Firmware ID: " + firmware_version
+                logging.exception(log_string)
+            else:
+                print("\nArduino Firmware ID: " + firmware_version)
+        except TypeError:
+            print('Do you have the correct Firmata sketch loaded?')
+            sys.exit(0)
 
         # try to get an analog pin map. if it comes back as none - shutdown
         report = self.loop.run_until_complete(self.get_analog_map())
@@ -776,7 +780,7 @@ class PymataCore:
             while self.query_reply_data.get(
                     PrivateConstants.REPORT_FIRMWARE) == '':
                 elapsed_time = time.time()
-                if elapsed_time - current_time > 2:
+                if elapsed_time - current_time > 4:
                     return None
                 await asyncio.sleep(self.sleep_tune)
         return self.query_reply_data.get(PrivateConstants.REPORT_FIRMWARE)
@@ -987,7 +991,7 @@ class PymataCore:
         try:
             await self._send_command([PrivateConstants.SYSTEM_RESET])
         except RuntimeError:
-            exit(0)
+            sys.exit(0)
 
     async def servo_config(self, pin, min_pulse=544, max_pulse=2400):
         """
@@ -1685,7 +1689,7 @@ class PymataCore:
 
         name = sysex_data[3:-1]
         firmware_name_iterator = iter(name)
-        
+
         # convert each element from two 7-bit bytes into characters, then add each
         # character to the version string
         for e in firmware_name_iterator:
@@ -1834,7 +1838,7 @@ class PymataCore:
             locations.append('end')
         # for everyone else, here is a list of possible ports
         else:
-            locations = ['dev/ttyACM0', '/dev/ttyACM0', '/dev/ttyACM1',
+            locations = ['/dev/ttyACM0', '/dev/ttyACM1',
                          '/dev/ttyACM2', '/dev/ttyACM3', '/dev/ttyACM4',
                          '/dev/ttyACM5', '/dev/ttyUSB0', '/dev/ttyUSB1',
                          '/dev/ttyUSB2', '/dev/ttyUSB3', '/dev/ttyUSB4',
@@ -1866,7 +1870,7 @@ class PymataCore:
                         print('Unable to find Serial Port, Please plug in '
                               'cable or check cable connections.')
                     detected = None
-                    exit()
+                    sys.exit()
         if self.log_output:
             log_string = 'Using COM Port: ' + detected
             logging.info(log_string)
