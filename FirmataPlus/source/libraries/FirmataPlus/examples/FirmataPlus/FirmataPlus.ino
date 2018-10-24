@@ -45,8 +45,8 @@
 #include <FirmataPlus.h>
 #include <NewPing.h>
 #include <Stepper.h>
-#include <ooPinChangeInt.h> https://code.google.com/p/arduino-pinchangeint/downloads/detail?name=pinchangeint-v2.19beta.zip
-#include <AdaEncoder.h> https://code.google.com/p/adaencoder/downloads/detail?name=adaencoder-v0.7beta.zip
+#include <ooPinChangeInt.h> 
+#include <AdaEncoder.h> 
 #include <avr/wdt.h>
 
 #define I2C_WRITE                   B00000000
@@ -846,7 +846,7 @@ void sysexCallback(byte command, byte argc, byte *argv)
         else
         {
           Firmata.sendString("STEPPER CONFIG Error: Wrong Number of arguments");
-          printData("argc = ", argc) ;
+          printData((char*)"argc = ", argc) ;
         }
       }
       else if ( argv[0] == STEPPER_STEP )
@@ -1137,6 +1137,3 @@ void printData(char * id,  long data)
   Firmata.sendString(id) ;
   Firmata.sendString(myArray);
 }
-
-
-

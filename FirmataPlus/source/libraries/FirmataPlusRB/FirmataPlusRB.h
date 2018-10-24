@@ -110,7 +110,7 @@
 #define PIN_MODE_I2C            0x06 // pin included in I2C setup
 #define PIN_MODE_ONEWIRE        0x07 // pin configured for 1-wire
 #define PIN_MODE_STEPPER        0x08 // pin configured for stepper motor
-#define
+#define PIN_MODE_ENCODER        0x09 // pin configured for rotary encoders
 #define PIN_MODE_SERIAL         0x0A
 #define PIN_MODE_PULLUP         0x0B // enable internal pull-up resistor for pin
 #define PIN_MODE_SONAR          0x0C // pin configured for HC-SR04

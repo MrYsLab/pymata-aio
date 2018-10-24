@@ -19,20 +19,15 @@
 // Many definitions in /usr/avr/include/avr/io.h
 
 #ifndef EnableInterrupt_h
-#pragma message("NOTICE: *** EnableInterrupt library version 0.9.5. This is not a problem. Keep calm, and carry on. ***")
 #define EnableInterrupt_h
 #include <Arduino.h>
 
-// Function Prototypes (comment) /*{{{*/
-/* *************************************************************************************
-// *************************************************************************************
-// Function Prototypes *****************************************************************
-// *************************************************************************************
-// *************************************************************************************
-// *** These are the only functions the end user (programmer) needs to consider.     ***
-// *** This means you!                                                               ***
-// *************************************************************************************
-*//*}}}*/
+
+// Function Prototypes 
+// 
+// 
+// These are the only functions the end user (programmer) needs to consider. 
+
 
 // Arduino Due (not Duemilanove) and Zero macros. Easy-peasy.
 // Zero uses the __SAMD21G18A__ processor macro (2015-10-13) but we will use this handy macro, to
@@ -1831,7 +1826,7 @@ ISR(PORTK_VECT) {/*{{{*/
 #endif // EI_ARDUINO_INTERRUPTED_PIN
   exitPORTKISR: return;
 #endif // NEEDFORSPEED
-}/*}}}*/
+}
 #endif // EI_NOTPORTK
 
 // *************************************************************************************

@@ -38,8 +38,11 @@
 extern ByteBuffer printBuffer;
 #endif
 
+/*
 # define cli()  __asm__ __volatile__ ("cli" ::)
+
 # define sei()  __asm__ __volatile__ ("sei" ::)
+*/
 
 #undef SWINTR_DEBUG // To debug using software interrupts on your two pins, define this.
 		    // Then in your sketch, set your pins as outputs.  Initialize them as you
