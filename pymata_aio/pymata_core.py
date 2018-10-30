@@ -224,6 +224,13 @@ class PymataCore:
             else:
                 print('Using Ip Address/Port: ' +
                       self.ip_address + ':' + str(self.ip_port))
+        elif self.com_port is not None:
+            if self.log_output:
+                log_string = 'Using COM Port: ', self.com_port
+                logging.info(log_string)
+            else:
+                print('{}{}\n'.format('Using COM Port:', self.com_port))
+
 
         self.sleep_tune = sleep_tune
 
@@ -284,6 +291,7 @@ class PymataCore:
                 else:
                     print(
                         'Cannot instantiate serial interface: ' + self.com_port)
+                    print('To see a list of serial ports, type: "list_serial_ports" in your console.')
                 sys.exit(0)
 
         # wait for arduino to go through a reset cycle if need be
@@ -302,7 +310,9 @@ class PymataCore:
             else:
                 print("\nArduino Firmware ID: " + firmware_version)
         except TypeError:
-            print('Do you have the correct Firmata sketch loaded?')
+            print('\nIs your serial cable plugged in and do you have the correct Firmata sketch loaded?')
+            print('Is the COM port correct?')
+            print('To see a list of serial ports, type: "list_serial_ports" in your console.')
             sys.exit(0)
 
         # try to get an analog pin map. if it comes back as none - shutdown
@@ -418,8 +428,10 @@ class PymataCore:
 
             else:
                 print('*** Firmware Version retrieval timed out. ***')
-                print('\nDo you have Arduino connectivity and do you have a '
-                      'Firmata sketch uploaded to the board?')
+                print('\nDo you have Arduino connectivity and do you have a ')
+                print('Firmata sketch uploaded to the board and are connected')
+                print('to the correct serial port.\n')
+                print('To see a list of serial ports, type: "list_serial_ports" in your console.')
             try:
                 loop = self.loop
                 for t in asyncio.Task.all_tasks(loop):
@@ -456,8 +468,10 @@ class PymataCore:
 
             else:
                 print('*** Analog map retrieval timed out. ***')
-                print('\nDo you have Arduino connectivity and do you have a '
-                      'Firmata sketch uploaded to the board?')
+                print('\nDo you have Arduino connectivity and do you have a ')
+                print( 'Firmata sketch uploaded to the board and are connected')
+                print( 'to the correct serial port.\n')
+                print('To see a list of serial ports, type: "list_serial_ports" in your console.')
             try:
                 loop = self.loop
                 for t in asyncio.Task.all_tasks(loop):
@@ -1127,6 +1141,8 @@ class PymataCore:
             await self.enable_digital_reporting(pin_number)
         else:
             pass
+
+        await self.sleep(.05)
 
     async def set_sampling_interval(self, interval):
         """
@@ -1869,7 +1885,6 @@ class PymataCore:
                     else:
                         print('Unable to find Serial Port, Please plug in '
                               'cable or check cable connections.')
-                    detected = None
                     sys.exit()
         if self.log_output:
             log_string = 'Using COM Port: ' + detected

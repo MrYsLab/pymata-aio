@@ -1,5 +1,15 @@
 # Change Log
 
+## Release 2.27
+22 October 2018
+
+* Fixed warnings in FirmataPlus scripts for Default warning level in Arduino IDE.
+* Fixed issue #85 Using current Arduino IDE, FirmataPlus.ino gives warnings when compiled.
+* Fixed issue #86 Rotary Encoder support not functioning.
+* Added some example code for the rotary encoder, simple digital and anlog  input.
+* Added a command utility to list the serial ports to help debug. This is automatically
+  installed with pymata-aio. Just type list_serial_ports in a console to see the serial ports.
+
 ## Release 2.26
 20 October 2018
 

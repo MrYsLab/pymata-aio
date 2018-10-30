@@ -149,14 +149,6 @@ class TestAnalogInput:
         assert self.result[Constants.LATCH_CALL_BACK_DATA] >= 512
         assert self.result[Constants.LATCH_CALL_BACK_PIN] == 'A2'
 
-    def test_digital_latch_high_cb(self):
-        self.board.set_pin_mode(13, Constants.INPUT)
-        self.board.set_digital_latch(13, 1, self.my_callback)
-        self.board.sleep(.5)
-
-        assert self.result[Constants.LATCH_CALL_BACK_DATA] == 1
-        assert self.result[Constants.LATCH_CALL_BACK_PIN] == 'D13'
-
     def test_analog_latch_gt(self):
         self.board.set_pin_mode(2, Constants.ANALOG)
         self.board.set_analog_latch(2, Constants.LATCH_GTE, 512)
@@ -164,9 +156,4 @@ class TestAnalogInput:
         l = self.board.get_analog_latch_data(2)
         assert l[Constants.LATCHED_DATA] >= 512
 
-    def test_digital_latch_high(self):
-        self.board.set_pin_mode(13, Constants.INPUT)
-        self.board.set_digital_latch(13, 1)
-        self.board.sleep(1)
-        l = self.board.get_digital_latch_data(13)
-        assert l[Constants.LATCHED_DATA] == 1
+
