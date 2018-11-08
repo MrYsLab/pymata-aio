@@ -252,11 +252,8 @@ class PymataCore:
         self.period = 0
         self.margin = 0
 
-<<<<<<< Updated upstream
-=======
         self.first_analog_pin = None
 
->>>>>>> Stashed changes
         # set up signal handler for controlC
         self.loop = asyncio.get_event_loop()
 
@@ -369,10 +366,8 @@ class PymataCore:
                                           'Digital Pins and',
                                           len(self.analog_pins),
                                           'Analog Pins\n\n'))
-<<<<<<< Updated upstream
-=======
+
         self.first_analog_pin = len(self.digital_pins) - len(self.analog_pins)
->>>>>>> Stashed changes
 
     async def start_aio(self):
         """
@@ -518,11 +513,8 @@ class PymataCore:
                                           len(self.analog_pins),
                                           'Analog Pins\n\n'))
 
-<<<<<<< Updated upstream
-=======
         self.first_analog_pin = len(self.digital_pins) - len(self.analog_pins)
 
->>>>>>> Stashed changes
     async def analog_read(self, pin):
         """
         Retrieve the last data update for the specified analog pin.
