@@ -366,6 +366,7 @@ class PymataCore:
                                           'Digital Pins and',
                                           len(self.analog_pins),
                                           'Analog Pins\n\n'))
+
         self.first_analog_pin = len(self.digital_pins) - len(self.analog_pins)
 
     async def start_aio(self):
@@ -513,7 +514,6 @@ class PymataCore:
                                           'Analog Pins\n\n'))
 
         self.first_analog_pin = len(self.digital_pins) - len(self.analog_pins)
-
 
     async def analog_read(self, pin):
         """
