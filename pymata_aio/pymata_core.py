@@ -366,7 +366,6 @@ class PymataCore:
                                           'Digital Pins and',
                                           len(self.analog_pins),
                                           'Analog Pins\n\n'))
-
         self.first_analog_pin = len(self.digital_pins) - len(self.analog_pins)
 
     async def start_aio(self):
@@ -1139,6 +1138,10 @@ class PymataCore:
                                          'pin state:', pin_state))
 
         pin_mode = pin_state
+
+        if pin_mode == Constants.ANALOG:
+            pin_number = pin_number + self.first_analog_pin
+
         command = [PrivateConstants.SET_PIN_MODE, pin_number, pin_mode]
         await self._send_command(command)
         if pin_state == Constants.ANALOG:
