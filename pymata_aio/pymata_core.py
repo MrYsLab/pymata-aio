@@ -127,7 +127,10 @@ class PymataCore:
                                    PrivateConstants.ENCODER_DATA:
                                        self._encoder_data,
                                    PrivateConstants.PIXY_DATA:
-                                       self._pixy_data}
+                                       self._pixy_data,
+                                   PrivateConstants.ONEWIRE_DATA:
+                                       self._one_wire_data
+                                   }
 
         # report query results are stored in this dictionary
         self.query_reply_data = {PrivateConstants.REPORT_VERSION: '',
@@ -231,7 +234,6 @@ class PymataCore:
             else:
                 print('{}{}\n'.format('Using COM Port:', self.com_port))
 
-
         self.sleep_tune = sleep_tune
 
         # a list of PinData objects - one for each pin segregate by pin type
@@ -251,6 +253,16 @@ class PymataCore:
         self.keep_alive_interval = 0
         self.period = 0
         self.margin = 0
+
+        self.first_analog_pin = None
+
+        # list of ds device pins and their addresses
+        self.ds_addresses = None
+
+        self.ds_temperature_callback = None
+        self.ds_temp_callback_type = None
+        self.ds_alarm_callback = None
+        self.ds_alarm_callback_type = None
 
         # set up signal handler for controlC
         self.loop = asyncio.get_event_loop()
@@ -364,6 +376,14 @@ class PymataCore:
                                           'Digital Pins and',
                                           len(self.analog_pins),
                                           'Analog Pins\n\n'))
+        self.first_analog_pin = len(self.digital_pins) - len(self.analog_pins)
+
+        # test to see if the firmware is FirmataPlusDS and if so
+        # find all the DS type devices.
+        if 'FirmataPlusDS' in firmware_version:
+            self.ds_addresses = [[None for i in range(1)] for j in range(len(self.digital_pins))]
+            task = asyncio.ensure_future(self._ds_discovery())
+            self.loop.run_until_complete(task)
 
     async def start_aio(self):
         """
@@ -469,8 +489,8 @@ class PymataCore:
             else:
                 print('*** Analog map retrieval timed out. ***')
                 print('\nDo you have Arduino connectivity and do you have a ')
-                print( 'Firmata sketch uploaded to the board and are connected')
-                print( 'to the correct serial port.\n')
+                print('Firmata sketch uploaded to the board and are connected')
+                print('to the correct serial port.\n')
                 print('To see a list of serial ports, type: "list_serial_ports" in your console.')
             try:
                 loop = self.loop
@@ -508,6 +528,14 @@ class PymataCore:
                                           'Digital Pins and',
                                           len(self.analog_pins),
                                           'Analog Pins\n\n'))
+
+        self.first_analog_pin = len(self.digital_pins) - len(self.analog_pins)
+
+        # test to see if the firmware is FirmataPlusDS and if so
+        # find all the DS type devices.
+        if 'FirmataPlusDS' in firmware_version:
+            self.ds_addresses = [[None for i in range(1)] for j in range(len(self.digital_pins))]
+            await self._ds_discovery()
 
     async def analog_read(self, pin):
         """
@@ -781,6 +809,52 @@ class PymataCore:
             return entry
         else:
             return None
+
+    async def get_ds_address_list(self):
+        """
+        Get the list of ds devices for all pins
+
+        :return: ds_addresses
+        """
+        return self.ds_addresses
+
+    async def get_ds_temperature(self, pin, callback,
+                                 callback_type=None,
+                                 device_index=0):
+        """
+        Request the current temperature for a specific device
+
+        :param pin: pin number
+
+        :param callback: callback function to be called when data
+               is received from arduino.
+
+        :param callback_type: CB_TYPE_DIRECT (None) for non asyncio
+                              CB_TYPE_ASYNCIO for asyncio function
+
+        :param device_index: device index for the pin.
+
+        :param celsius: True = return celsius, False = return farhrenheit
+
+        :return: None - result is returned via callback
+        """
+        if not self.ds_addresses:
+            raise RuntimeError('DS address table not found. Did you forget to load FirmataPlusDS?')
+        if not callback:
+            raise RuntimeError('callback function must be specified')
+        else:
+            self.ds_temperature_callback = callback
+            self.ds_temp_callback_type = callback_type
+
+        data = [PrivateConstants.DS_REQUEST_TEMPERATURE,
+                pin & 0x7f,
+                device_index & 0x7f, (device_index >> 7) & 0x7f]
+
+
+        await self._send_sysex(PrivateConstants.ONEWIRE_DATA, data)
+
+        # add delay to not swamp the ds device with requests
+        await self.sleep(.07)
 
     async def get_firmware_version(self):
         """
@@ -1123,6 +1197,7 @@ class PymataCore:
             elif pin_state == Constants.ANALOG:
                 self.analog_pins[pin_number].cb = callback
                 self.analog_pins[pin_number].cb_type = callback_type
+                # adjust analog pin number to digital pin number equivalent
             else:
                 if self.log_output:
                     log_string = 'set_pin_mode: callback ignored for ' \
@@ -1133,6 +1208,8 @@ class PymataCore:
                                          'pin state:', pin_state))
 
         pin_mode = pin_state
+        if pin_mode == Constants.ANALOG:
+            pin_number = pin_number + self.first_analog_pin
         command = [PrivateConstants.SET_PIN_MODE, pin_number, pin_mode]
         await self._send_command(command)
         if pin_state == Constants.ANALOG:
@@ -1374,6 +1451,31 @@ class PymataCore:
                 g & 0x7f, (g >> 7) & 0x7f, b & 0x7f,
                 (b >> 7) & 0x7f]
         await self._send_sysex(PrivateConstants.PIXY_CONFIG, data)
+
+    async def _ds_display(self):
+        """
+        Print ds device info to the screen
+        :return:
+        """
+        if not self.log_output:
+            print('One Wire Temperature Device Addresses')
+            for index in range(len(self.ds_addresses)):
+                if not self.ds_addresses[index] == [None]:
+                    for adr in range(len(self.ds_addresses[index])):
+                        if not self.ds_addresses[index][adr] == None:
+                            print('Pin:{}  Index={}  Address={}'.format(index,
+                                                                        adr,
+                                                                        self.ds_addresses[index][adr]))
+
+    async def _ds_discovery(self):
+        """
+        Discover all onewire temperature sensors.
+
+        :return:
+        """
+        data = [PrivateConstants.DS_DISCOVER_DEVICES,
+                (len(self.digital_pins)) & 0x7f]
+        await self._send_sysex(PrivateConstants.ONEWIRE_DATA, data)
 
     async def _command_dispatcher(self):
         """
@@ -1617,6 +1719,39 @@ class PymataCore:
             else:
                 loop = self.loop
                 loop.call_soon(self.digital_pins[PrivateConstants.PIN_PIXY_MOSI].cb, blocks)
+
+    async def _one_wire_data(self, data):
+        """
+        This is a private message handler method to process
+        incoming one wire data messages
+        :param data: one wire data
+        :return:
+        """
+        addr = []
+        # determine message type
+        if data[1] == PrivateConstants.DS_DISCOVERY_REPLY:
+            pin = data[2]
+            for adr in range(0, 16, 2):
+                addr.append(((data[4 + adr] ) << 7) + (data[3 + adr] ))
+            if self.ds_addresses[pin][0] == None:
+                self.ds_addresses[pin][0] = addr
+            else:
+                self.ds_addresses[pin].append(addr)
+
+            await self._ds_display()
+        elif data[1] == PrivateConstants.DS_TEMPERATURE_REPLY:
+            celsius_temp = float(data[4]) + data[5] / 100
+            if data[6] == 1:
+                celsius_temp *= -1.0
+            temperature_data = {'pin': data[2], 'index': data[3], 'celsius': celsius_temp}
+            if self.ds_temp_callback_type:
+                await self.ds_temperature_callback(temperature_data)
+            else:
+                loop = self.loop
+                loop.call_soon(self.ds_temperature_callback, temperature_data)
+            #await asyncio.sleep(self.sleep_tune)
+            await asyncio.sleep(.1)
+
 
     async def _i2c_reply(self, data):
         """

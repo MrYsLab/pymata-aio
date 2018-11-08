@@ -317,6 +317,40 @@ class PyMata3:
         l_data = self.loop.run_until_complete(task)
         return l_data
 
+    def get_ds_address_list(self):
+        """
+        Get the list of ds devices for all pins
+        :return: ds_addresses
+        """
+        return self.core.ds_addresses
+
+    def get_ds_temperature(self, pin, callback,
+                                 callback_type=None,
+                                 device_index=0):
+        """
+        Request the current temperature for a specific device
+
+        :param pin: pin number
+
+        :param callback: callback function to be called when data
+               is received from arduino.
+
+        :param callback_type: CB_TYPE_DIRECT for non asyncio
+                              CB_TYPE_ASYNCIO for asyncio function
+
+        :param device_index: device index for the pin.
+
+        :param celsius: True = return celsius, False = return farhrenheit
+
+        :return: None - result is returned via callback
+        """
+        task = asyncio.ensure_future(self.core.get_ds_temperature(pin,
+                                                                  callback,
+                                                                  callback_type,
+                                                                  device_index))
+
+        value = self.loop.run_until_complete(task)
+
     def get_firmware_version(self, cb=None):
         """
         This method retrieves the Firmata firmware version
@@ -469,6 +503,7 @@ class PyMata3:
         :returns: No return value
         """
         asyncio.ensure_future(self.core.keep_alive(period, margin))
+
 
     def play_tone(self, pin, tone_command, frequency, duration=None):
         """

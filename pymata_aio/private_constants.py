@@ -46,11 +46,13 @@ class PrivateConstants:
     SONAR_DATA = 0x63  # distance data returned
     PIXY_CONFIG = 0x64  # configure the Pixy.  Configure has 4 subcommands
     PIXY_DATA = 0x65  # blocks data returned
+    DS18B20_TEMP_READ = 0x66 # read a ds18b20 one wire device on a pin
     # end of FirmataPlus defined SYSEX commands
 
     SERVO_CONFIG = 0x70  # set servo pin and max and min angles
     STRING_DATA = 0x71  # a string message with 14-bits per char
     STEPPER_DATA = 0x72  # Stepper motor command
+    ONEWIRE_DATA = 0x73
     I2C_REQUEST = 0x76  # send an I2C read/write request
     I2C_REPLY = 0x77  # a reply to an I2C read request
     I2C_CONFIG = 0x78  # config I2C settings such as delay times and power pins
@@ -70,7 +72,7 @@ class PrivateConstants:
     SYSEX_REALTIME = 0x7F  # MIDI Reserved for realtime messages
 
     # reserved for PyMata
-    PYMATA_VERSION = "2.27"
+    PYMATA_VERSION = "2.28"
 
     # each byte represents a digital port
     #  and its value contains the current port settings
@@ -102,4 +104,11 @@ class PrivateConstants:
 
     # Pin used to store Pixy data
     PIN_PIXY_MOSI = 11
+
+    # subcommands for onewire
+    DS_DISCOVER_DEVICES = 0x40 # find all temp sensors connected
+    DS_DISCOVERY_REPLY = 0x41 # discovery reply message
+    DS_REQUEST_TEMPERATURE = 0x42
+    DS_TEMPERATURE_REPLY = 0x43
+
 
