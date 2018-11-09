@@ -14,7 +14,7 @@
   Copyright (C) 2010-2011 Paul Stoffregen.  All rights reserved.
   Copyright (C) 2009 Shigeru Kobayashi.  All rights reserved.
   Copyright (C) 2009-2015 Jeff Hoefs.  All rights reserved.
-  Copyright (C) 2013-2015 Alan Yorinks. All rights reserved.
+  Copyright (C) 2013-2018 Alan Yorinks. All rights reserved.
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -683,7 +683,7 @@ void sysexCallback(byte command, byte argc, byte *argv)
     case KEEP_ALIVE:
       keepAliveInterval = argv[0] + (argv[1] << 7);
       previousKeepAliveMillis = millis();
-      break;      
+      break;
     case SAMPLING_INTERVAL:
       if (argc > 1) {
         samplingInterval = argv[0] + (argv[1] << 7);
@@ -939,7 +939,7 @@ void disableI2CPins() {
 void systemResetCallback()
 {
   isResetting = true;
-  
+
   encoderPresent = false;
 
   // initialize a defalt state

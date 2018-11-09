@@ -15,7 +15,7 @@
  Copyright (C) 2010-2011 Paul Stoffregen.  All rights reserved.
  Copyright (C) 2009 Shigeru Kobayashi.  All rights reserved.
  Copyright (C) 2009-2011 Jeff Hoefs.  All rights reserved.
- Copyright (C) 2013-2016 Alan Yorinks. All rights reserved.
+ Copyright (C) 2013-2018 Alan Yorinks. All rights reserved.
 
 
  This library is free software; you can redistribute it and/or
@@ -27,8 +27,8 @@
 
  formatted using the GNU C formatting and indenting
  */
- 
- /* This sketch provides additional functionality to StandardFirmata. 
+
+ /* This sketch provides additional functionality to StandardFirmata.
     It provides support for:
     Tone
     Stepper
@@ -45,8 +45,8 @@
 #include <FirmataPlus.h>
 #include <NewPing.h>
 #include <Stepper.h>
-#include <ooPinChangeInt.h> 
-#include <AdaEncoder.h> 
+#include <ooPinChangeInt.h>
+#include <AdaEncoder.h>
 #include <avr/wdt.h>
 
 #define I2C_WRITE                   B00000000
@@ -678,7 +678,7 @@ void sysexCallback(byte command, byte argc, byte *argv)
     case KEEP_ALIVE:
       keepAliveInterval = argv[0] + (argv[1] << 7);
       previousKeepAliveMillis = millis();
-      break;      
+      break;
     case SAMPLING_INTERVAL:
       if (argc > 1) {
         samplingInterval = argv[0] + (argv[1] << 7);
@@ -764,11 +764,11 @@ void sysexCallback(byte command, byte argc, byte *argv)
     // requested pin designators
     encoderPin1 = argv[0] ;
     encoderPin2 = argv[1] ;
-    static AdaEncoder encoder = 
+    static AdaEncoder encoder =
       AdaEncoder('a', encoderPin1, encoderPin2) ;
     //thisEncoder = &encoder ;
     encoderPresent = true ;
-    break ; 
+    break ;
 
   case SERIAL_MESSAGE:
 #ifdef FIRMATA_SERIAL_FEATURE
@@ -1116,7 +1116,7 @@ void loop()
        currentMillis = millis();
        if (currentMillis - previousKeepAliveMillis > keepAliveInterval*1000) {
          systemResetCallback();
-         
+
          wdt_enable(WDTO_15MS);
          // systemResetCallback();
          while(1)

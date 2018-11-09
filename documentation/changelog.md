@@ -1,5 +1,11 @@
 # Change Log
 
+## Release 2.28
+09 November 2018
+
+* Fixed issue #87
+* Updated copyright strings for FirmataPlus files - no code changes
+
 ## Release 2.27
 22 October 2018
 
