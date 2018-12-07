@@ -20,7 +20,7 @@ Major features
 * Auto-detects Arduino COM ports.
 
 * FirmataPlus (enhanced StandardFirmata sketch) included with distribution. It adds support for:
-     * HC-SRO4 Ultrasonic Distance Sensors using a single pin.
+     * HC-SR04 Ultrasonic Distance Sensors using a single pin.
      * Stepper Motors.
      * Piezo Tone Generation.
      * 2 Pin Rotary Encoder Support.
