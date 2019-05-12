@@ -1,4 +1,3 @@
-![logo](https://raw.github.com/MrYsLab/pymata-aio/master/documentation/images/logo.png)
 
 
 pymata_aio is a high performance, non-blocking, Python asyncio client

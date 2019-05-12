@@ -1,5 +1,9 @@
 # Change Log
 
+## Release 2.29
+12 May 2019
+* Accepted Pull Request #93
+
 ## Release 2.28
 09 November 2018
 
