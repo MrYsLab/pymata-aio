@@ -1122,7 +1122,7 @@ class PymataCore:
         if not len(self.digital_pins):
             await asyncio.sleep(2)
         if callback:
-            if pin_state == Constants.INPUT:
+            if pin_state == Constants.INPUT or pin_state == Constants.PULLUP:
                 self.digital_pins[pin_number].cb = callback
                 self.digital_pins[pin_number].cb_type = callback_type
             elif pin_state == Constants.ANALOG:
@@ -1146,7 +1146,7 @@ class PymataCore:
         await self._send_command(command)
         if pin_state == Constants.ANALOG:
             await self.enable_analog_reporting(pin_number)
-        elif pin_state == Constants.INPUT:
+        elif pin_state == Constants.INPUT or pin_state == Constants.PULLUP:
             await self.enable_digital_reporting(pin_number)
         else:
             pass
