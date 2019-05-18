@@ -4,7 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 
     <title>pymata_aio.pin_data API documentation</title>
-    <meta name="description" content="Copyright (c) 2015-2017 Alan Yorinks All rights reserved.
+    <meta name="description" content="Copyright (c) 2015-2019 Alan Yorinks All rights reserved.
 
 This program is free software; you can re..." />
 
@@ -853,6 +853,77 @@ table {
 
   </style>
 
+  <style type="text/css">
+  .codehilite .hll { background-color: #ffffcc }
+.codehilite  { background: #f8f8f8; }
+.codehilite .c { color: #408080; font-style: italic } /* Comment */
+.codehilite .err { border: 1px solid #FF0000 } /* Error */
+.codehilite .k { color: #008000; font-weight: bold } /* Keyword */
+.codehilite .o { color: #666666 } /* Operator */
+.codehilite .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.codehilite .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.codehilite .cp { color: #BC7A00 } /* Comment.Preproc */
+.codehilite .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.codehilite .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.codehilite .cs { color: #408080; font-style: italic } /* Comment.Special */
+.codehilite .gd { color: #A00000 } /* Generic.Deleted */
+.codehilite .ge { font-style: italic } /* Generic.Emph */
+.codehilite .gr { color: #FF0000 } /* Generic.Error */
+.codehilite .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.codehilite .gi { color: #00A000 } /* Generic.Inserted */
+.codehilite .go { color: #888888 } /* Generic.Output */
+.codehilite .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.codehilite .gt { color: #0044DD } /* Generic.Traceback */
+.codehilite .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.codehilite .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.codehilite .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.codehilite .kp { color: #008000 } /* Keyword.Pseudo */
+.codehilite .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.codehilite .kt { color: #B00040 } /* Keyword.Type */
+.codehilite .m { color: #666666 } /* Literal.Number */
+.codehilite .s { color: #BA2121 } /* Literal.String */
+.codehilite .na { color: #7D9029 } /* Name.Attribute */
+.codehilite .nb { color: #008000 } /* Name.Builtin */
+.codehilite .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.codehilite .no { color: #880000 } /* Name.Constant */
+.codehilite .nd { color: #AA22FF } /* Name.Decorator */
+.codehilite .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.codehilite .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.codehilite .nf { color: #0000FF } /* Name.Function */
+.codehilite .nl { color: #A0A000 } /* Name.Label */
+.codehilite .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.codehilite .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.codehilite .nv { color: #19177C } /* Name.Variable */
+.codehilite .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.codehilite .w { color: #bbbbbb } /* Text.Whitespace */
+.codehilite .mb { color: #666666 } /* Literal.Number.Bin */
+.codehilite .mf { color: #666666 } /* Literal.Number.Float */
+.codehilite .mh { color: #666666 } /* Literal.Number.Hex */
+.codehilite .mi { color: #666666 } /* Literal.Number.Integer */
+.codehilite .mo { color: #666666 } /* Literal.Number.Oct */
+.codehilite .sa { color: #BA2121 } /* Literal.String.Affix */
+.codehilite .sb { color: #BA2121 } /* Literal.String.Backtick */
+.codehilite .sc { color: #BA2121 } /* Literal.String.Char */
+.codehilite .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.codehilite .s2 { color: #BA2121 } /* Literal.String.Double */
+.codehilite .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.codehilite .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.codehilite .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.codehilite .sx { color: #008000 } /* Literal.String.Other */
+.codehilite .sr { color: #BB6688 } /* Literal.String.Regex */
+.codehilite .s1 { color: #BA2121 } /* Literal.String.Single */
+.codehilite .ss { color: #19177C } /* Literal.String.Symbol */
+.codehilite .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #0000FF } /* Name.Function.Magic */
+.codehilite .vc { color: #19177C } /* Name.Variable.Class */
+.codehilite .vg { color: #19177C } /* Name.Variable.Global */
+.codehilite .vi { color: #19177C } /* Name.Variable.Instance */
+.codehilite .vm { color: #19177C } /* Name.Variable.Magic */
+.codehilite .il { color: #666666 } /* Literal.Number.Integer.Long */
+  </style>
 
   <style type="text/css">
   
@@ -999,7 +1070,7 @@ table {
 
   <header id="section-intro">
   <h1 class="title"><span class="name">pymata_aio.pin_data</span> module</h1>
-  <p>Copyright (c) 2015-2017 Alan Yorinks All rights reserved.</p>
+  <p>Copyright (c) 2015-2019 Alan Yorinks All rights reserved.</p>
 <p>This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
 Version 3 as published by the Free Software Foundation; either
@@ -1014,67 +1085,67 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA</p>
   
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-pymata_aio.pin_data', this);">Show source &equiv;</a></p>
   <div id="source-pymata_aio.pin_data" class="source">
-    <pre><code>"""
- Copyright (c) 2015-2017 Alan Yorinks All rights reserved.
+    <div class="codehilite"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd"> Copyright (c) 2015-2019 Alan Yorinks All rights reserved.</span>
 
- This program is free software; you can redistribute it and/or
- modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- Version 3 as published by the Free Software Foundation; either
- or (at your option) any later version.
- This library is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- General Public License for more details.
+<span class="sd"> This program is free software; you can redistribute it and/or</span>
+<span class="sd"> modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE</span>
+<span class="sd"> Version 3 as published by the Free Software Foundation; either</span>
+<span class="sd"> or (at your option) any later version.</span>
+<span class="sd"> This library is distributed in the hope that it will be useful,</span>
+<span class="sd"> but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd"> MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU</span>
+<span class="sd"> General Public License for more details.</span>
 
- You should have received a copy of the GNU AFFERO GENERAL PUBLIC LICENSE
- along with this library; if not, write to the Free Software
- Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-"""
+<span class="sd"> You should have received a copy of the GNU AFFERO GENERAL PUBLIC LICENSE</span>
+<span class="sd"> along with this library; if not, write to the Free Software</span>
+<span class="sd"> Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 
-class PinData:
-    """
-    Each analog and digital input pin is described by an instance of
-    this class. It contains both the last data value received and a potential
-    callback reference and the callback method type.
-    The callback method type default is a non-asyncio call,
-    but can be optionally be set to use yield from when required.
-    """
+<span class="k">class</span> <span class="nc">PinData</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Each analog and digital input pin is described by an instance of</span>
+<span class="sd">    this class. It contains both the last data value received and a potential</span>
+<span class="sd">    callback reference and the callback method type.</span>
+<span class="sd">    The callback method type default is a non-asyncio call,</span>
+<span class="sd">    but can be optionally be set to use yield from when required.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    def __init__(self):
-        # current data value
-        self._current_value = 0
-        # callback reference
-        self._cb = None
-        # call back to be executed with "await" or direct call
-        # direct call is the default
-        self._cb_type = None
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># current data value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_current_value</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># callback reference</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cb</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="c1"># call back to be executed with &quot;await&quot; or direct call</span>
+        <span class="c1"># direct call is the default</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cb_type</span> <span class="o">=</span> <span class="bp">None</span>
 
-    @property
-    def current_value(self):
-        return self._current_value
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">current_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_value</span>
 
-    @current_value.setter
-    def current_value(self, value):
-        self._current_value = value
+    <span class="nd">@current_value.setter</span>
+    <span class="k">def</span> <span class="nf">current_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_current_value</span> <span class="o">=</span> <span class="n">value</span>
 
-    @property
-    def cb(self):
-        return self._cb
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cb</span>
 
-    @cb.setter
-    def cb(self, value):
-        self._cb = value
+    <span class="nd">@cb.setter</span>
+    <span class="k">def</span> <span class="nf">cb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cb</span> <span class="o">=</span> <span class="n">value</span>
 
-    @property
-    def cb_type(self):
-        return self._cb_type
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cb_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cb_type</span>
 
-    @cb_type.setter
-    def cb_type(self, value):
-        self._cb_type = value
+    <span class="nd">@cb_type.setter</span>
+    <span class="k">def</span> <span class="nf">cb_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cb_type</span> <span class="o">=</span> <span class="n">value</span>
+</pre></div>
 
-</code></pre>
   </div>
 
   </header>
@@ -1096,48 +1167,49 @@ but can be optionally be set to use yield from when required.</p></div>
   <div class="source_cont">
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-pymata_aio.pin_data.PinData', this);">Show source &equiv;</a></p>
   <div id="source-pymata_aio.pin_data.PinData" class="source">
-    <pre><code>class PinData:
-    """
-    Each analog and digital input pin is described by an instance of
-    this class. It contains both the last data value received and a potential
-    callback reference and the callback method type.
-    The callback method type default is a non-asyncio call,
-    but can be optionally be set to use yield from when required.
-    """
+    <div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">PinData</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Each analog and digital input pin is described by an instance of</span>
+<span class="sd">    this class. It contains both the last data value received and a potential</span>
+<span class="sd">    callback reference and the callback method type.</span>
+<span class="sd">    The callback method type default is a non-asyncio call,</span>
+<span class="sd">    but can be optionally be set to use yield from when required.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    def __init__(self):
-        # current data value
-        self._current_value = 0
-        # callback reference
-        self._cb = None
-        # call back to be executed with "await" or direct call
-        # direct call is the default
-        self._cb_type = None
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># current data value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_current_value</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># callback reference</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cb</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="c1"># call back to be executed with &quot;await&quot; or direct call</span>
+        <span class="c1"># direct call is the default</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cb_type</span> <span class="o">=</span> <span class="bp">None</span>
 
-    @property
-    def current_value(self):
-        return self._current_value
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">current_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_value</span>
 
-    @current_value.setter
-    def current_value(self, value):
-        self._current_value = value
+    <span class="nd">@current_value.setter</span>
+    <span class="k">def</span> <span class="nf">current_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_current_value</span> <span class="o">=</span> <span class="n">value</span>
 
-    @property
-    def cb(self):
-        return self._cb
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cb</span>
 
-    @cb.setter
-    def cb(self, value):
-        self._cb = value
+    <span class="nd">@cb.setter</span>
+    <span class="k">def</span> <span class="nf">cb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cb</span> <span class="o">=</span> <span class="n">value</span>
 
-    @property
-    def cb_type(self):
-        return self._cb_type
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cb_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cb_type</span>
 
-    @cb_type.setter
-    def cb_type(self, value):
-        self._cb_type = value
-</code></pre>
+    <span class="nd">@cb_type.setter</span>
+    <span class="k">def</span> <span class="nf">cb_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cb_type</span> <span class="o">=</span> <span class="n">value</span>
+</pre></div>
+
   </div>
 </div>
 
@@ -1162,15 +1234,16 @@ but can be optionally be set to use yield from when required.</p></div>
   <div class="source_cont">
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-pymata_aio.pin_data.PinData.__init__', this);">Show source &equiv;</a></p>
   <div id="source-pymata_aio.pin_data.PinData.__init__" class="source">
-    <pre><code>def __init__(self):
-    # current data value
-    self._current_value = 0
-    # callback reference
-    self._cb = None
-    # call back to be executed with "await" or direct call
-    # direct call is the default
-    self._cb_type = None
-</code></pre>
+    <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="c1"># current data value</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_current_value</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1"># callback reference</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_cb</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="c1"># call back to be executed with &quot;await&quot; or direct call</span>
+    <span class="c1"># direct call is the default</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_cb_type</span> <span class="o">=</span> <span class="bp">None</span>
+</pre></div>
+
   </div>
 </div>
 

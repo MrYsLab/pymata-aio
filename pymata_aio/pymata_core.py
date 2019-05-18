@@ -46,7 +46,7 @@ class PymataCore:
 
     def __init__(self, arduino_wait=4, sleep_tune=0.0001, log_output=False,
                  com_port=None, ip_address=None, ip_port=2000,
-                 ip_handshake='*HELLO*'):
+                 ip_handshake='*HELLO*', port_discovery_exceptions=False):
         """
         This is the "constructor" method for the PymataCore class.
 
@@ -74,6 +74,9 @@ class PymataCore:
 
         :param ip_handshake: Connectivity handshake string sent by IP device
 
+        :param port_discovery_exceptions: If True, then RuntimeError is
+                                          raised instead of exiting.
+
         :returns: This method never returns
         """
         # check to make sure that Python interpreter is version 3.5 or greater
@@ -99,6 +102,7 @@ class PymataCore:
             self.ip_address = ip_address
         self.ip_port = int(ip_port)
         self.ip_handshake = ip_handshake
+        self.port_discovery_exceptions = port_discovery_exceptions
 
         self.hall_encoder = False
 
@@ -294,7 +298,11 @@ class PymataCore:
                     print(
                         'Cannot instantiate serial interface: ' + self.com_port)
                     print('To see a list of serial ports, type: "list_serial_ports" in your console.')
-                sys.exit(0)
+
+                if self.port_discovery_exceptions:
+                    raise RuntimeError
+                else:
+                    sys.exit(0)
 
         # wait for arduino to go through a reset cycle if need be
         time.sleep(self.arduino_wait)
@@ -307,15 +315,18 @@ class PymataCore:
         try:
             firmware_version = self.loop.run_until_complete(self.get_firmware_version())
             if self.log_output:
-                log_string = "\nArduino Firmware ID: " + firmware_version
+                log_string = "\nArduino Firmware ID: " + str(firmware_version)
                 logging.exception(log_string)
             else:
-                print("\nArduino Firmware ID: " + firmware_version)
+                print("\nArduino Firmware ID: " + str(firmware_version))
         except TypeError:
             print('\nIs your serial cable plugged in and do you have the correct Firmata sketch loaded?')
             print('Is the COM port correct?')
             print('To see a list of serial ports, type: "list_serial_ports" in your console.')
-            sys.exit(0)
+            if self.port_discovery_exceptions:
+                raise RuntimeError
+            else:
+                sys.exit(0)
 
         # try to get an analog pin map. if it comes back as none - shutdown
         report = self.loop.run_until_complete(self.get_analog_map())
@@ -332,6 +343,8 @@ class PymataCore:
                 print('*** Analog map retrieval timed out. ***')
                 print('\nDo you have Arduino connectivity and do you have a '
                       'Firmata sketch uploaded to the board?')
+                if self.port_discovery_exceptions:
+                    raise RuntimeError
             try:
                 loop = self.loop
                 for t in asyncio.Task.all_tasks(loop):
@@ -343,9 +356,15 @@ class PymataCore:
             except RuntimeError:
                 # this suppresses the Event Loop Is Running message, which may
                 # be a bug in python 3
-                sys.exit(0)
+                if self.port_discovery_exceptions:
+                    raise
+                else:
+                    sys.exit(0)
             except TypeError:
-                sys.exit(0)
+                if self.port_discovery_exceptions:
+                    raise RuntimeError
+                else:
+                    sys.exit(0)
 
         # custom assemble the pin lists
         for pin in report:
@@ -409,8 +428,10 @@ class PymataCore:
                 else:
                     print(
                         'Cannot instantiate serial interface: ' + self.com_port)
-                sys.exit(0)
-
+                if self.port_discovery_exceptions:
+                    raise RuntimeError
+                else:
+                    sys.exit(0)
         # wait for arduino to go through a reset cycle if need be
         time.sleep(self.arduino_wait)
 
@@ -442,15 +463,24 @@ class PymataCore:
                 loop.run_until_complete(asyncio.sleep(.1))
                 loop.stop()
                 loop.close()
-                sys.exit(0)
+                if self.port_discovery_exceptions:
+                    raise RuntimeError
+                else:
+                    sys.exit(0)
             except RuntimeError:
                 self.the_task.cancel()
                 time.sleep(1)
                 # this suppresses the Event Loop Is Running message,
                 # which may be a bug in python 3.4.3
-                sys.exit(0)
+                if self.port_discovery_exceptions:
+                    raise
+                else:
+                    sys.exit(0)
             except TypeError:
-                sys.exit(0)
+                if self.port_discovery_exceptions:
+                    raise RuntimeError
+                else:
+                    sys.exit(0)
         if self.log_output:
             log_string = "\nArduino Firmware ID: " + firmware_version
             logging.exception(log_string)
@@ -482,16 +512,24 @@ class PymataCore:
                 loop.run_until_complete(asyncio.sleep(.1))
                 loop.stop()
                 loop.close()
-                sys.exit(0)
+                if self.port_discovery_exceptions:
+                    raise RuntimeError
+                else:
+                    sys.exit(0)
             except RuntimeError:
                 self.the_task.cancel()
                 time.sleep(1)
                 # this suppresses the Event Loop Is Running message,
                 # which may be a bug in python 3.4.3
-                sys.exit(0)
+                if self.port_discovery_exceptions:
+                    raise RuntimeError
+                else:
+                    sys.exit(0)
             except TypeError:
-                sys.exit(0)
-
+                if self.port_discovery_exceptions:
+                    raise RuntimeError
+                else:
+                    sys.exit(0)
         # custom assemble the pin lists
         for pin in report:
             digital_data = PinData()
@@ -1442,18 +1480,22 @@ class PymataCore:
                     logging.exception(ex)
                 else:
                     print(ex)
-                await self.shutdown()
+                if self.port_discovery_exceptions:
+                    raise RuntimeError("Can't transmit Firmata Message or "
+                                       "invalid message received")
+                else:
+                    await self.shutdown()
 
-                await self.serial_port.close()
+                    await self.serial_port.close()
 
-                print("An exception occurred on the asyncio event loop while receiving data.  Invalid message.")
-                loop = self.loop
-                for t in asyncio.Task.all_tasks(loop):
-                    t.cancel()
-                loop.run_until_complete(asyncio.sleep(.1))
-                loop.close()
-                loop.stop()
-                sys.exit(0)
+                    print("An exception occurred on the asyncio event loop while receiving data.  Invalid message.")
+                    loop = self.loop
+                    for t in asyncio.Task.all_tasks(loop):
+                        t.cancel()
+                    loop.run_until_complete(asyncio.sleep(.1))
+                    loop.close()
+                    loop.stop()
+                    sys.exit(0)
 
     '''
     Firmata message handlers

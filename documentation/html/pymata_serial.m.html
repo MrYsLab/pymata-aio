@@ -4,7 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 
     <title>pymata_aio.pymata_serial API documentation</title>
-    <meta name="description" content="Copyright (c) 2015-2017 Alan Yorinks All rights reserved.
+    <meta name="description" content="Copyright (c) 2015-2019 Alan Yorinks All rights reserved.
 
 This program is free software; you can re..." />
 
@@ -853,6 +853,77 @@ table {
 
   </style>
 
+  <style type="text/css">
+  .codehilite .hll { background-color: #ffffcc }
+.codehilite  { background: #f8f8f8; }
+.codehilite .c { color: #408080; font-style: italic } /* Comment */
+.codehilite .err { border: 1px solid #FF0000 } /* Error */
+.codehilite .k { color: #008000; font-weight: bold } /* Keyword */
+.codehilite .o { color: #666666 } /* Operator */
+.codehilite .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.codehilite .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.codehilite .cp { color: #BC7A00 } /* Comment.Preproc */
+.codehilite .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.codehilite .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.codehilite .cs { color: #408080; font-style: italic } /* Comment.Special */
+.codehilite .gd { color: #A00000 } /* Generic.Deleted */
+.codehilite .ge { font-style: italic } /* Generic.Emph */
+.codehilite .gr { color: #FF0000 } /* Generic.Error */
+.codehilite .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.codehilite .gi { color: #00A000 } /* Generic.Inserted */
+.codehilite .go { color: #888888 } /* Generic.Output */
+.codehilite .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.codehilite .gt { color: #0044DD } /* Generic.Traceback */
+.codehilite .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.codehilite .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.codehilite .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.codehilite .kp { color: #008000 } /* Keyword.Pseudo */
+.codehilite .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.codehilite .kt { color: #B00040 } /* Keyword.Type */
+.codehilite .m { color: #666666 } /* Literal.Number */
+.codehilite .s { color: #BA2121 } /* Literal.String */
+.codehilite .na { color: #7D9029 } /* Name.Attribute */
+.codehilite .nb { color: #008000 } /* Name.Builtin */
+.codehilite .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.codehilite .no { color: #880000 } /* Name.Constant */
+.codehilite .nd { color: #AA22FF } /* Name.Decorator */
+.codehilite .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.codehilite .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.codehilite .nf { color: #0000FF } /* Name.Function */
+.codehilite .nl { color: #A0A000 } /* Name.Label */
+.codehilite .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.codehilite .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.codehilite .nv { color: #19177C } /* Name.Variable */
+.codehilite .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.codehilite .w { color: #bbbbbb } /* Text.Whitespace */
+.codehilite .mb { color: #666666 } /* Literal.Number.Bin */
+.codehilite .mf { color: #666666 } /* Literal.Number.Float */
+.codehilite .mh { color: #666666 } /* Literal.Number.Hex */
+.codehilite .mi { color: #666666 } /* Literal.Number.Integer */
+.codehilite .mo { color: #666666 } /* Literal.Number.Oct */
+.codehilite .sa { color: #BA2121 } /* Literal.String.Affix */
+.codehilite .sb { color: #BA2121 } /* Literal.String.Backtick */
+.codehilite .sc { color: #BA2121 } /* Literal.String.Char */
+.codehilite .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.codehilite .s2 { color: #BA2121 } /* Literal.String.Double */
+.codehilite .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.codehilite .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.codehilite .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.codehilite .sx { color: #008000 } /* Literal.String.Other */
+.codehilite .sr { color: #BB6688 } /* Literal.String.Regex */
+.codehilite .s1 { color: #BA2121 } /* Literal.String.Single */
+.codehilite .ss { color: #19177C } /* Literal.String.Symbol */
+.codehilite .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #0000FF } /* Name.Function.Magic */
+.codehilite .vc { color: #19177C } /* Name.Variable.Class */
+.codehilite .vg { color: #19177C } /* Name.Variable.Global */
+.codehilite .vi { color: #19177C } /* Name.Variable.Instance */
+.codehilite .vm { color: #19177C } /* Name.Variable.Magic */
+.codehilite .il { color: #666666 } /* Literal.Number.Integer.Long */
+  </style>
 
   <style type="text/css">
   
@@ -1006,7 +1077,7 @@ table {
 
   <header id="section-intro">
   <h1 class="title"><span class="name">pymata_aio.pymata_serial</span> module</h1>
-  <p>Copyright (c) 2015-2017 Alan Yorinks All rights reserved.</p>
+  <p>Copyright (c) 2015-2019 Alan Yorinks All rights reserved.</p>
 <p>This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
 Version 3 as published by the Free Software Foundation; either
@@ -1021,198 +1092,199 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA</p>
   
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-pymata_aio.pymata_serial', this);">Show source &equiv;</a></p>
   <div id="source-pymata_aio.pymata_serial" class="source">
-    <pre><code># -*- coding: utf-8 -*-
-"""
- Copyright (c) 2015-2017 Alan Yorinks All rights reserved.
+    <div class="codehilite"><pre><span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd"> Copyright (c) 2015-2019 Alan Yorinks All rights reserved.</span>
 
- This program is free software; you can redistribute it and/or
- modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- Version 3 as published by the Free Software Foundation; either
- or (at your option) any later version.
- This library is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- General Public License for more details.
+<span class="sd"> This program is free software; you can redistribute it and/or</span>
+<span class="sd"> modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE</span>
+<span class="sd"> Version 3 as published by the Free Software Foundation; either</span>
+<span class="sd"> or (at your option) any later version.</span>
+<span class="sd"> This library is distributed in the hope that it will be useful,</span>
+<span class="sd"> but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd"> MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU</span>
+<span class="sd"> General Public License for more details.</span>
 
- You should have received a copy of the GNU AFFERO GENERAL PUBLIC LICENSE
- along with this library; if not, write to the Free Software
- Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-"""
+<span class="sd"> You should have received a copy of the GNU AFFERO GENERAL PUBLIC LICENSE</span>
+<span class="sd"> along with this library; if not, write to the Free Software</span>
+<span class="sd"> Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
-import asyncio
-import sys
-import logging
+<span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 
-import serial
+<span class="kn">import</span> <span class="nn">serial</span>
 
 
-# noinspection PyStatementEffect,PyUnresolvedReferences,PyUnresolvedReferences
-class PymataSerial:
-    """
-    This class encapsulates management of the serial port that communicates
-    with the Arduino Firmata
-    It provides a 'futures' interface to make Pyserial compatible with asyncio
-    """
+<span class="c1"># noinspection PyStatementEffect,PyUnresolvedReferences,PyUnresolvedReferences</span>
+<span class="k">class</span> <span class="nc">PymataSerial</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class encapsulates management of the serial port that communicates</span>
+<span class="sd">    with the Arduino Firmata</span>
+<span class="sd">    It provides a &#39;futures&#39; interface to make Pyserial compatible with asyncio</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    def __init__(self, com_port='/dev/ttyACM0', speed=57600, sleep_tune=.001,
-                 log_output=False):
-        """
-        This is the constructor for the aio serial handler
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">com_port</span><span class="o">=</span><span class="s1">&#39;/dev/ttyACM0&#39;</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="mi">57600</span><span class="p">,</span> <span class="n">sleep_tune</span><span class="o">=.</span><span class="mo">001</span><span class="p">,</span>
+                 <span class="n">log_output</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is the constructor for the aio serial handler</span>
 
-        :param com_port: Com port designator
-        :param speed: baud rate
-        :return: None
-        """
-        self.log_output = log_output
-        if self.log_output:
-            logging.info('Initializing Arduino - Please wait...')
-        else:
-            print('Initializing Arduino - Please wait...', end=" ")
-        sys.stdout.flush()
-        self.my_serial = serial.Serial(com_port, speed, timeout=1,
-                                       writeTimeout=1)
+<span class="sd">        :param com_port: Com port designator</span>
+<span class="sd">        :param speed: baud rate</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_output</span> <span class="o">=</span> <span class="n">log_output</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_output</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Initializing Arduino - Please wait...&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Initializing Arduino - Please wait...&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span> <span class="o">=</span> <span class="n">serial</span><span class="o">.</span><span class="n">Serial</span><span class="p">(</span><span class="n">com_port</span><span class="p">,</span> <span class="n">speed</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                       <span class="n">writeTimeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-        self.com_port = com_port
-        self.sleep_tune = sleep_tune
+        <span class="bp">self</span><span class="o">.</span><span class="n">com_port</span> <span class="o">=</span> <span class="n">com_port</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span> <span class="o">=</span> <span class="n">sleep_tune</span>
 
-    def get_serial(self):
-        """
-        This method returns a reference to the serial port in case the
-        user wants to call pyserial methods directly
+    <span class="k">def</span> <span class="nf">get_serial</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method returns a reference to the serial port in case the</span>
+<span class="sd">        user wants to call pyserial methods directly</span>
 
-        :return: pyserial instance
-        """
-        return self.my_serial
+<span class="sd">        :return: pyserial instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span>
 
-    async def write(self, data):
-        """
-        This is an asyncio adapted version of pyserial write. It provides a
-        non-blocking  write and returns the number of bytes written upon
-        completion
+    <span class="n">async</span> <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is an asyncio adapted version of pyserial write. It provides a</span>
+<span class="sd">        non-blocking  write and returns the number of bytes written upon</span>
+<span class="sd">        completion</span>
 
-        :param data: Data to be written
-        :return: Number of bytes written
-        """
-        # the secret sauce - it is in your future
-        future = asyncio.Future()
-        result = None
-        try:
-            result = self.my_serial.write(bytes([ord(data)]))
-        except serial.SerialException:
-            # self.my_serial.close()
-            # noinspection PyBroadException
-            try:
-                await self.close()
-                future.cancel()
-                if self.log_output:
-                    logging.exception('Write exception')
-                else:
-                    print('Write exception')
+<span class="sd">        :param data: Data to be written</span>
+<span class="sd">        :return: Number of bytes written</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># the secret sauce - it is in your future</span>
+        <span class="n">future</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Future</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">bytes</span><span class="p">([</span><span class="nb">ord</span><span class="p">(</span><span class="n">data</span><span class="p">)]))</span>
+        <span class="k">except</span> <span class="n">serial</span><span class="o">.</span><span class="n">SerialException</span><span class="p">:</span>
+            <span class="c1"># self.my_serial.close()</span>
+            <span class="c1"># noinspection PyBroadException</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="n">future</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_output</span><span class="p">:</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;Write exception&#39;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Write exception&#39;</span><span class="p">)</span>
 
-                loop = asyncio.get_event_loop()
-                for t in asyncio.Task.all_tasks(loop):
-                    t.cancel()
-                loop.run_until_complete(asyncio.sleep(.1))
-                loop.stop()
-                loop.close()
-                self.my_serial.close()
-                sys.exit(0)
-            except:  # swallow any additional exceptions during shutdown
-                pass
+                <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Task</span><span class="o">.</span><span class="n">all_tasks</span><span class="p">(</span><span class="n">loop</span><span class="p">):</span>
+                    <span class="n">t</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+                <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="o">.</span><span class="mi">1</span><span class="p">))</span>
+                <span class="n">loop</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+                <span class="n">loop</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>  <span class="c1"># swallow any additional exceptions during shutdown</span>
+                <span class="k">pass</span>
 
-        if result:
-            future.set_result(result)
-            while True:
-                if not future.done():
-                    # spin our asyncio wheels until future completes
-                    await asyncio.sleep(self.sleep_tune)
+        <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+            <span class="n">future</span><span class="o">.</span><span class="n">set_result</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+            <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">future</span><span class="o">.</span><span class="n">done</span><span class="p">():</span>
+                    <span class="c1"># spin our asyncio wheels until future completes</span>
+                    <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span><span class="p">)</span>
 
-                else:
-                    return future.result()
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
 
-    async def readline(self):
-        """
-        This is an asyncio adapted version of pyserial read.
-        It provides a non-blocking read and returns a line of data read.
+    <span class="n">async</span> <span class="k">def</span> <span class="nf">readline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is an asyncio adapted version of pyserial read.</span>
+<span class="sd">        It provides a non-blocking read and returns a line of data read.</span>
 
-        :return: A line of data
-        """
-        future = asyncio.Future()
-        data_available = False
-        while True:
-            if not data_available:
-                if not self.my_serial.inWaiting():
-                    await asyncio.sleep(self.sleep_tune)
-                else:
-                    data_available = True
-                    data = self.my_serial.readline()
-                    future.set_result(data)
-            else:
-                if not future.done():
-                    await asyncio.sleep(self.sleep_tune)
-                else:
-                    return future.result()
+<span class="sd">        :return: A line of data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">future</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Future</span><span class="p">()</span>
+        <span class="n">data_available</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">data_available</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span><span class="o">.</span><span class="n">inWaiting</span><span class="p">():</span>
+                    <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">data_available</span> <span class="o">=</span> <span class="bp">True</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+                    <span class="n">future</span><span class="o">.</span><span class="n">set_result</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">future</span><span class="o">.</span><span class="n">done</span><span class="p">():</span>
+                    <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
 
-    async def read(self):
-        """
-        This is an asyncio adapted version of pyserial read
-        that provides non-blocking read.
+    <span class="n">async</span> <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is an asyncio adapted version of pyserial read</span>
+<span class="sd">        that provides non-blocking read.</span>
 
-        :return: One character
-        """
+<span class="sd">        :return: One character</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-        # create an asyncio Future
-        future = asyncio.Future()
+        <span class="c1"># create an asyncio Future</span>
+        <span class="n">future</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Future</span><span class="p">()</span>
 
-        # create a flag to indicate when data becomes available
-        data_available = False
+        <span class="c1"># create a flag to indicate when data becomes available</span>
+        <span class="n">data_available</span> <span class="o">=</span> <span class="bp">False</span>
 
-        # wait for a character to become available and read from
-        # the serial port
-        while True:
-            if not data_available:
-                # test to see if a character is waiting to be read.
-                # if not, relinquish control back to the event loop through the
-                # short sleep
-                if not self.my_serial.inWaiting():
-                    await asyncio.sleep(self.sleep_tune)
-                # data is available.
-                # set the flag to true so that the future can "wait" until the
-                # read is completed.
-                else:
-                    data_available = True
-                    data = self.my_serial.read()
-                    # set future result to make the character available
-                    future.set_result(ord(data))
-            else:
-                # wait for the future to complete
-                if not future.done():
-                    await asyncio.sleep(self.sleep_tune)
-                else:
-                    # future is done, so return the character
-                    return future.result()
+        <span class="c1"># wait for a character to become available and read from</span>
+        <span class="c1"># the serial port</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">data_available</span><span class="p">:</span>
+                <span class="c1"># test to see if a character is waiting to be read.</span>
+                <span class="c1"># if not, relinquish control back to the event loop through the</span>
+                <span class="c1"># short sleep</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span><span class="o">.</span><span class="n">inWaiting</span><span class="p">():</span>
+                    <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span><span class="p">)</span>
+                <span class="c1"># data is available.</span>
+                <span class="c1"># set the flag to true so that the future can &quot;wait&quot; until the</span>
+                <span class="c1"># read is completed.</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">data_available</span> <span class="o">=</span> <span class="bp">True</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                    <span class="c1"># set future result to make the character available</span>
+                    <span class="n">future</span><span class="o">.</span><span class="n">set_result</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># wait for the future to complete</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">future</span><span class="o">.</span><span class="n">done</span><span class="p">():</span>
+                    <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># future is done, so return the character</span>
+                    <span class="k">return</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
 
-    async def close(self):
-        """
-        Close the serial port
-        """
-        # future = asyncio.Future()
-        self.my_serial.close()
+    <span class="n">async</span> <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Close the serial port</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># future = asyncio.Future()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-    async def open(self):
-        """
-        Open the serial port
-        """
-        # future = asyncio.Future()
-        self.my_serial.open()
+    <span class="n">async</span> <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Open the serial port</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># future = asyncio.Future()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
 
-    async def set_dtr(self, state):
-        """
-        Set DTR state
-        :param state: DTR state
-        """
-        self.my_serial.setDTR(state)
-</code></pre>
+    <span class="n">async</span> <span class="k">def</span> <span class="nf">set_dtr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set DTR state</span>
+<span class="sd">        :param state: DTR state</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span><span class="o">.</span><span class="n">setDTR</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+</pre></div>
+
   </div>
 
   </header>
@@ -1232,172 +1304,173 @@ It provides a 'futures' interface to make Pyserial compatible with asyncio</p></
   <div class="source_cont">
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-pymata_aio.pymata_serial.PymataSerial', this);">Show source &equiv;</a></p>
   <div id="source-pymata_aio.pymata_serial.PymataSerial" class="source">
-    <pre><code>class PymataSerial:
-    """
-    This class encapsulates management of the serial port that communicates
-    with the Arduino Firmata
-    It provides a 'futures' interface to make Pyserial compatible with asyncio
-    """
+    <div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">PymataSerial</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class encapsulates management of the serial port that communicates</span>
+<span class="sd">    with the Arduino Firmata</span>
+<span class="sd">    It provides a &#39;futures&#39; interface to make Pyserial compatible with asyncio</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    def __init__(self, com_port='/dev/ttyACM0', speed=57600, sleep_tune=.001,
-                 log_output=False):
-        """
-        This is the constructor for the aio serial handler
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">com_port</span><span class="o">=</span><span class="s1">&#39;/dev/ttyACM0&#39;</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="mi">57600</span><span class="p">,</span> <span class="n">sleep_tune</span><span class="o">=.</span><span class="mo">001</span><span class="p">,</span>
+                 <span class="n">log_output</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is the constructor for the aio serial handler</span>
 
-        :param com_port: Com port designator
-        :param speed: baud rate
-        :return: None
-        """
-        self.log_output = log_output
-        if self.log_output:
-            logging.info('Initializing Arduino - Please wait...')
-        else:
-            print('Initializing Arduino - Please wait...', end=" ")
-        sys.stdout.flush()
-        self.my_serial = serial.Serial(com_port, speed, timeout=1,
-                                       writeTimeout=1)
+<span class="sd">        :param com_port: Com port designator</span>
+<span class="sd">        :param speed: baud rate</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_output</span> <span class="o">=</span> <span class="n">log_output</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_output</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Initializing Arduino - Please wait...&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Initializing Arduino - Please wait...&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span> <span class="o">=</span> <span class="n">serial</span><span class="o">.</span><span class="n">Serial</span><span class="p">(</span><span class="n">com_port</span><span class="p">,</span> <span class="n">speed</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                       <span class="n">writeTimeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-        self.com_port = com_port
-        self.sleep_tune = sleep_tune
+        <span class="bp">self</span><span class="o">.</span><span class="n">com_port</span> <span class="o">=</span> <span class="n">com_port</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span> <span class="o">=</span> <span class="n">sleep_tune</span>
 
-    def get_serial(self):
-        """
-        This method returns a reference to the serial port in case the
-        user wants to call pyserial methods directly
+    <span class="k">def</span> <span class="nf">get_serial</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method returns a reference to the serial port in case the</span>
+<span class="sd">        user wants to call pyserial methods directly</span>
 
-        :return: pyserial instance
-        """
-        return self.my_serial
+<span class="sd">        :return: pyserial instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span>
 
-    async def write(self, data):
-        """
-        This is an asyncio adapted version of pyserial write. It provides a
-        non-blocking  write and returns the number of bytes written upon
-        completion
+    <span class="n">async</span> <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is an asyncio adapted version of pyserial write. It provides a</span>
+<span class="sd">        non-blocking  write and returns the number of bytes written upon</span>
+<span class="sd">        completion</span>
 
-        :param data: Data to be written
-        :return: Number of bytes written
-        """
-        # the secret sauce - it is in your future
-        future = asyncio.Future()
-        result = None
-        try:
-            result = self.my_serial.write(bytes([ord(data)]))
-        except serial.SerialException:
-            # self.my_serial.close()
-            # noinspection PyBroadException
-            try:
-                await self.close()
-                future.cancel()
-                if self.log_output:
-                    logging.exception('Write exception')
-                else:
-                    print('Write exception')
+<span class="sd">        :param data: Data to be written</span>
+<span class="sd">        :return: Number of bytes written</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># the secret sauce - it is in your future</span>
+        <span class="n">future</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Future</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">bytes</span><span class="p">([</span><span class="nb">ord</span><span class="p">(</span><span class="n">data</span><span class="p">)]))</span>
+        <span class="k">except</span> <span class="n">serial</span><span class="o">.</span><span class="n">SerialException</span><span class="p">:</span>
+            <span class="c1"># self.my_serial.close()</span>
+            <span class="c1"># noinspection PyBroadException</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="n">future</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_output</span><span class="p">:</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;Write exception&#39;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Write exception&#39;</span><span class="p">)</span>
 
-                loop = asyncio.get_event_loop()
-                for t in asyncio.Task.all_tasks(loop):
-                    t.cancel()
-                loop.run_until_complete(asyncio.sleep(.1))
-                loop.stop()
-                loop.close()
-                self.my_serial.close()
-                sys.exit(0)
-            except:  # swallow any additional exceptions during shutdown
-                pass
+                <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Task</span><span class="o">.</span><span class="n">all_tasks</span><span class="p">(</span><span class="n">loop</span><span class="p">):</span>
+                    <span class="n">t</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+                <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="o">.</span><span class="mi">1</span><span class="p">))</span>
+                <span class="n">loop</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+                <span class="n">loop</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>  <span class="c1"># swallow any additional exceptions during shutdown</span>
+                <span class="k">pass</span>
 
-        if result:
-            future.set_result(result)
-            while True:
-                if not future.done():
-                    # spin our asyncio wheels until future completes
-                    await asyncio.sleep(self.sleep_tune)
+        <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+            <span class="n">future</span><span class="o">.</span><span class="n">set_result</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+            <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">future</span><span class="o">.</span><span class="n">done</span><span class="p">():</span>
+                    <span class="c1"># spin our asyncio wheels until future completes</span>
+                    <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span><span class="p">)</span>
 
-                else:
-                    return future.result()
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
 
-    async def readline(self):
-        """
-        This is an asyncio adapted version of pyserial read.
-        It provides a non-blocking read and returns a line of data read.
+    <span class="n">async</span> <span class="k">def</span> <span class="nf">readline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is an asyncio adapted version of pyserial read.</span>
+<span class="sd">        It provides a non-blocking read and returns a line of data read.</span>
 
-        :return: A line of data
-        """
-        future = asyncio.Future()
-        data_available = False
-        while True:
-            if not data_available:
-                if not self.my_serial.inWaiting():
-                    await asyncio.sleep(self.sleep_tune)
-                else:
-                    data_available = True
-                    data = self.my_serial.readline()
-                    future.set_result(data)
-            else:
-                if not future.done():
-                    await asyncio.sleep(self.sleep_tune)
-                else:
-                    return future.result()
+<span class="sd">        :return: A line of data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">future</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Future</span><span class="p">()</span>
+        <span class="n">data_available</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">data_available</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span><span class="o">.</span><span class="n">inWaiting</span><span class="p">():</span>
+                    <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">data_available</span> <span class="o">=</span> <span class="bp">True</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+                    <span class="n">future</span><span class="o">.</span><span class="n">set_result</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">future</span><span class="o">.</span><span class="n">done</span><span class="p">():</span>
+                    <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
 
-    async def read(self):
-        """
-        This is an asyncio adapted version of pyserial read
-        that provides non-blocking read.
+    <span class="n">async</span> <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is an asyncio adapted version of pyserial read</span>
+<span class="sd">        that provides non-blocking read.</span>
 
-        :return: One character
-        """
+<span class="sd">        :return: One character</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-        # create an asyncio Future
-        future = asyncio.Future()
+        <span class="c1"># create an asyncio Future</span>
+        <span class="n">future</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Future</span><span class="p">()</span>
 
-        # create a flag to indicate when data becomes available
-        data_available = False
+        <span class="c1"># create a flag to indicate when data becomes available</span>
+        <span class="n">data_available</span> <span class="o">=</span> <span class="bp">False</span>
 
-        # wait for a character to become available and read from
-        # the serial port
-        while True:
-            if not data_available:
-                # test to see if a character is waiting to be read.
-                # if not, relinquish control back to the event loop through the
-                # short sleep
-                if not self.my_serial.inWaiting():
-                    await asyncio.sleep(self.sleep_tune)
-                # data is available.
-                # set the flag to true so that the future can "wait" until the
-                # read is completed.
-                else:
-                    data_available = True
-                    data = self.my_serial.read()
-                    # set future result to make the character available
-                    future.set_result(ord(data))
-            else:
-                # wait for the future to complete
-                if not future.done():
-                    await asyncio.sleep(self.sleep_tune)
-                else:
-                    # future is done, so return the character
-                    return future.result()
+        <span class="c1"># wait for a character to become available and read from</span>
+        <span class="c1"># the serial port</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">data_available</span><span class="p">:</span>
+                <span class="c1"># test to see if a character is waiting to be read.</span>
+                <span class="c1"># if not, relinquish control back to the event loop through the</span>
+                <span class="c1"># short sleep</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span><span class="o">.</span><span class="n">inWaiting</span><span class="p">():</span>
+                    <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span><span class="p">)</span>
+                <span class="c1"># data is available.</span>
+                <span class="c1"># set the flag to true so that the future can &quot;wait&quot; until the</span>
+                <span class="c1"># read is completed.</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">data_available</span> <span class="o">=</span> <span class="bp">True</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                    <span class="c1"># set future result to make the character available</span>
+                    <span class="n">future</span><span class="o">.</span><span class="n">set_result</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># wait for the future to complete</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">future</span><span class="o">.</span><span class="n">done</span><span class="p">():</span>
+                    <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># future is done, so return the character</span>
+                    <span class="k">return</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
 
-    async def close(self):
-        """
-        Close the serial port
-        """
-        # future = asyncio.Future()
-        self.my_serial.close()
+    <span class="n">async</span> <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Close the serial port</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># future = asyncio.Future()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-    async def open(self):
-        """
-        Open the serial port
-        """
-        # future = asyncio.Future()
-        self.my_serial.open()
+    <span class="n">async</span> <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Open the serial port</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># future = asyncio.Future()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
 
-    async def set_dtr(self, state):
-        """
-        Set DTR state
-        :param state: DTR state
-        """
-        self.my_serial.setDTR(state)
-</code></pre>
+    <span class="n">async</span> <span class="k">def</span> <span class="nf">set_dtr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set DTR state</span>
+<span class="sd">        :param state: DTR state</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span><span class="o">.</span><span class="n">setDTR</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+</pre></div>
+
   </div>
 </div>
 
@@ -1425,25 +1498,26 @@ It provides a 'futures' interface to make Pyserial compatible with asyncio</p></
   <div class="source_cont">
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-pymata_aio.pymata_serial.PymataSerial.__init__', this);">Show source &equiv;</a></p>
   <div id="source-pymata_aio.pymata_serial.PymataSerial.__init__" class="source">
-    <pre><code>def __init__(self, com_port='/dev/ttyACM0', speed=57600, sleep_tune=.001,
-             log_output=False):
-    """
-    This is the constructor for the aio serial handler
-    :param com_port: Com port designator
-    :param speed: baud rate
-    :return: None
-    """
-    self.log_output = log_output
-    if self.log_output:
-        logging.info('Initializing Arduino - Please wait...')
-    else:
-        print('Initializing Arduino - Please wait...', end=" ")
-    sys.stdout.flush()
-    self.my_serial = serial.Serial(com_port, speed, timeout=1,
-                                   writeTimeout=1)
-    self.com_port = com_port
-    self.sleep_tune = sleep_tune
-</code></pre>
+    <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">com_port</span><span class="o">=</span><span class="s1">&#39;/dev/ttyACM0&#39;</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="mi">57600</span><span class="p">,</span> <span class="n">sleep_tune</span><span class="o">=.</span><span class="mo">001</span><span class="p">,</span>
+             <span class="n">log_output</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is the constructor for the aio serial handler</span>
+<span class="sd">    :param com_port: Com port designator</span>
+<span class="sd">    :param speed: baud rate</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">log_output</span> <span class="o">=</span> <span class="n">log_output</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_output</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Initializing Arduino - Please wait...&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Initializing Arduino - Please wait...&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span> <span class="o">=</span> <span class="n">serial</span><span class="o">.</span><span class="n">Serial</span><span class="p">(</span><span class="n">com_port</span><span class="p">,</span> <span class="n">speed</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                   <span class="n">writeTimeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">com_port</span> <span class="o">=</span> <span class="n">com_port</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span> <span class="o">=</span> <span class="n">sleep_tune</span>
+</pre></div>
+
   </div>
 </div>
 
@@ -1462,13 +1536,14 @@ It provides a 'futures' interface to make Pyserial compatible with asyncio</p></
   <div class="source_cont">
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-pymata_aio.pymata_serial.PymataSerial.close', this);">Show source &equiv;</a></p>
   <div id="source-pymata_aio.pymata_serial.PymataSerial.close" class="source">
-    <pre><code>async def close(self):
-    """
-    Close the serial port
-    """
-    # future = asyncio.Future()
-    self.my_serial.close()
-</code></pre>
+    <div class="codehilite"><pre><span></span><span class="n">async</span> <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Close the serial port</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># future = asyncio.Future()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+
   </div>
 </div>
 
@@ -1489,14 +1564,15 @@ user wants to call pyserial methods directly</p>
   <div class="source_cont">
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-pymata_aio.pymata_serial.PymataSerial.get_serial', this);">Show source &equiv;</a></p>
   <div id="source-pymata_aio.pymata_serial.PymataSerial.get_serial" class="source">
-    <pre><code>def get_serial(self):
-    """
-    This method returns a reference to the serial port in case the
-    user wants to call pyserial methods directly
-    :return: pyserial instance
-    """
-    return self.my_serial
-</code></pre>
+    <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">get_serial</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This method returns a reference to the serial port in case the</span>
+<span class="sd">    user wants to call pyserial methods directly</span>
+<span class="sd">    :return: pyserial instance</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span>
+</pre></div>
+
   </div>
 </div>
 
@@ -1515,13 +1591,14 @@ user wants to call pyserial methods directly</p>
   <div class="source_cont">
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-pymata_aio.pymata_serial.PymataSerial.open', this);">Show source &equiv;</a></p>
   <div id="source-pymata_aio.pymata_serial.PymataSerial.open" class="source">
-    <pre><code>async def open(self):
-    """
-    Open the serial port
-    """
-    # future = asyncio.Future()
-    self.my_serial.open()
-</code></pre>
+    <div class="codehilite"><pre><span></span><span class="n">async</span> <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Open the serial port</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># future = asyncio.Future()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+</pre></div>
+
   </div>
 </div>
 
@@ -1542,41 +1619,42 @@ that provides non-blocking read.</p>
   <div class="source_cont">
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-pymata_aio.pymata_serial.PymataSerial.read', this);">Show source &equiv;</a></p>
   <div id="source-pymata_aio.pymata_serial.PymataSerial.read" class="source">
-    <pre><code>async def read(self):
-    """
-    This is an asyncio adapted version of pyserial read
-    that provides non-blocking read.
-    :return: One character
-    """
-    # create an asyncio Future
-    future = asyncio.Future()
-    # create a flag to indicate when data becomes available
-    data_available = False
-    # wait for a character to become available and read from
-    # the serial port
-    while True:
-        if not data_available:
-            # test to see if a character is waiting to be read.
-            # if not, relinquish control back to the event loop through the
-            # short sleep
-            if not self.my_serial.inWaiting():
-                await asyncio.sleep(self.sleep_tune)
-            # data is available.
-            # set the flag to true so that the future can "wait" until the
-            # read is completed.
-            else:
-                data_available = True
-                data = self.my_serial.read()
-                # set future result to make the character available
-                future.set_result(ord(data))
-        else:
-            # wait for the future to complete
-            if not future.done():
-                await asyncio.sleep(self.sleep_tune)
-            else:
-                # future is done, so return the character
-                return future.result()
-</code></pre>
+    <div class="codehilite"><pre><span></span><span class="n">async</span> <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is an asyncio adapted version of pyserial read</span>
+<span class="sd">    that provides non-blocking read.</span>
+<span class="sd">    :return: One character</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># create an asyncio Future</span>
+    <span class="n">future</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Future</span><span class="p">()</span>
+    <span class="c1"># create a flag to indicate when data becomes available</span>
+    <span class="n">data_available</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="c1"># wait for a character to become available and read from</span>
+    <span class="c1"># the serial port</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">data_available</span><span class="p">:</span>
+            <span class="c1"># test to see if a character is waiting to be read.</span>
+            <span class="c1"># if not, relinquish control back to the event loop through the</span>
+            <span class="c1"># short sleep</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span><span class="o">.</span><span class="n">inWaiting</span><span class="p">():</span>
+                <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span><span class="p">)</span>
+            <span class="c1"># data is available.</span>
+            <span class="c1"># set the flag to true so that the future can &quot;wait&quot; until the</span>
+            <span class="c1"># read is completed.</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">data_available</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                <span class="c1"># set future result to make the character available</span>
+                <span class="n">future</span><span class="o">.</span><span class="n">set_result</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># wait for the future to complete</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">future</span><span class="o">.</span><span class="n">done</span><span class="p">():</span>
+                <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># future is done, so return the character</span>
+                <span class="k">return</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+</pre></div>
+
   </div>
 </div>
 
@@ -1597,28 +1675,29 @@ It provides a non-blocking read and returns a line of data read.</p>
   <div class="source_cont">
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-pymata_aio.pymata_serial.PymataSerial.readline', this);">Show source &equiv;</a></p>
   <div id="source-pymata_aio.pymata_serial.PymataSerial.readline" class="source">
-    <pre><code>async def readline(self):
-    """
-    This is an asyncio adapted version of pyserial read.
-    It provides a non-blocking read and returns a line of data read.
-    :return: A line of data
-    """
-    future = asyncio.Future()
-    data_available = False
-    while True:
-        if not data_available:
-            if not self.my_serial.inWaiting():
-                await asyncio.sleep(self.sleep_tune)
-            else:
-                data_available = True
-                data = self.my_serial.readline()
-                future.set_result(data)
-        else:
-            if not future.done():
-                await asyncio.sleep(self.sleep_tune)
-            else:
-                return future.result()
-</code></pre>
+    <div class="codehilite"><pre><span></span><span class="n">async</span> <span class="k">def</span> <span class="nf">readline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is an asyncio adapted version of pyserial read.</span>
+<span class="sd">    It provides a non-blocking read and returns a line of data read.</span>
+<span class="sd">    :return: A line of data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">future</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Future</span><span class="p">()</span>
+    <span class="n">data_available</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">data_available</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span><span class="o">.</span><span class="n">inWaiting</span><span class="p">():</span>
+                <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">data_available</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+                <span class="n">future</span><span class="o">.</span><span class="n">set_result</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">future</span><span class="o">.</span><span class="n">done</span><span class="p">():</span>
+                <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+</pre></div>
+
   </div>
 </div>
 
@@ -1638,13 +1717,14 @@ It provides a non-blocking read and returns a line of data read.</p>
   <div class="source_cont">
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-pymata_aio.pymata_serial.PymataSerial.set_dtr', this);">Show source &equiv;</a></p>
   <div id="source-pymata_aio.pymata_serial.PymataSerial.set_dtr" class="source">
-    <pre><code>async def set_dtr(self, state):
-    """
-    Set DTR state
-    :param state: DTR state
-    """
-    self.my_serial.setDTR(state)
-</code></pre>
+    <div class="codehilite"><pre><span></span><span class="n">async</span> <span class="k">def</span> <span class="nf">set_dtr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Set DTR state</span>
+<span class="sd">    :param state: DTR state</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span><span class="o">.</span><span class="n">setDTR</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+</pre></div>
+
   </div>
 </div>
 
@@ -1667,48 +1747,49 @@ completion</p>
   <div class="source_cont">
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-pymata_aio.pymata_serial.PymataSerial.write', this);">Show source &equiv;</a></p>
   <div id="source-pymata_aio.pymata_serial.PymataSerial.write" class="source">
-    <pre><code>async def write(self, data):
-    """
-    This is an asyncio adapted version of pyserial write. It provides a
-    non-blocking  write and returns the number of bytes written upon
-    completion
-    :param data: Data to be written
-    :return: Number of bytes written
-    """
-    # the secret sauce - it is in your future
-    future = asyncio.Future()
-    result = None
-    try:
-        result = self.my_serial.write(bytes([ord(data)]))
-    except serial.SerialException:
-        # self.my_serial.close()
-        # noinspection PyBroadException
-        try:
-            await self.close()
-            future.cancel()
-            if self.log_output:
-                logging.exception('Write exception')
-            else:
-                print('Write exception')
-            loop = asyncio.get_event_loop()
-            for t in asyncio.Task.all_tasks(loop):
-                t.cancel()
-            loop.run_until_complete(asyncio.sleep(.1))
-            loop.stop()
-            loop.close()
-            self.my_serial.close()
-            sys.exit(0)
-        except:  # swallow any additional exceptions during shutdown
-            pass
-    if result:
-        future.set_result(result)
-        while True:
-            if not future.done():
-                # spin our asyncio wheels until future completes
-                await asyncio.sleep(self.sleep_tune)
-            else:
-                return future.result()
-</code></pre>
+    <div class="codehilite"><pre><span></span><span class="n">async</span> <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is an asyncio adapted version of pyserial write. It provides a</span>
+<span class="sd">    non-blocking  write and returns the number of bytes written upon</span>
+<span class="sd">    completion</span>
+<span class="sd">    :param data: Data to be written</span>
+<span class="sd">    :return: Number of bytes written</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># the secret sauce - it is in your future</span>
+    <span class="n">future</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Future</span><span class="p">()</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">bytes</span><span class="p">([</span><span class="nb">ord</span><span class="p">(</span><span class="n">data</span><span class="p">)]))</span>
+    <span class="k">except</span> <span class="n">serial</span><span class="o">.</span><span class="n">SerialException</span><span class="p">:</span>
+        <span class="c1"># self.my_serial.close()</span>
+        <span class="c1"># noinspection PyBroadException</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">future</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_output</span><span class="p">:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;Write exception&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Write exception&#39;</span><span class="p">)</span>
+            <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Task</span><span class="o">.</span><span class="n">all_tasks</span><span class="p">(</span><span class="n">loop</span><span class="p">):</span>
+                <span class="n">t</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+            <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="o">.</span><span class="mi">1</span><span class="p">))</span>
+            <span class="n">loop</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+            <span class="n">loop</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">my_serial</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>  <span class="c1"># swallow any additional exceptions during shutdown</span>
+            <span class="k">pass</span>
+    <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+        <span class="n">future</span><span class="o">.</span><span class="n">set_result</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">future</span><span class="o">.</span><span class="n">done</span><span class="p">():</span>
+                <span class="c1"># spin our asyncio wheels until future completes</span>
+                <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_tune</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+</pre></div>
+
   </div>
 </div>
 

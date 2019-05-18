@@ -1,5 +1,9 @@
 # Change Log
 
+## Release 2.30
+18 May 2019
+* Added parameter to generate exceptions instead of exiting
+
 ## Release 2.29
 12 May 2019
 * Accepted Pull Request #93

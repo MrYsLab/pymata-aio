@@ -32,7 +32,8 @@ class PyMata3:
     """
 
     def __init__(self, arduino_wait=2, sleep_tune=0.0001, log_output=False, com_port=None,
-                 ip_address=None, ip_port=2000, ip_handshake='*HELLO*'):
+                 ip_address=None, ip_port=2000, ip_handshake='*HELLO*',
+                 port_discovery_exceptions=False):
         """
         Constructor for the PyMata3 API
         If log_output is set to True, a log file called 'pymata_log'
@@ -57,6 +58,9 @@ class PyMata3:
 
         :param ip_handshake: Connectivity handshake string sent by IP device
 
+        :param port_discovery_exceptions: If True, then RuntimeError is
+                                          raised instead of exiting.
+
         :returns: None
         """
         self.log_out = log_output
@@ -64,7 +68,8 @@ class PyMata3:
 
         self.sleep_tune = sleep_tune
         self.core = PymataCore(arduino_wait, self.sleep_tune, log_output,
-                               com_port, ip_address, ip_port, ip_handshake)
+                               com_port, ip_address, ip_port, ip_handshake,
+                               port_discovery_exceptions)
         self.core.start()
         self.sleep(1)
 

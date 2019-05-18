@@ -6,7 +6,7 @@ Pymata-aio port of the Arduino Servo --> Sweep Example
 from pymata_aio.pymata3 import PyMata3
 
 board = PyMata3()
-SERVO_PIN = 11
+SERVO_PIN = 5
 
 
 def setup():
