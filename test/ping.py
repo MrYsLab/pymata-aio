@@ -34,7 +34,7 @@ def cb_ping(data):
 # create a PyMata instance
 board = PyMata3(2)
 
-# configure 4 pins for 4 SONAR modules
+# configure an HC-SR04 for single pin operation on pin 12
 board.sonar_config(12, 12, cb_ping)
 
 while True:
