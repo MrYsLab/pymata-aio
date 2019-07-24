@@ -902,9 +902,9 @@ void systemResetCallback()
       // turns off pullup, configures everything
       setPinModeCallback(i, PIN_MODE_ANALOG);
     }
-    else if ( IS_PIN_TONE(i)) {
-      noTone(i) ;
-    }
+//    else if ( IS_PIN_TONE(i)) {
+//      noTone(i) ;
+//    }
     else {
       // sets the output to 0, configures portConfigInputs
       setPinModeCallback(i, OUTPUT);
