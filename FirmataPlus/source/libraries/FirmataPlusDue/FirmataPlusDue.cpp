@@ -16,7 +16,7 @@
 //* Includes
 //******************************************************************************
 
-#include "FirmataDue.h"
+#include "FirmataPlusDue.h"
 #include "HardwareSerial.h"
 
 extern "C" {
