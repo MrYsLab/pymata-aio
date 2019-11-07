@@ -641,9 +641,12 @@ class PymataCore:
 
         :returns: No return value
         """
-        command = [PrivateConstants.REPORT_ANALOG + pin,
-                   PrivateConstants.REPORTING_DISABLE]
-        await self._send_command(command)
+        # command = [PrivateConstants.REPORT_ANALOG + pin,
+        #            PrivateConstants.REPORTING_DISABLE]
+        # await self._send_command(command)
+        pin = pin + self.first_analog_pin
+        # self.set_pin_mode(pin)
+        await self.set_pin_mode(pin, Constants.INPUT)
 
     async def disable_digital_reporting(self, pin):
         """
@@ -717,9 +720,13 @@ class PymataCore:
 
         :returns: No return value
         """
-        command = [PrivateConstants.REPORT_ANALOG + pin,
-                   PrivateConstants.REPORTING_ENABLE]
-        await self._send_command(command)
+        # command = [PrivateConstants.REPORT_ANALOG + pin,
+        #            PrivateConstants.REPORTING_ENABLE]
+        # await self._send_command(command)
+
+        # pin = pin + self.first_analog_pin
+        # self.set_pin_mode(pin)
+        await self.set_pin_mode(pin, Constants.ANALOG)
 
     async def enable_digital_reporting(self, pin):
         """
@@ -1182,9 +1189,9 @@ class PymataCore:
 
         command = [PrivateConstants.SET_PIN_MODE, pin_number, pin_mode]
         await self._send_command(command)
-        if pin_state == Constants.ANALOG:
-            await self.enable_analog_reporting(pin_number)
-        elif pin_state == Constants.INPUT or pin_state == Constants.PULLUP:
+        # if pin_state == Constants.ANALOG:
+         #    await self.enable_analog_reporting(pin_number)
+        if pin_state == Constants.INPUT or pin_state == Constants.PULLUP:
             await self.enable_digital_reporting(pin_number)
         else:
             pass
