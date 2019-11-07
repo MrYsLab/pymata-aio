@@ -1,12 +1,11 @@
 from setuptools import setup
 
-with open('pypi_desc.md') as f:
+with open('pypi_desc.md', "r") as f:
     long_description = f.read()
-
 
 setup(
     name='pymata-aio',
-    version='2.32',
+    version='2.33',
     packages=['pymata_aio', 'utilities'],
     install_requires=['pyserial', 'websockets'],
     entry_points={
