@@ -4,7 +4,7 @@ pymata_aio is a high performance, non-blocking, Python asyncio client
 for the Firmata Protocolthat supports the complete StandardFirmata
 protocol.
 
-Major features
+Major features  
 ==============
 
 * Python 3.5+ compatible.
