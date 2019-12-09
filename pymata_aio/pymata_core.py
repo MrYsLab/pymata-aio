@@ -46,7 +46,8 @@ class PymataCore:
 
     def __init__(self, arduino_wait=4, sleep_tune=0.0001, log_output=False,
                  com_port=None, ip_address=None, ip_port=2000,
-                 ip_handshake='*HELLO*', port_discovery_exceptions=False):
+                 ip_handshake='*HELLO*', port_discovery_exceptions=False,
+                 event_loop=None):
         """
         This is the "constructor" method for the PymataCore class.
 
@@ -258,8 +259,15 @@ class PymataCore:
 
         self.first_analog_pin = None
 
-        # set up signal handler for controlC
-        self.loop = asyncio.get_event_loop()
+        # get the event loop
+        # this is for python 3.8
+        if event_loop:
+            self.loop = event_loop
+        else:
+            if sys.platform == 'win32':
+                asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+
+            self.loop = asyncio.get_event_loop()
 
     def start(self):
         """
@@ -308,7 +316,6 @@ class PymataCore:
         time.sleep(self.arduino_wait)
 
         # register the get_command method with the event loop
-        # self.loop = asyncio.get_event_loop()
         self.the_task = self.loop.create_task(self._command_dispatcher())
 
         # get arduino firmware version and print it
@@ -436,7 +443,6 @@ class PymataCore:
         time.sleep(self.arduino_wait)
 
         # register the get_command method with the event loop
-        self.loop = asyncio.get_event_loop()
         self.the_task = self.loop.create_task(self._command_dispatcher())
 
         # get arduino firmware version and print it

@@ -17,6 +17,7 @@
 
 
 import asyncio
+import sys
 
 try:
     from pymata_core import PymataCore
@@ -64,12 +65,17 @@ class PyMata3:
         :returns: None
         """
         self.log_out = log_output
+        # get the event loop
+        # this is for python 3.8
+        if sys.platform == 'win32':
+            asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+
         self.loop = asyncio.get_event_loop()
 
         self.sleep_tune = sleep_tune
         self.core = PymataCore(arduino_wait, self.sleep_tune, log_output,
                                com_port, ip_address, ip_port, ip_handshake,
-                               port_discovery_exceptions)
+                               port_discovery_exceptions, self.loop)
         self.core.start()
         self.sleep(1)
 
