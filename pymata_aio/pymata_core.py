@@ -80,9 +80,19 @@ class PymataCore:
 
         :returns: This method never returns
         """
-        # check to make sure that Python interpreter is version 3.5 or greater
+        # check to make sure that Python interpreter is version 3.5 or greater for
+        # linux and mac and version 3.7 for Windows
         python_version = sys.version_info
-        if python_version[0] >= 3:
+
+        if sys.platform == 'win32':
+            if python_version[0] >= 3:
+                if python_version[1] >= 7:
+                    pass
+                else:
+                    print(
+                        "ERROR: Python 3.7 or greater is required for use of this program with Windows.")
+        # version 3.5 or greater for linux/mac
+        elif python_version[0] >= 3:
             if python_version[1] >= 5:
                 pass
             else:

@@ -8,9 +8,10 @@
 
 ### Major features
 
-* __Python 3.5+__ compatible.
+* __Python 3.5+__  compatible for Linux and macOS.
     * **Implements [PEP 492](https://www.python.org/dev/peps/pep-0492/)**
     * **Applications developed with version 1.x of pymata_aio are backward compatible without modification.**
+* __Python 3.7+__  compatible for Windows.
 * **Implemented using the high efficiency Python [asyncio](https://docs.python.org/3/library/asyncio.html) library.**
 * **Choose From 3 Included APIs**
      * **pymata_core** - a pure asyncio method call API.
