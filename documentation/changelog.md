@@ -1,5 +1,24 @@
 # Change Log
 
+## Release 2.35
+February 6 2020
+* Limit Windows support to Python 3.7 and above
+
+## Release 2.34
+9 December 2019
+* Python asyncio library support for Windows Python 3.7 release
+
+## Release 2.33
+17 November 2019
+* This release fixes issue #101
+
+## Release 2.32
+* Ignore this release - bad build
+
+## Release 2.31
+6 September 2019
+* Fixed a type in pymata_iot
+
 ## Release 2.30
 18 May 2019
 * Added parameter to generate exceptions instead of exiting
