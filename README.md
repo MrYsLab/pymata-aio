@@ -1,3 +1,7 @@
+# This repository has been archived.
+## The pymata-core API has been replaced with [pymata-express,](https://github.com/MrYsLab/pymata-express) and the pymata3 API has been replaced with [pymata4](https://github.com/MrYsLab/pymata4).
+
+
 ![logo](https://raw.github.com/MrYsLab/pymata-aio/master/documentation/images/logo.png)
 ======
 
